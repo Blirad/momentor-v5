@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Momentor — Your Four Pillars Reading</title>
+<meta property="og:title" content="Momentor — Your Four Pillars Reading">
+<meta property="og:description" content="More precise than astrology. Older than the zodiac. Your birth chart, to the exact hour.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://blirad.github.io/momentor-v5/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Momentor — Your Four Pillars Reading">
+<meta name="twitter:description" content="More precise than astrology. Older than the zodiac.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -84,6 +91,12 @@
     max-width: var(--max-w);
     margin: 0 auto;
     border-bottom: 1px solid var(--card-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(13,11,30,0.85);
   }
   .logo {
     font-family: var(--font-serif);
@@ -419,12 +432,12 @@
     margin-bottom: 20px;
   }
   .identity-tag {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 13px;
-    color: var(--text-secondary);
+    border-radius: 999px;
+    background: rgba(232,197,71,0.1);
+    border: 1px solid rgba(232,197,71,0.25);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 4px 12px;
   }
   .identity-tag span { color: var(--gold-soft); margin-right: 4px; }
 
@@ -438,11 +451,65 @@
   }
   .story-text + .story-text { margin-top: 12px; }
   .story-section-label {
-    font-size: 10px;
-    letter-spacing: .2em;
+    font-size: 11px;
+    letter-spacing: .15em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--gold-soft);
     margin: 24px 0 10px;
+  }
+
+  /* T3-A: Past→Present connection block */
+  .connection-moment {
+    border-left: 3px solid var(--gold);
+    background: rgba(232,197,71,0.04);
+    padding: 20px 24px;
+    margin: 16px 0;
+    border-radius: 0 12px 12px 0;
+  }
+
+  /* T2-A: Conviction section */
+  .conviction-section {
+    border-left: 3px solid var(--gold);
+    background: rgba(232,197,71,0.04);
+    padding: 28px 24px;
+    margin: 32px 0;
+    border-radius: 0 12px 12px 0;
+  }
+  .conviction-section p {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    line-height: 1.9;
+    color: var(--text-primary);
+  }
+  .conviction-section .conviction-closer {
+    margin-top: 20px;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--gold-soft);
+  }
+
+  /* T3-B: Daeun progress bar */
+  .daeun-progress {
+    margin-top: 12px;
+  }
+  .progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    transition: width 0.8s ease;
+  }
+  .progress-meta {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
   }
 
   /* ─── ACCORDION ─── */
@@ -877,6 +944,40 @@
     margin-top: 4px;
   }
 
+  /* ─── ELEMENT PILLAR GLOW ─── */
+  [data-element="Wood"] .pillar-stem { color: #5de8a0; text-shadow: 0 0 24px rgba(93,232,160,.4); }
+  [data-element="Fire"] .pillar-stem  { color: #ff7eb3; text-shadow: 0 0 24px rgba(255,126,179,.4); }
+  [data-element="Earth"] .pillar-stem { color: #f0b860; text-shadow: 0 0 24px rgba(240,184,96,.4); }
+  [data-element="Metal"] .pillar-stem { color: #e0e8f0; text-shadow: 0 0 24px rgba(224,232,240,.4); }
+  [data-element="Water"] .pillar-stem { color: #7eb8ff; text-shadow: 0 0 24px rgba(126,184,255,.4); }
+
+  /* ─── DATE SELECTS ─── */
+  .date-selects { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+  @media (max-width: 360px) { .date-selects { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* ─── STICKY CTA BAR ─── */
+  .sticky-cta-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
+    background: linear-gradient(135deg, rgba(20,12,40,0.97), rgba(30,15,50,0.97));
+    border-top: 1px solid rgba(232,197,71,0.3);
+    padding: 12px 20px calc(12px + env(safe-area-inset-bottom,0px));
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    display: flex; justify-content: center;
+  }
+  .sticky-cta-inner { display: flex; align-items: center; gap: 16px; max-width: 680px; width: 100%; justify-content: space-between; }
+  .sticky-cta-text { color: var(--text-secondary); font-size: 14px; }
+  .sticky-cta-btn {
+    background: linear-gradient(135deg, #f0b860, #e8a840, #ffd080, #c9a84c, #f0b860);
+    background-size: 200% auto;
+    animation: shimmer 3.2s linear infinite;
+    color: #0d0b1e; font-weight: 700; font-size: 15px;
+    padding: 10px 24px; border-radius: 999px; text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* ─── PAYWALL ANCHOR ─── */
+  .paywall-anchor { font-size: 12px; color: var(--text-muted); text-align: center; margin: 8px 0; }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 480px) {
     .form-row { grid-template-columns: 1fr; }
@@ -913,10 +1014,8 @@
 <section id="section-form">
   <div class="container">
     <div class="form-intro">
-      <h1 id="form-title">Your Four Pillars Reading</h1>
-      <p id="form-subtitle">Enter your birth details. No account. No email. Just your chart.</p>
-      <p style="font-size:14px;color:var(--text-secondary);text-align:center;margin-bottom:24px;">Your birth chart, but precise to the hour — not just your sun sign.</p>
-      <p class="form-tagline2">More precise than astrology. Older than the zodiac.</p>
+      <h1 id="form-title">You were already this person<br>the moment you arrived.</h1>
+      <p id="form-subtitle">Before you had a name for it.<br>Your Four Pillars have been holding the answer.</p>
     </div>
 
     <div class="step-indicator">
@@ -934,7 +1033,7 @@
       </div>
       <div class="form-group">
         <label id="label-bday">Date of birth</label>
-        <div class="date-selects" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+        <div class="date-selects">
           <select id="inp-year" class="time-select">
             <option value="">Year</option>
           </select>
@@ -992,7 +1091,6 @@
       </div>
       <button class="btn-primary" onclick="generateReport()" id="btn-generate">See My Reading →</button>
       <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:12px;">Free. Private. Instant. Just your birth moment, just your chart.</p>
-      <p style="font-size:13px;color:var(--text-muted);text-align:center;margin-top:8px;">Four Pillars is a 3,000-year-old system that maps your character and life timing from your exact birth moment — year, month, day, and hour.</p>
     </div>
   </div>
 </section>
@@ -1013,9 +1111,9 @@
 
       <!-- Day Master Hero -->
       <div class="dm-hero reveal" id="dm-hero">
+        <div class="dm-hook" id="dm-hook">Loading...</div>
         <span class="dm-char" id="dm-char">甲</span>
         <div class="dm-label" id="dm-label">Yang Wood · The Ancient Tree</div>
-        <div class="dm-hook" id="dm-hook">Loading...</div>
       </div>
 
       <!-- Identity Tags -->
@@ -1080,8 +1178,9 @@
     <!-- BRIDGE 2→3 -->
     <div class="chapter-bridge reveal">
       <div class="bridge-inner">
-        <p id="bridge-23a">All that time behind you.</p>
-        <p class="bridge-question" id="bridge-23b">And here you are, right now.</p>
+        <p id="bridge-23a">None of those years were accidents.</p>
+        <p id="bridge-23b2">The chart knew which ones would break you open —<br>and which ones would quietly rebuild.</p>
+        <p class="bridge-question" id="bridge-23b">Now look where you are.</p>
       </div>
     </div>
 
@@ -1100,6 +1199,7 @@
         <div class="current-badge" id="current-badge">Current Cycle</div>
         <span class="current-pillar-char" id="current-pillar-chars"></span>
         <p class="current-desc" id="current-desc"></p>
+        <div id="current-daeun-progress"></div>
       </div>
 
       <!-- Strength Analysis -->
@@ -1115,8 +1215,20 @@
       </div>
 
       <!-- Past → Present Connection -->
-      <div class="card reveal" style="margin-top:16px">
+      <div class="connection-moment reveal" style="margin-top:16px">
         <p style="font-family:var(--font-serif);font-size:15px;color:var(--text-secondary);line-height:1.75" id="past-present-link"></p>
+      </div>
+
+      <!-- ④ 납득 (Conviction) Section -->
+      <div class="conviction-section reveal" id="conviction-section">
+        <p id="conviction-text">Here is what the chart did to reach this reading:<br><br>
+        Your Day Pillar — <span id="conviction-pillar"></span> — was locked in at the exact hour you were born.
+        Every cycle since then has been running on the same 60-year clock,
+        unchanged for 3,000 years.<br><br>
+        The past decades you just read? Calculated.
+        The one you're living now? Calculated.
+        What comes next is already in the numbers.</p>
+        <p class="conviction-closer">This isn't astrology. This is arithmetic on time.</p>
       </div>
     </div>
 
@@ -1143,13 +1255,14 @@
 
       <!-- Trust line -->
       <p class="reveal" style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px;font-family:var(--font-serif)" id="paywall-trust-text">
-        Everything you've read so far — your identity, your past cycles, your current energy — came directly from your chart. The future cycles are calculated the same way.
+        The past was already written when you were born.<br>So is what comes next.<br><br><span id="paywall-name-span"></span>the chart doesn't stop at today.
       </p>
 
       <!-- CTA -->
       <div class="paywall-cta-wrap reveal" id="paywall-cta">
         <p class="paywall-hook" id="paywall-hook">Aren't you curious what comes next?</p>
-        <p class="paywall-sub" id="paywall-sub">The next decade of your cycle. When opportunity arrives.<br>When to move carefully. What the chart says about you.</p>
+        <p class="paywall-sub" id="paywall-sub">The next decade is waiting.<br>And the one after that.<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
+        <p class="paywall-anchor">Co-Star: $8.99/month. Momentor: $7.99 one-time.</p>
         <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
           ✦ See My Next Decade — $7.99
         </a>
@@ -1159,6 +1272,14 @@
 
   </div>
 </section>
+
+<!-- STICKY CTA BAR -->
+<div class="sticky-cta-bar" id="sticky-cta" style="display:none">
+  <div class="sticky-cta-inner">
+    <span class="sticky-cta-text">✦ Unlock Your Full Reading</span>
+    <a href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" class="sticky-cta-btn" onclick="openPayModal();return false;">$7.99</a>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════════════════
@@ -1184,8 +1305,8 @@ let reportData = null;
 // I18N
 // ═══════════════════════════════════════════════
 const T = {
-  'form-title':         { en:'Your Four Pillars Reading', ko:'사주 리포트' },
-  'form-subtitle':      { en:'Enter your birth details. No account. No email. Just your chart.', ko:'생년월일을 입력하세요. 계정 없이 바로 확인.' },
+  'form-title':         { en:'You were already this person\nthe moment you arrived.', ko:'당신은 태어난 순간부터 이미 이 사람이었습니다.' },
+  'form-subtitle':      { en:'Before you had a name for it.\nYour Four Pillars have been holding the answer.', ko:'그것을 이름 붙이기도 전에.\n사주는 처음부터 답을 갖고 있었습니다.' },
   'step1-title':        { en:'Tell me about yourself', ko:'당신에 대해 알려주세요' },
   'label-name':         { en:'Your name', ko:'이름' },
   'label-bday':         { en:'Date of birth', ko:'생년월일' },
@@ -1218,22 +1339,61 @@ const T = {
   'current-badge':      { en:'Current Cycle', ko:'현재 대운' },
   'today-label':        { en:"Today's Energy", ko:'오늘의 에너지' },
   'bridge-12a':         { en:'There is a reason you became this person.', ko:'당신이 이런 사람이 된 데는 이유가 있습니다.' },
-  'bridge-12b':         { en:"Let's look at the time that shaped you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
-  'bridge-23a':         { en:'All that time behind you.', ko:'그 모든 시간이 지나.' },
-  'bridge-23b':         { en:'And here you are, right now.', ko:'지금 이 순간, 당신은 여기 있습니다.' },
+  'bridge-12b':         { en:"The chart remembers every decade that made you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
+  'bridge12b':          { en:"The chart remembers every decade that made you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
+  'bridge-23a':         { en:'None of those years were accidents.', ko:'그 어떤 해도 우연이 아니었습니다.' },
+  'bridge-23b':         { en:'Now look where you are.', ko:'지금 당신이 서 있는 곳을 보세요.' },
   'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
   'bridge-34b':         { en:'What comes next?', ko:'그렇다면, 다음은 무엇일까요?' },
   'paywall-hook':       { en:"Aren't you curious what comes next?", ko:'다음 이야기가 궁금하지 않으신가요?' },
-  'paywall-sub':        { en:'The next decade of your cycle. When opportunity arrives.<br>When to move carefully. What the chart says about you.', ko:'다음 10년의 흐름. 기회가 오는 시기.<br>조심해야 할 때. 사주가 당신에게 하는 말.' },
+  'paywall-sub':        { en:'The next decade is waiting.<br>And the one after that.<br><br>The chart has never been wrong about your past.<br>It won\'t start now.', ko:'다음 10년이 기다리고 있습니다.<br>그리고 그 다음도.<br><br>사주는 당신의 과거에 대해 한 번도 틀린 적이 없습니다.<br>이제 와서 틀릴 리 없습니다.' },
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
-  'paywall-trust-text': { en:'Everything you\'ve read so far — your identity, your past cycles, your current energy — came directly from your chart. The future cycles are calculated the same way.', ko:'지금까지 읽으신 모든 내용 — 정체성, 과거 대운, 현재 에너지 — 은 모두 실제 사주에서 나왔습니다. 미래 대운도 같은 방식으로 계산됩니다.' },
+  'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
 };
 
+// ═══════════════════════════════════════════════
+// SECURITY UTILS
+// ═══════════════════════════════════════════════
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;');
+}
+
+async function verifyAndUnlock(orderId) {
+  try {
+    const resp = await fetch('/api/verify-order', {
+      method: 'POST',
+      body: JSON.stringify({ orderId }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await resp.json();
+    if (data && data.ok) {
+      sessionStorage.setItem('momentor_token', data.token || orderId);
+      if (reportData) {
+        reportData.unlocked = true;
+        renderReport(reportData);
+      }
+      return true;
+    }
+  } catch (e) {
+    // Vercel function not available (local dev fallback)
+    console.warn('verify-order endpoint not available:', e.message);
+  }
+  return false;
+}
+
+function isUnlocked() {
+  return !!sessionStorage.getItem('momentor_token');
+}
+
 function setLang(lang) {
   currentLang = lang;
+  document.documentElement.lang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase()));
   // update static strings
   Object.keys(T).forEach(id => {
@@ -1295,6 +1455,52 @@ function getHourPillar(dayStemIdx, hour) {
   return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
 }
 
+function getSolarTermDay(year, month0) {
+  // month0: 0=Jan(小寒), 1=Feb(立春), 2=Mar(驚蟄), ..., 11=Dec(大雪)
+  const Y = year % 100;
+  const base = year >= 2000 ? ST_BASE_20[month0] : ST_BASE_19[month0];
+  return Math.floor(Y * 0.2422 + base) - Math.floor(Y / 4);
+}
+
+function calcDaeunStartAge(year, month, day, monthPillar, forward) {
+  const m0 = month - 1;
+  let termYear = year, termMonth0 = m0;
+  if (forward) {
+    const termDay = getSolarTermDay(year, m0);
+    if (day >= termDay) {
+      termMonth0 = (m0 + 1) % 12;
+      termYear = m0 === 11 ? year + 1 : year;
+    }
+    const targetDay = getSolarTermDay(termYear, termMonth0);
+    const birth = new Date(year, month - 1, day);
+    const term  = new Date(termYear, termMonth0, targetDay);
+    const diff  = (term - birth) / 86400000;
+    return Math.max(1, Math.round(diff / 3));
+  } else {
+    const termDay = getSolarTermDay(year, m0);
+    if (day < termDay) {
+      termMonth0 = (m0 - 1 + 12) % 12;
+      termYear = m0 === 0 ? year - 1 : year;
+    }
+    const targetDay = getSolarTermDay(termYear, termMonth0);
+    const birth = new Date(year, month - 1, day);
+    const term  = new Date(termYear, termMonth0, targetDay);
+    const diff  = Math.abs(birth - term) / 86400000;
+    return Math.max(1, Math.round(diff / 3));
+  }
+}
+
+function renderDaeunProgress(startAge, currentAge) {
+  const elapsed = Math.min(Math.max(currentAge - startAge, 0), 10);
+  const pct = (elapsed / 10 * 100).toFixed(0);
+  return `
+    <div class="daeun-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <span class="progress-meta">${elapsed}yr in · ${10 - elapsed}yr remaining</span>
+    </div>
+  `;
+}
+
 function calcFourPillars(year, month, day, hour, gender, noTime) {
   const yearPillar  = getYearPillar(year, month, day);
   const monthPillar = getMonthPillar(year, month, day);
@@ -1314,9 +1520,12 @@ function calcFourPillars(year, month, day, hour, gender, noTime) {
   const currentYear = new Date().getFullYear();
   const personAge   = currentYear - year;
 
+  // T1-C: Real 起運 calculation
+  const startAge = calcDaeunStartAge(year, month, day, monthPillar, forward);
+
   const daeun = [];
   for (let i = 0; i < 9; i++) {
-    const age = 5 + i * 10;
+    const age = startAge + i * 10;
     const startYear = year + age;
     const endYear   = startYear + 9;
     const mIdx = ((monthPillar.branchIdx + (forward ? i+1 : -(i+1))) % 12 + 12) % 12;
@@ -1395,8 +1604,8 @@ const DM = {
   },
   '戊': {
     labelEn: 'Yang Earth · The Mountain', labelKo: '무토 · 산',
-    hookEn: "People have been leaning on you your whole life — and most of them have never once asked if you were tired.",
-    hookKo: "사람들은 평생 당신에게 기대왔습니다 — 그리고 그들 대부분은 당신이 지쳤는지 한 번도 묻지 않았습니다.",
+    hookEn: "You've absorbed things in silence that would have broken louder people. You just kept standing. And nobody thought to ask — because mountains don't fall.",
+    hookKo: "더 소리 높은 사람들을 무너뜨렸을 것들을 당신은 침묵 속에 흡수했습니다. 그냥 계속 서 있었습니다. 아무도 묻지 않았습니다 — 산은 쓰러지지 않으니까요.",
     originEn: "You are the fixed point in the lives of the people around you. In a world full of people who destabilize at the first sign of turbulence, you are the thing that doesn't move. Not because you aren't affected — you are, deeply — but because you learned, probably very young, that someone had to be the mountain. And you were the most qualified person in the room.\n\n戊Earth doesn't perform stability. It is stability. Your presence communicates, without words, that whatever is happening can be survived. People feel the ground beneath their feet when you walk in. That's not nothing. That's everything, actually. It just costs in ways no one sees.",
     originKo: "당신은 주변 사람들의 삶에서 고정점입니다. 혼란의 첫 신호에 불안정해지는 사람들로 가득 찬 세상에서, 당신은 움직이지 않는 것입니다. 영향을 받지 않아서가 아니라 — 당신은 깊이 영향을 받습니다 — 아마도 아주 어렸을 때, 누군가는 산이 되어야 한다는 것을 배웠기 때문입니다.",
     shadowEn: "The mountain shows nothing on the surface. What lives underneath is another matter. There's accumulated pressure in you — too many small surrenders, too many times you held the room together by holding yourself still. 戊Earth doesn't break in the usual way. It holds and holds and holds, and then the ground shifts in a way that surprises even you. The earthquake doesn't announce itself.",
@@ -1447,8 +1656,8 @@ const DM = {
   },
   '壬': {
     labelEn: 'Yang Water · The Great River', labelKo: '임수 · 대강',
-    hookEn: "You've known more about the people in your life than you've ever told them — and they have no idea.",
-    hookKo: "당신은 삶의 사람들에 대해 그들에게 말한 것보다 훨씬 더 많이 알고 있습니다 — 그리고 그들은 전혀 모릅니다.",
+    hookEn: "You've mapped everyone in your life — their patterns, their fears, their tells — and kept it entirely to yourself. Not out of strategy. Out of something lonelier than that.",
+    hookKo: "당신 삶의 모든 사람을 파악해왔습니다 — 그들의 패턴, 두려움, 징조 — 그리고 그것을 전부 혼자 간직했습니다. 전략 때문이 아닙니다. 그보다 더 외로운 무언가 때문에.",
     originEn: "You were born as water that has no bottom. Not the ocean — the great river: moving, navigating, reading every terrain it passes through without judgment and without stopping. Other people are sitting on the riverbank wondering what the water is thinking. The water is already three miles downstream.\n\nYou absorb everything. A comment made in passing. A shift in someone's energy halfway through dinner. A pattern in numbers that no one else caught. This isn't effort — it's your natural state. You map people the way rivers map landscapes: completely, instinctively, and without being asked.",
     originKo: "당신은 바닥이 없는 물로 태어났습니다. 대양이 아니라 — 대강: 움직이고, 항해하고, 통과하는 모든 지형을 판단 없이, 멈추지 않고 읽습니다. 다른 사람들은 강둑에 앉아 물이 무엇을 생각하는지 의문입니다. 물은 이미 3마일 하류에 있습니다.",
     shadowEn: "Nothing contains you for long. Not a job. Not a city. Not a relationship. When something starts to feel like a cage — even a comfortable one — part of you is already calculating how to flow around it. The people who love you learn this early, and they hold you loosely, because that's the only way to hold a river. You carry a loneliness that doesn't come from being alone. It comes from knowing too much — and choosing, constantly, how little to say.",
@@ -1460,8 +1669,8 @@ const DM = {
   },
   '癸': {
     labelEn: 'Yin Water · The Mountain Spring', labelKo: '계수 · 산속의 샘',
-    hookEn: "You feel things that haven't happened yet — and you've spent years trying to figure out if that makes you sensitive or simply awake.",
-    hookKo: "당신은 아직 일어나지 않은 것들을 느낍니다 — 그리고 그것이 당신을 예민하게 만드는지 아니면 단순히 깨어있게 만드는지 오랫동안 알아내려 했습니다.",
+    hookEn: "You've cried at other people's grief before they started crying themselves. That's what happens when the boundaries between you and everyone else are thinner than most people's are.",
+    hookKo: "다른 사람들이 울기 시작하기 전에 당신이 먼저 울었습니다. 당신과 다른 사람들 사이의 경계가 대부분의 사람들보다 훨씬 얇을 때 일어나는 일입니다.",
     originEn: "癸Water is the rain and the dew — not the flood, not the ocean. It seeps. It infiltrates. It nurtures things that don't even know they're being nurtured. You absorb the emotional frequency of a room before anyone has spoken. You already knew, when you walked in, who was hurting and who was performing and who needed to leave early. You didn't say anything. You rarely do.\n\nYou have an interior life of remarkable richness. What emerges in the right conversation, with the right person, is extraordinary. Most people never get close enough to see it.",
     originKo: "癸水는 비와 이슬입니다 — 홍수도, 대양도 아닙니다. 스며듭니다. 침투합니다. 양육받는 것조차 모르는 것들을 양육합니다. 당신은 누구도 말하기 전에 방의 감정 주파수를 흡수합니다.",
     shadowEn: "Water that absorbs everything eventually becomes murky. You carry everyone else's emotional weather — their grief, their anxiety, their unspoken need — and sometimes you genuinely don't know where you end and another person begins. The exhaustion of being this open is real, and it's rarely acknowledged. Also: you see the best version of everyone. That's a kind of love. It's also, sometimes, a way of avoiding the version that's actually there.",
@@ -1623,7 +1832,7 @@ function populateDateSelects() {
   const yearSel = document.getElementById('inp-year');
   const daySel  = document.getElementById('inp-day');
   yearSel.innerHTML = `<option value="">Year</option>`;
-  for (let y = 2010; y >= 1930; y--) {
+  for (let y = 2020; y >= 1930; y--) {
     yearSel.innerHTML += `<option value="${y}">${y}</option>`;
   }
   daySel.innerHTML = `<option value="">Day</option>`;
@@ -1696,11 +1905,15 @@ function generateReport() {
 
   reportData = { name, year, month, day, hour, noTime, gender: selectedGender, pillars };
 
-  // check unlock from URL
+  // check unlock from sessionStorage token or URL order_id
   const params = new URLSearchParams(window.location.search);
-  if (params.get('order_id') || localStorage.getItem('momentor_unlocked') === 'true') {
+  if (isUnlocked()) {
     reportData.unlocked = true;
-    if (params.get('order_id')) localStorage.setItem('momentor_unlocked', 'true');
+  } else if (params.get('order_id')) {
+    // verify with server; unlock after verification
+    verifyAndUnlock(params.get('order_id')).then(ok => {
+      if (ok) showToast('✦ Your full reading is now unlocked!');
+    });
   }
 
   document.getElementById('section-form').style.display    = 'none';
@@ -1710,6 +1923,23 @@ function generateReport() {
   renderReport(reportData);
   initReveal();
   initChapterNav();
+
+  // Sticky CTA: show when chapter-1 is in view, hide when unlocked
+  if (!reportData.unlocked) {
+    const stickyCta = document.getElementById('sticky-cta');
+    const ch1 = document.getElementById('chapter-1');
+    if (stickyCta && ch1) {
+      const ctaObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            stickyCta.style.display = 'flex';
+            ctaObs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      ctaObs.observe(ch1);
+    }
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -1730,8 +1960,8 @@ function renderReport(data) {
   const elemName = lang === 'en' ? dp.element : ELEM_KR[dp.element];
   const tags = [
     `<span>✦</span>${elemName}`,
-    `<span>✦</span>${dp.branch} (${lang === 'en' ? dp.branchElement : ELEM_KR[dp.branchElement]})`,
-    `<span>✦</span>${dp.stem}${dp.branch}`,
+    `<span>✦</span>${escapeHtml(dp.branch)} (${escapeHtml(lang === 'en' ? dp.branchElement : ELEM_KR[dp.branchElement])})`,
+    `<span>✦</span>${escapeHtml(dp.stem)}${escapeHtml(dp.branch)}`,
   ];
   document.getElementById('identity-tags').innerHTML = tags.map(t => `<div class="identity-tag">${t}</div>`).join('');
 
@@ -1744,10 +1974,10 @@ function renderReport(data) {
   const pLabels = lang === 'en' ? ['Year','Month','Day','Hour'] : ['년주','월주','일주','시주'];
   const cols    = [pillars.yearPillar, pillars.monthPillar, pillars.dayPillar, pillars.hourPillar];
   document.getElementById('pillar-grid').innerHTML = cols.map((p, i) => {
-    if (!p) return `<div class="pillar-col"><span class="pillar-label">${pLabels[i]}</span><span class="pillar-stem-char" style="color:var(--text-muted)">—</span></div>`;
-    return `<div class="pillar-col ${i===2?'day-col':''}">
+    if (!p) return `<div class="pillar-col"><span class="pillar-label">${pLabels[i]}</span><span class="pillar-stem-char pillar-stem" style="color:var(--text-muted)">—</span></div>`;
+    return `<div class="pillar-col ${i===2?'day-col':''}" data-element="${p.element}">
       <span class="pillar-label">${pLabels[i]}${i===2?' ★':''}</span>
-      <span class="pillar-stem-char">${p.stem}</span>
+      <span class="pillar-stem-char pillar-stem">${p.stem}</span>
       <span class="pillar-branch-char">${p.branch}</span>
       <div><span class="pillar-elem-dot elem-${p.element}"></span></div>
     </div>`;
@@ -1802,10 +2032,19 @@ function renderReport(data) {
     document.getElementById('current-pillar-chars').textContent = `${curDaeun.stem}${curDaeun.branch}`;
     const curNarr = lang === 'en' ? getCurrentNarrativeEn(curDaeun, dp.element) : getCurrentNarrativeKo(curDaeun, dp.element);
     document.getElementById('current-desc').textContent = curNarr;
+    // T3-B: Progress bar
+    const progressEl = document.getElementById('current-daeun-progress');
+    if (progressEl) {
+      progressEl.innerHTML = renderDaeunProgress(curDaeun.startAge, data.year ? (new Date().getFullYear() - data.year) : curDaeun.startAge);
+    }
   } else {
     document.getElementById('current-pillar-chars').textContent = '—';
     document.getElementById('current-desc').textContent = lang === 'en' ? 'Calculating your current cycle...' : '현재 대운을 계산 중입니다...';
   }
+
+  // T2-A: Conviction section — update Day Pillar
+  const convPillar = document.getElementById('conviction-pillar');
+  if (convPillar) convPillar.textContent = dp.stem + dp.branch;
 
   // strengths grid
   const kw = lang === 'en' ? dm.keywordsEn : dm.keywordsKo;
@@ -1823,6 +2062,16 @@ function renderReport(data) {
       ? `${prev.stem}${prev.branch} (${prev.startYear}–${prev.endYear}) carried ${prev.element} energy. Now in ${curDaeun.stem}${curDaeun.branch}, you're moving through ${curDaeun.element}. That shift isn't random. The chart was always taking you somewhere.`
       : `${prev.stemKr}${prev.branchKr} (${prev.startYear}–${prev.endYear}) 대운은 ${ELEM_KR[prev.element]}의 에너지였습니다. 이제 ${curDaeun.stemKr}${curDaeun.branchKr} 대운에서 ${ELEM_KR[curDaeun.element]}을 통과하고 있습니다. 이 전환은 우연이 아닙니다.`;
     document.getElementById('past-present-link').textContent = pText;
+  }
+
+  // ── Bridge 3→4 personalization ────────────
+  const nextDaeunForBridge = pillars.daeun.find(d => d.isFuture);
+  const bridge34b = document.getElementById('bridge-34b');
+  if (bridge34b && nextDaeunForBridge) {
+    const nextYear = nextDaeunForBridge.startYear;
+    bridge34b.innerHTML = lang === 'ko'
+      ? `${nextYear}년, 다음 챕터가 시작됩니다.`
+      : `Your next chapter begins in ${nextYear}.`;
   }
 
   // ── Chapter 4: Future Daeun ───────────────
@@ -1858,11 +2107,16 @@ function renderReport(data) {
   // update paywall CTA text with personalization
   const nextDaeun = futureDaeun[0];
   if (nextDaeun && !data.unlocked) {
+    const safeName = escapeHtml(name);
     const hookText = lang === 'en'
-      ? `The chart already knows what ${nextDaeun.startYear} brings.\n${name} — it's been written since the hour you were born.`
-      : `${name}, 다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.\n무엇이 기다리는지 궁금하지 않으신가요?`;
+      ? `The chart already knows what ${nextDaeun.startYear} brings.\n${safeName} — it's been written since the hour you were born.`
+      : `${safeName}, 다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.\n무엇이 기다리는지 궁금하지 않으신가요?`;
     document.getElementById('paywall-hook').innerHTML = hookText.replace(/\n/g, '<br>');
   }
+
+  // update paywall-name-span (conviction/trust section)
+  const nameSpan = document.getElementById('paywall-name-span');
+  if (nameSpan) nameSpan.textContent = name ? name + ', ' : '';
 
   // update static i18n strings
   Object.keys(T).forEach(id => {
@@ -1922,13 +2176,6 @@ document.addEventListener('DOMContentLoaded', () => {
   populateTimeSelects();
   populateDateSelects();
   setLang('en');
-
-  // check if returning after payment
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('order_id')) {
-    localStorage.setItem('momentor_unlocked', 'true');
-    showToast('✦ Your full reading is now unlocked!');
-  }
 });
 
 function openPayModal() {
