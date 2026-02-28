@@ -266,9 +266,19 @@
     position: relative;
     z-index: 1;
   }
-  .story-chapter:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(232,197,71,0.15);
+  @media (hover: hover) {
+    .story-chapter:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
+    }
+    .dm-hero:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
+    }
+    .daeun-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
+    }
   }
   .chapter-header {
     text-align: center;
@@ -372,10 +382,6 @@
     position: relative;
     z-index: 1;
   }
-  .dm-hero:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(232,197,71,0.15);
-  }
   .dm-char {
     font-family: var(--font-serif);
     font-size: 72px;
@@ -387,8 +393,8 @@
     text-shadow: 0 0 40px rgba(232,197,71,0.4);
   }
   .dm-label {
-    font-size: 13px;
-    color: var(--text-secondary);
+    font-size: 16px;
+    color: var(--gold-soft);
     letter-spacing: .1em;
     margin-bottom: 20px;
   }
@@ -559,10 +565,6 @@
     padding: 20px;
     margin-bottom: 14px;
     transition: all 0.3s ease;
-  }
-  .daeun-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(232,197,71,0.15);
   }
   .daeun-card::before {
     content: '';
@@ -767,7 +769,7 @@
     padding: 18px 24px;
     background-image: linear-gradient(135deg, #f0b860, #e8a840, #ffd080, #c9a84c, #f0b860);
     background-size: 200% auto;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 6s linear infinite;
     color: #0d0b1e;
     border: none;
     border-radius: var(--radius);
@@ -853,6 +855,28 @@
   }
   .cnav-dot.active { background: var(--gold); transform: scale(1.3); }
 
+  /* ─── TIME INCENTIVE ─── */
+  .time-incentive {
+    font-size: 13px;
+    color: var(--gold-soft);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  /* ─── MORE DECADES HINT ─── */
+  .more-decades-hint {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 16px;
+  }
+  /* ─── FORM TAGLINE2 ─── */
+  .form-tagline2 {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 4px;
+  }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 480px) {
     .form-row { grid-template-columns: 1fr; }
@@ -892,6 +916,7 @@
       <h1 id="form-title">Your Four Pillars Reading</h1>
       <p id="form-subtitle">Enter your birth details. No account. No email. Just your chart.</p>
       <p style="font-size:14px;color:var(--text-secondary);text-align:center;margin-bottom:24px;">Your birth chart, but precise to the hour — not just your sun sign.</p>
+      <p class="form-tagline2">More precise than astrology. Older than the zodiac.</p>
     </div>
 
     <div class="step-indicator">
@@ -909,7 +934,29 @@
       </div>
       <div class="form-group">
         <label id="label-bday">Date of birth</label>
-        <input type="date" id="inp-date" max="2015-12-31">
+        <div class="date-selects" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+          <select id="inp-year" class="time-select">
+            <option value="">Year</option>
+          </select>
+          <select id="inp-month" class="time-select">
+            <option value="">Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <select id="inp-day" class="time-select">
+            <option value="">Day</option>
+          </select>
+        </div>
         <div class="error-msg" id="err-date">Please enter a valid date.</div>
       </div>
       <div class="form-group">
@@ -927,6 +974,7 @@
     <div class="form-step" id="step2">
       <button class="btn-secondary" onclick="prevStep()">← <span id="btn-back-label">Back</span></button>
       <h2 id="step2-title">Birth time (optional)</h2>
+      <p class="time-incentive">Adding your birth time unlocks your Hour Pillar — the most personal of the four.</p>
       <div class="form-group">
         <label id="label-time">Time of birth</label>
         <div class="form-row">
@@ -1012,7 +1060,7 @@
     <div class="chapter-bridge reveal">
       <div class="bridge-inner">
         <p id="bridge-12a">There is a reason you became this person.</p>
-        <p class="bridge-question" id="bridge-12b">Let's look at the time that shaped you.</p>
+        <p class="bridge-question" id="bridge-12b">그 시간들이 사주에 새겨져 있습니다.</p>
       </div>
     </div>
 
@@ -1102,7 +1150,7 @@
       <div class="paywall-cta-wrap reveal" id="paywall-cta">
         <p class="paywall-hook" id="paywall-hook">Aren't you curious what comes next?</p>
         <p class="paywall-sub" id="paywall-sub">The next decade of your cycle. When opportunity arrives.<br>When to move carefully. What the chart says about you.</p>
-        <a href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" class="btn-unlock" id="btn-unlock" target="_blank" rel="noopener">
+        <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
           ✦ See My Next Decade — $7.99
         </a>
         <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Your chart, forever.</p>
@@ -1170,7 +1218,7 @@ const T = {
   'current-badge':      { en:'Current Cycle', ko:'현재 대운' },
   'today-label':        { en:"Today's Energy", ko:'오늘의 에너지' },
   'bridge-12a':         { en:'There is a reason you became this person.', ko:'당신이 이런 사람이 된 데는 이유가 있습니다.' },
-  'bridge-12b':         { en:"Let's look at the time that shaped you.", ko:'당신을 만들어온 시간을 돌아봅시다.' },
+  'bridge-12b':         { en:"Let's look at the time that shaped you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
   'bridge-23a':         { en:'All that time behind you.', ko:'그 모든 시간이 지나.' },
   'bridge-23b':         { en:'And here you are, right now.', ko:'지금 이 순간, 당신은 여기 있습니다.' },
   'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
@@ -1324,7 +1372,7 @@ const DM = {
     hookEn: "You light up every room you walk into. That's not ego — it's physics. And you've spent years apologizing for it anyway.",
     hookKo: "당신은 조용히 방에 들어간 적이 없습니다 — 그리고 그것이 문제인지 오랫동안 고민해왔습니다.",
     originEn: "You were born as the sun: full-spectrum, unfiltered, and non-negotiable. Not a lamp you can dim when the room gets sensitive. Not a spotlight you point somewhere useful. The sun doesn't perform — it simply is, and the world organizes itself around that.\n\nBefore you understood charisma, you had it. Before you knew what 'taking up space' meant, people were already orbiting you — some grateful, some resentful, most without understanding why. That was never arrogance. That was 丙Fire doing what fire does: rising, filling, reaching every corner of the room before it thinks to stop.",
-    originKo: "당신은 태양으로 태어났습니다: 전체 스펙트럼, 필터 없음, 협상 불가. 방이 너무 민감할 때 낮출 수 있는 램프가 아닙니다. 유용한 곳에 가리키는 스포트라이트도 아닙니다. 태양은 연기하지 않습니다 — 단순히 존재하고, 세상이 그 주위에 조직됩니다.\n\n카리스마를 이해하기 전에, 당신은 그것을 갖고 있었습니다. '공간을 차지하는 것'이 무엇을 의미하는지 알기 전에, 사람들은 이미 당신을 중심으로 공전하고 있었습니다.",
+    originKo: "당신은 태양으로 태어났습니다: 전체 스펙트럼, 필터 없음, 협상 불가. 방이 너무 민감할 때 낮출 수 있는 램프가 아닙니다. 유용한 곳에 가리키는 스포트라이트도 아닙니다. 태양은 연기하지 않습니다 — 단순히 존재하고, 세상이 그 주위에 조직됩니다.\n\n카리스마를 이해하기 전에, 당신은 그것을 갖고 있었습니다. '공간을 차지하는 것'이 무엇을 의미하는지 알기 전에, 사람들은 이미 당신을 중심으로 공전하고 있었습니다. 카리스마가 무엇인지 알기도 전에, 당신은 이미 그것을 갖고 있었습니다. '공간을 차지한다'는 말의 의미를 알기도 전에, 사람들은 이미 당신을 중심으로 돌고 있었습니다.",
     shadowEn: "Here's what the sun doesn't see: it can blind people who look directly at it. The intensity you carry — the warmth, the energy, the brightness that isn't performance, it's just you — can overwhelm the people who love you most. Underneath all of that light, something in you is counting: who stayed in the room when you were dim? Because 丙Fire dims. And in those moments, you learn who was actually there for the light — and who was there for you.",
     shadowKo: "태양이 보지 못하는 것이 있습니다: 직접 바라보는 사람들을 눈멀게 합니다. 당신이 모든 방에 가져오는 강도 — 따뜻함, 에너지, 밝기 — 는 당신을 가장 사랑하는 사람들을 압도할 수 있습니다.\n\n또한 이것이 있습니다: 당신은 보이길 필요로 합니다. 단지 알아채지는 것이 아니라 — 보이는 것. 목격되는 것.",
     invitationEn: "Who gets to see you when you're not performing?",
@@ -1379,15 +1427,15 @@ const DM = {
     originKo: "당신은 가공되지 않은 광석으로 이 세상에 왔습니다: 밀도 있고, 무겁고, 압박에 저항적입니다. 그것은 설계의 실수가 아니었습니다. 庚金은 가을에 단련됩니다, 세상이 성장을 멈추고 굳어지기 시작하는 계절.\n\n외부에서 무뚝뚝함처럼 보이는 것은 더 오래된 무언가입니다 — 자신의 날을 시험하는 금속입니다.",
     shadowEn: "The blade that never rests gets brittle. The same directness that makes you trustworthy in a crisis makes you feel dangerous in small talk. You are not broken. You are a precision instrument in a world that mostly needs spoons. But: the people closest to you sometimes hold you carefully — like something that could cut. And you've noticed. And part of you doesn't know what to do with that.",
     shadowKo: "쉬지 않는 날은 부러지기 쉽습니다. 위기에서 당신을 신뢰할 수 있게 만드는 동일한 직접성이 가벼운 대화에서 불안하게 느끼게 만듭니다.",
-    invitationEn: "The blade that never rests gets brittle. What are you protecting — and what are you protecting it from?",
-    invitationKo: "쉬지 않는 날은 부러지기 쉽습니다. 당신은 누구로부터 자신을 보호하고 있나요?",
+    invitationEn: "庚Metal was forged to cut — but even the best blade was made by someone who cared about its edge. Who takes care of yours?",
+    invitationKo: "庚金은 베기 위해 벼려졌습니다. 하지만 최고의 칼날도 그것을 아끼는 사람이 만들었습니다. 당신의 날을 갈아주는 사람은 누구입니까?",
     keywordsEn: ['Precision', 'Justice', 'Courage', 'Clarity'],
     keywordsKo: ['정밀함', '정의', '용기', '명확성'],
   },
   '辛': {
     labelEn: 'Yin Metal · The Refined Jewel', labelKo: '신금 · 정련된 보석',
-    hookEn: "You've always seen what was wrong the moment you walked in — and spent years wondering why no one else did.",
-    hookKo: "당신은 들어가는 순간 무엇이 잘못되었는지 항상 보았습니다 — 그리고 왜 다른 사람들은 그러지 않는지 오랫동안 의문이었습니다.",
+    hookEn: "You have a standard that almost nothing meets — including yourself. The world calls this perfectionism. You call it knowing what's possible.",
+    hookKo: "당신이 세운 기준을 충족하는 것은 거의 없습니다 — 당신 자신을 포함해서. 세상은 이것을 완벽주의라 부릅니다. 당신은 그것을 가능성을 아는 것이라 부릅니다.",
     originEn: "辛Metal is not raw iron. It's the gem that emerged from compression — already refined, already precise. Where 庚Metal is ore being shaped, you are the thing that resulted from that process: the jewel where every facet is intentional, the scalpel, the poem where no word is accidental.\n\nYou carry an internal quality standard that runs constantly, automatically, below conscious awareness. It catches inconsistencies. It notices what's off. It finds the gap between what's promised and what's delivered. Other people call this perfectionism. The chart calls it knowing your own value. The problem is that most of the world isn't calibrated to that level — and you feel every deviation.",
     originKo: "辛金은 가공되지 않은 철이 아닙니다. 압축에서 나온 보석입니다. 당신이 지키는 모든 기준, 당신이 알아채는 모든 결함 — 그것은 보석이 자신의 가치를 아는 것입니다.",
     shadowEn: "When you're hurt, you don't break. You sharpen. And the people who love you sometimes can't reach the blade. Your composure and your standards can make you appear unreachable — and people who might love you deeply sometimes don't try, because they assume you wouldn't want them to. The loneliness of unmatched standards is real. So is the wound that goes inward, refines itself into something cold, and waits.",
@@ -1451,6 +1499,7 @@ const DAEUN_NARRATIVE_EN = {
   generating: (age) => "This was a giving period — one where you poured your energy outward. Relationships, work, creative output. The resource flowed from you. Looking back, it may have felt generous or depleting depending on whether the giving was chosen.",
   controlled: (age) => age < 25 ? "This period had a quality of friction to it. Something kept not quite going the way you intended. That wasn't punishment — it was the chart building in resistance while your character was still forming." : "There was pressure in this decade. Things that should have been easier weren't. The question the period kept asking was: are you doing this because you want to, or because you don't know another way?",
   controlling:(age) => "This was a period of forward motion. You were in charge of the energy — pushing, building, deciding. It cost you something. The drive that made things happen had a price, usually in relationships or rest.",
+  neutral:    (age) => "This period carried a quiet steadiness — not dramatic highs or lows, but a reliable undercurrent that let you move at your own pace.",
 };
 
 const DAEUN_NARRATIVE_KO = {
@@ -1459,6 +1508,7 @@ const DAEUN_NARRATIVE_KO = {
   generating: (age) => "이것은 베푸는 시기였습니다 — 에너지를 밖으로 쏟아냈습니다. 관계, 일, 창의적 산출물. 자원이 당신으로부터 흘렀습니다. 돌이켜보면, 그 베풀기가 선택이었는지에 따라 관대하거나 고갈되는 느낌이었을 겁니다.",
   controlled: (age) => age < 25 ? "이 시기는 마찰의 질이 있었습니다. 의도한 대로 잘 되지 않는 무언가가 있었습니다. 그것은 처벌이 아니었습니다 — 성격이 아직 형성되는 동안 저항을 쌓는 사주였습니다." : "이 10년에는 압박이 있었습니다. 더 쉬워야 할 것들이 그렇지 않았습니다. 시기가 계속 물었습니다: 원해서 하는 건가, 아니면 다른 방법을 모르는 건가?",
   controlling:(age) => "이것은 앞으로 나아가는 시기였습니다. 당신이 에너지를 통제하고 있었습니다 — 밀고, 쌓고, 결정했습니다. 무언가를 댓가로 치렀습니다. 일을 이루게 만든 추진력에는 보통 관계나 휴식에서 대가가 있었습니다.",
+  neutral:    (age) => "이 시기는 조용한 안정감을 품고 있었습니다. 극적인 기복보다는 묵직한 흐름 속에서 자신의 속도로 나아갈 수 있었던 시간.",
 };
 
 function getLifeStageEn(age) {
@@ -1569,6 +1619,19 @@ function populateTimeSelects() {
   }
 }
 
+function populateDateSelects() {
+  const yearSel = document.getElementById('inp-year');
+  const daySel  = document.getElementById('inp-day');
+  yearSel.innerHTML = `<option value="">Year</option>`;
+  for (let y = 2010; y >= 1930; y--) {
+    yearSel.innerHTML += `<option value="${y}">${y}</option>`;
+  }
+  daySel.innerHTML = `<option value="">Day</option>`;
+  for (let d = 1; d <= 31; d++) {
+    daySel.innerHTML += `<option value="${d}">${d}</option>`;
+  }
+}
+
 function selectGender(g) {
   selectedGender = g;
   document.getElementById('gb-m').classList.toggle('selected', g === 'M');
@@ -1583,10 +1646,12 @@ function toggleTime() {
 
 function nextStep() {
   const name   = document.getElementById('inp-name').value.trim();
-  const date   = document.getElementById('inp-date').value;
+  const yr     = document.getElementById('inp-year').value;
+  const mo     = document.getElementById('inp-month').value;
+  const dy     = document.getElementById('inp-day').value;
   const gErr   = !selectedGender;
   const nameErr= !name;
-  const dateErr= !date;
+  const dateErr= !yr || !mo || !dy;
 
   if (nameErr) { showErrEl('err-name'); return; }
   if (dateErr) { showErrEl('err-date'); return; }
@@ -1621,10 +1686,11 @@ function showToast(msg) {
 
 function generateReport() {
   const name    = document.getElementById('inp-name').value.trim();
-  const date    = document.getElementById('inp-date').value;
+  const year    = parseInt(document.getElementById('inp-year').value);
+  const month   = parseInt(document.getElementById('inp-month').value);
+  const day     = parseInt(document.getElementById('inp-day').value);
   const noTime  = document.getElementById('chk-notime').checked;
   const hour    = noTime ? 12 : parseInt(document.getElementById('inp-hour').value) || 12;
-  const [year, month, day] = date.split('-').map(Number);
 
   const pillars = calcFourPillars(year, month, day, hour, selectedGender, noTime);
 
@@ -1786,7 +1852,7 @@ function renderReport(data) {
         <p class="fdc-teaser">${teaser}</p>
         ${i===0 ? '<div class="fdc-fade"></div>' : ''}
       </div>`;
-    }).join('');
+    }).join('') + `<div class="more-decades-hint"><p>+ 2 more decades in your chart</p></div>`;
   }
 
   // update paywall CTA text with personalization
@@ -1795,7 +1861,7 @@ function renderReport(data) {
     const hookText = lang === 'en'
       ? `The chart already knows what ${nextDaeun.startYear} brings.\n${name} — it's been written since the hour you were born.`
       : `${name}, 다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.\n무엇이 기다리는지 궁금하지 않으신가요?`;
-    document.getElementById('paywall-hook').textContent = hookText;
+    document.getElementById('paywall-hook').innerHTML = hookText.replace(/\n/g, '<br>');
   }
 
   // update static i18n strings
@@ -1854,6 +1920,7 @@ function toggleAccordion(header) {
 // ═══════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   populateTimeSelects();
+  populateDateSelects();
   setLang('en');
 
   // check if returning after payment
