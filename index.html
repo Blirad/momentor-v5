@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momentor — Your Four Pillars Reading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ─── RESET & BASE ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0b1e;
+    --bg2: #110f27;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.08);
+    --gold: #e8c547;
+    --gold-soft: rgba(232,197,71,0.7);
+    --gold-dim: rgba(232,197,71,0.3);
+    --text-primary: rgba(255,255,255,0.92);
+    --text-secondary: rgba(255,255,255,0.58);
+    --text-muted: rgba(255,255,255,0.35);
+    --font-serif: 'Cormorant Garamond', Georgia, serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --radius: 12px;
+    --max-w: 680px;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ─── LAYOUT ─── */
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ─── HEADER ─── */
+  .site-header {
+    padding: 24px 20px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .logo {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: .08em;
+    color: var(--gold);
+  }
+  .lang-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 3px;
+  }
+  .lang-btn {
+    padding: 3px 12px;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    border-radius: 16px;
+    transition: all .2s;
+  }
+  .lang-btn.active {
+    background: var(--gold);
+    color: #0d0b1e;
+    font-weight: 600;
+  }
+
+  /* ─── FORMS ─── */
+  #section-form {
+    padding: 60px 0 80px;
+  }
+  .form-intro {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .form-intro h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 6vw, 42px);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  .form-intro p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+  .form-step h2 {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 16px;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--gold-dim);
+  }
+  .form-group select option { background: #1a1730; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gender-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gender-btn {
+    padding: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-size: 15px;
+    cursor: pointer;
+    text-align: center;
+    transition: all .2s;
+  }
+  .gender-btn.selected {
+    border-color: var(--gold-dim);
+    color: var(--gold);
+    background: rgba(232,197,71,0.06);
+  }
+  .no-time-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .no-time-label input[type=checkbox] { accent-color: var(--gold); width: 16px; height: 16px; }
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: var(--gold);
+    color: #0d0b1e;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 16px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+  }
+  .btn-primary:hover { opacity: .9; }
+  .btn-primary:active { transform: scale(.99); }
+  .btn-secondary {
+    background: none;
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color .2s;
+    font-family: var(--font-sans);
+    margin-bottom: 20px;
+  }
+  .btn-secondary:hover { border-color: var(--gold-dim); color: var(--text-primary); }
+  .error-msg {
+    font-size: 13px;
+    color: #ff6b6b;
+    margin-top: 6px;
+    display: none;
+  }
+  .error-msg.show { display: block; }
+  .step-indicator {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .step-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--card-border);
+    transition: background .2s;
+  }
+  .step-dot.active { background: var(--gold); }
+
+  /* ─── RESULTS ─── */
+  #section-results { display: none; padding-bottom: 80px; }
+  #section-results.visible { display: block; }
+
+  /* ─── CHAPTER STRUCTURE ─── */
+  .story-chapter { padding: 40px 0; }
+  .chapter-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--card-border);
+  }
+  .chapter-badge {
+    font-size: 10px;
+    letter-spacing: .2em;
+    color: var(--gold-soft);
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .chapter-title {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 300;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .chapter-tagline {
+    font-family: var(--font-serif);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  .chapter-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 40px 0;
+    color: var(--gold-dim);
+    font-size: 12px;
+    letter-spacing: .15em;
+  }
+  .chapter-divider::before, .chapter-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+
+  /* ─── BRIDGE ─── */
+  .chapter-bridge {
+    padding: 32px 0;
+    text-align: center;
+    position: relative;
+  }
+  .chapter-bridge::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+  }
+  .bridge-inner {
+    position: relative;
+    background: var(--bg);
+    display: inline-block;
+    padding: 0 20px;
+    max-width: 340px;
+  }
+  .bridge-inner p {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-style: italic;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .bridge-question {
+    font-size: 20px !important;
+    color: var(--gold) !important;
+    font-style: normal !important;
+    margin-top: 6px;
+  }
+
+  /* ─── CARDS ─── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── DAY MASTER HERO ─── */
+  .dm-hero {
+    background: linear-gradient(135deg, rgba(232,197,71,0.08), rgba(138,100,255,0.08));
+    border: 1px solid var(--gold-dim);
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .dm-char {
+    font-family: var(--font-serif);
+    font-size: 72px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+    text-shadow: 0 0 40px rgba(232,197,71,0.4);
+  }
+  .dm-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    letter-spacing: .1em;
+    margin-bottom: 20px;
+  }
+  .dm-hook {
+    font-family: var(--font-serif);
+    font-size: clamp(17px, 4vw, 21px);
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1.5;
+    font-style: italic;
+    border-left: 2px solid var(--gold);
+    padding-left: 16px;
+    text-align: left;
+    margin-top: 16px;
+  }
+
+  /* ─── IDENTITY TAGS ─── */
+  .identity-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .identity-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .identity-tag span { color: var(--gold-soft); margin-right: 4px; }
+
+  /* ─── STORY TEXT ─── */
+  .story-text {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: var(--text-primary);
+    line-height: 1.85;
+    margin-bottom: 16px;
+  }
+  .story-text + .story-text { margin-top: 12px; }
+  .story-section-label {
+    font-size: 10px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 24px 0 10px;
+  }
+
+  /* ─── ACCORDION ─── */
+  .accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--card-border);
+    user-select: none;
+  }
+  .accordion-header:hover { color: var(--text-primary); }
+  .accordion-arrow { transition: transform .3s; }
+  .accordion-header.open .accordion-arrow { transform: rotate(180deg); }
+  .accordion-body { display: none; padding: 12px 0; }
+  .accordion-body.open { display: block; }
+
+  /* ─── PILLAR GRID ─── */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .pillar-col {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 8px;
+    text-align: center;
+  }
+  .pillar-col.day-col {
+    border-color: var(--gold-dim);
+    background: rgba(232,197,71,0.05);
+  }
+  .pillar-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: .1em;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .pillar-stem-char {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--text-primary);
+    line-height: 1;
+    display: block;
+  }
+  .pillar-branch-char {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    color: var(--text-secondary);
+    display: block;
+    margin-top: 4px;
+  }
+  .pillar-elem-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  .elem-Wood { background: #4ade80; }
+  .elem-Fire { background: #f87171; }
+  .elem-Earth { background: #d97706; }
+  .elem-Metal { background: #94a3b8; }
+  .elem-Water { background: #60a5fa; }
+
+  /* ─── ELEMENTS BAR ─── */
+  .elements-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .elem-col { text-align: center; }
+  .elem-bar-wrap {
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+  .elem-bar {
+    width: 24px;
+    border-radius: 4px 4px 0 0;
+    transition: height .5s ease;
+  }
+  .elem-bar.elem-Wood { background: rgba(74,222,128,0.6); }
+  .elem-bar.elem-Fire { background: rgba(248,113,113,0.6); }
+  .elem-bar.elem-Earth { background: rgba(217,119,6,0.6); }
+  .elem-bar.elem-Metal { background: rgba(148,163,184,0.6); }
+  .elem-bar.elem-Water { background: rgba(96,165,250,0.6); }
+  .elem-name { font-size: 11px; color: var(--text-muted); }
+  .elem-count { font-size: 16px; font-weight: 600; color: var(--text-secondary); }
+
+  /* ─── DAEUN TIMELINE ─── */
+  .daeun-timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .daeun-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 12px; bottom: 12px;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold-dim), transparent);
+  }
+  .daeun-card {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 14px;
+    transition: border-color .2s;
+  }
+  .daeun-card::before {
+    content: '';
+    position: absolute;
+    left: -22px; top: 22px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--gold-dim);
+  }
+  .daeun-card.is-current {
+    border-color: var(--gold-dim);
+    background: rgba(232,197,71,0.04);
+  }
+  .daeun-card.is-current::before {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+  .daeun-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .daeun-era-badge {
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .era-past { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+  .era-current { background: rgba(232,197,71,0.15); color: var(--gold); }
+  .daeun-period { font-size: 12px; color: var(--text-secondary); }
+  .daeun-pillars {
+    font-family: var(--font-serif);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .daeun-pillars span { color: var(--text-secondary); font-size: 22px; }
+  .daeun-narrative {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+  .daeun-lifestage {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    letter-spacing: .05em;
+  }
+  .daeun-resonance {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 8px;
+    border-top: 1px solid var(--card-border);
+    padding-top: 10px;
+  }
+
+  /* ─── CHAPTER 3 CURRENT ─── */
+  .current-hero {
+    background: linear-gradient(135deg, rgba(232,197,71,0.06), rgba(60,100,200,0.06));
+    border: 1px solid var(--gold-dim);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .current-badge {
+    display: inline-block;
+    background: rgba(232,197,71,0.15);
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: .15em;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .current-pillar-char {
+    font-family: var(--font-serif);
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .current-desc {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .today-hint {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .today-hint-label {
+    font-size: 10px;
+    letter-spacing: .15em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .today-hint-text {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+  .strength-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .strength-item {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+  .strength-item.highlight { border-color: var(--gold-dim); color: var(--text-primary); }
+
+  /* ─── CHAPTER 4 PAYWALL ─── */
+  .future-preview-wrap { margin-bottom: 24px; }
+  .future-daeun-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .future-daeun-card.partial .fdc-fade {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 55%;
+    background: linear-gradient(to bottom, transparent, var(--bg) 90%);
+    pointer-events: none;
+  }
+  .future-daeun-card.locked {
+    filter: blur(5px);
+    opacity: 0.3;
+    pointer-events: none;
+    min-height: 80px;
+  }
+  .fdc-period { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .fdc-pillar {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .fdc-teaser {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .paywall-cta-wrap {
+    text-align: center;
+    padding: 32px 0 20px;
+  }
+  .paywall-hook {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1.4;
+    margin-bottom: 6px;
+  }
+  .paywall-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .btn-unlock {
+    display: inline-block;
+    width: 100%;
+    max-width: 380px;
+    padding: 18px 24px;
+    background: var(--gold);
+    color: #0d0b1e;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 17px;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity .2s, transform .1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-unlock::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 100%;
+    background: rgba(255,255,255,0.25);
+    transform: skewX(-20deg);
+    animation: shimmer 2.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+  }
+  .btn-unlock:hover { opacity: .92; }
+  .btn-unlock:active { transform: scale(.99); }
+  .paywall-fine {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 14px;
+  }
+  .paywall-trust {
+    margin-top: 24px;
+    padding: 16px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ─── TOAST ─── */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: rgba(30,28,50,0.95);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 10px 20px;
+    font-size: 14px;
+    color: var(--text-primary);
+    z-index: 9999;
+    transition: transform .3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ─── REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── CHAPTER NAV DOTS ─── */
+  .chapter-nav {
+    position: fixed;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+  }
+  .chapter-nav.visible { display: flex; }
+  .cnav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--card-border);
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .cnav-dot.active { background: var(--gold); transform: scale(1.3); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 480px) {
+    .form-row { grid-template-columns: 1fr; }
+    .pillar-grid { gap: 5px; }
+    .pillar-stem-char { font-size: 24px; }
+    .chapter-nav { display: none !important; }
+    .strength-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CHAPTER NAV DOTS -->
+<div class="chapter-nav" id="chapterNav">
+  <div class="cnav-dot active" data-ch="1" title="Ch.1"></div>
+  <div class="cnav-dot" data-ch="2" title="Ch.2"></div>
+  <div class="cnav-dot" data-ch="3" title="Ch.3"></div>
+  <div class="cnav-dot" data-ch="4" title="Ch.4"></div>
+</div>
+
+<!-- SITE HEADER -->
+<header class="site-header">
+  <div class="logo">✦ Momentor</div>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('ko')">KR</button>
+  </div>
+</header>
+
+<!-- SECTION: FORM -->
+<section id="section-form">
+  <div class="container">
+    <div class="form-intro">
+      <h1 id="form-title">Your Four Pillars Reading</h1>
+      <p id="form-subtitle">Enter your birth details. No account. No email. Just your chart.</p>
+    </div>
+
+    <div class="step-indicator">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="form-step active" id="step1">
+      <h2 id="step1-title">Tell me about yourself</h2>
+      <div class="form-group">
+        <label id="label-name">Your name</label>
+        <input type="text" id="inp-name" placeholder="First name">
+        <div class="error-msg" id="err-name">Please enter your name.</div>
+      </div>
+      <div class="form-group">
+        <label id="label-bday">Date of birth</label>
+        <input type="date" id="inp-date" max="2015-12-31">
+        <div class="error-msg" id="err-date">Please enter a valid date.</div>
+      </div>
+      <div class="form-group">
+        <label id="label-gender">Gender</label>
+        <div class="gender-select">
+          <div class="gender-btn" id="gb-m" onclick="selectGender('M')">♂ <span id="gb-m-label">Male</span></div>
+          <div class="gender-btn" id="gb-f" onclick="selectGender('F')">♀ <span id="gb-f-label">Female</span></div>
+        </div>
+        <div class="error-msg" id="err-gender">Please select a gender.</div>
+      </div>
+      <button class="btn-primary" onclick="nextStep()" id="btn-step1-next">Continue →</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="form-step" id="step2">
+      <button class="btn-secondary" onclick="prevStep()">← <span id="btn-back-label">Back</span></button>
+      <h2 id="step2-title">Birth time (optional)</h2>
+      <div class="form-group">
+        <label id="label-time">Time of birth</label>
+        <div class="form-row">
+          <select id="inp-hour">
+            <option value="" id="opt-hour">Hour</option>
+          </select>
+          <select id="inp-minute">
+            <option value="" id="opt-min">Minute</option>
+          </select>
+        </div>
+        <label class="no-time-label" style="margin-top:12px">
+          <input type="checkbox" id="chk-notime" onchange="toggleTime()">
+          <span id="notime-label">I don't know my birth time</span>
+        </label>
+      </div>
+      <button class="btn-primary" onclick="generateReport()" id="btn-generate">See My Reading →</button>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION: RESULTS -->
+<section id="section-results">
+  <div class="container">
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- CHAPTER 1: Who You Are                     -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="story-chapter" id="chapter-1">
+      <div class="chapter-header reveal">
+        <span class="chapter-badge">Chapter 1</span>
+        <h2 class="chapter-title" id="ch1-title">Why You Are This Way</h2>
+        <p class="chapter-tagline" id="ch1-tagline">You were this person from the beginning.</p>
+      </div>
+
+      <!-- Day Master Hero -->
+      <div class="dm-hero reveal" id="dm-hero">
+        <span class="dm-char" id="dm-char">甲</span>
+        <div class="dm-label" id="dm-label">Yang Wood · The Ancient Tree</div>
+        <div class="dm-hook" id="dm-hook">Loading...</div>
+      </div>
+
+      <!-- Identity Tags -->
+      <div class="identity-tags reveal" id="identity-tags"></div>
+
+      <!-- Story Body -->
+      <div class="card reveal" id="dm-story-card">
+        <p class="story-section-label" id="sl-origin">Origin</p>
+        <p class="story-text" id="dm-body1"></p>
+        <p class="story-section-label" id="sl-shadow">Shadow</p>
+        <p class="story-text" id="dm-body2"></p>
+        <p class="story-section-label" id="sl-invitation">Invitation</p>
+        <p class="story-text" id="dm-body3"></p>
+      </div>
+
+      <!-- Pillars Grid (accordion) -->
+      <div class="card reveal">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span id="acc-pillars-label">Your Four Pillars</span>
+          <span class="accordion-arrow">↓</span>
+        </div>
+        <div class="accordion-body" id="pillars-body">
+          <div class="pillar-grid" id="pillar-grid"></div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px" id="pillar-note">★ Day Pillar (日柱) is your core identity.</p>
+        </div>
+      </div>
+
+      <!-- Elements Distribution (accordion) -->
+      <div class="card reveal">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span id="acc-elements-label">Energy Composition</span>
+          <span class="accordion-arrow">↓</span>
+        </div>
+        <div class="accordion-body" id="elements-body">
+          <div class="elements-grid" id="elements-grid"></div>
+          <p class="story-text" id="elements-narrative" style="margin-top:16px;font-size:15px;"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRIDGE 1→2 -->
+    <div class="chapter-bridge reveal">
+      <div class="bridge-inner">
+        <p id="bridge-12a">There is a reason you became this person.</p>
+        <p class="bridge-question" id="bridge-12b">Let's look at the time that shaped you.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- CHAPTER 2: What You've Been Through        -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="story-chapter" id="chapter-2">
+      <div class="chapter-header reveal">
+        <span class="chapter-badge">Chapter 2</span>
+        <h2 class="chapter-title" id="ch2-title">What You've Been Through</h2>
+        <p class="chapter-tagline" id="ch2-tagline">The chart remembers your past.</p>
+      </div>
+
+      <div class="daeun-timeline reveal" id="past-daeun-list"></div>
+    </div>
+
+    <!-- BRIDGE 2→3 -->
+    <div class="chapter-bridge reveal">
+      <div class="bridge-inner">
+        <p id="bridge-23a">All that time behind you.</p>
+        <p class="bridge-question" id="bridge-23b">And here you are, right now.</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- CHAPTER 3: Where You Stand Now             -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="story-chapter" id="chapter-3">
+      <div class="chapter-header reveal">
+        <span class="chapter-badge">Chapter 3</span>
+        <h2 class="chapter-title" id="ch3-title">Where You Stand Now</h2>
+        <p class="chapter-tagline" id="ch3-tagline">The energy you're moving through today.</p>
+      </div>
+
+      <!-- Current Daeun Hero -->
+      <div class="current-hero reveal" id="current-daeun-hero">
+        <div class="current-badge" id="current-badge">Current Cycle</div>
+        <span class="current-pillar-char" id="current-pillar-chars"></span>
+        <p class="current-desc" id="current-desc"></p>
+      </div>
+
+      <!-- Strength Analysis -->
+      <div class="card reveal">
+        <p class="story-section-label" id="sl-strength">Your strengths now</p>
+        <div class="strength-grid" id="strength-grid"></div>
+      </div>
+
+      <!-- Today's Energy Hint -->
+      <div class="today-hint reveal">
+        <div class="today-hint-label" id="today-label">Today's Energy</div>
+        <p class="today-hint-text" id="today-text"></p>
+      </div>
+
+      <!-- Past → Present Connection -->
+      <div class="card reveal" style="margin-top:16px">
+        <p style="font-family:var(--font-serif);font-size:15px;color:var(--text-secondary);line-height:1.75" id="past-present-link"></p>
+      </div>
+    </div>
+
+    <!-- BRIDGE 3→4 -->
+    <div class="chapter-bridge reveal">
+      <div class="bridge-inner">
+        <p id="bridge-34a">You know who you are. You know where you've been.</p>
+        <p class="bridge-question" id="bridge-34b">What comes next?</p>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- CHAPTER 4: Where You're Going [PAYWALL]   -->
+    <!-- ══════════════════════════════════════════ -->
+    <div class="story-chapter" id="chapter-4">
+      <div class="chapter-header reveal">
+        <span class="chapter-badge">Chapter 4</span>
+        <h2 class="chapter-title" id="ch4-title">Where You're Going</h2>
+        <p class="chapter-tagline" id="ch4-tagline">The story not yet written.</p>
+      </div>
+
+      <!-- Future Daeun Preview (blur) -->
+      <div class="future-preview-wrap reveal" id="future-daeun-list"></div>
+
+      <!-- Trust line -->
+      <p class="reveal" style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px;font-family:var(--font-serif)" id="paywall-trust-text">
+        Everything you've read so far — your identity, your past cycles, your current energy — came directly from your chart. The future cycles are calculated the same way.
+      </p>
+
+      <!-- CTA -->
+      <div class="paywall-cta-wrap reveal" id="paywall-cta">
+        <p class="paywall-hook" id="paywall-hook">Aren't you curious what comes next?</p>
+        <p class="paywall-sub" id="paywall-sub">The next decade of your cycle. When opportunity arrives.<br>When to move carefully. What the chart says about you.</p>
+        <a href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" class="btn-unlock" id="btn-unlock" target="_blank" rel="noopener">
+          ✦ See My Next Decade — $7.99
+        </a>
+        <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Your chart, forever.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ═══════════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════════
+const STEMS   = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+const BRANCHES= ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+const STEM_ELEMENTS   = ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'];
+const BRANCH_ELEMENTS = ['Water','Earth','Wood','Wood','Earth','Fire','Fire','Earth','Metal','Metal','Earth','Water'];
+const STEM_KR   = ['갑','을','병','정','무','기','경','신','임','계'];
+const BRANCH_KR = ['자','축','인','묘','진','사','오','미','신','유','술','해'];
+const ELEM_KR   = {Wood:'목',Fire:'화',Earth:'토',Metal:'금',Water:'수'};
+const ELEM_EN   = {Wood:'Wood',Fire:'Fire',Earth:'Earth',Metal:'Metal',Water:'Water'};
+const ST_BASE_20 = [5.4055,3.8724,5.6324,4.8693,5.7133,6.0893,6.9693,7.2688,7.8543,7.9921,6.6193,7.0433];
+const ST_BASE_19 = [6.11,4.6295,6.3826,5.1526,6.0942,5.6982,7.108,7.5928,8.2443,8.4102,7.8820,7.9];
+
+// ─── State ───
+let currentLang = 'en';
+let selectedGender = null;
+let reportData = null;
+
+// ═══════════════════════════════════════════════
+// I18N
+// ═══════════════════════════════════════════════
+const T = {
+  'form-title':         { en:'Your Four Pillars Reading', ko:'사주 리포트' },
+  'form-subtitle':      { en:'Enter your birth details. No account. No email. Just your chart.', ko:'생년월일을 입력하세요. 계정 없이 바로 확인.' },
+  'step1-title':        { en:'Tell me about yourself', ko:'당신에 대해 알려주세요' },
+  'label-name':         { en:'Your name', ko:'이름' },
+  'label-bday':         { en:'Date of birth', ko:'생년월일' },
+  'label-gender':       { en:'Gender', ko:'성별' },
+  'gb-m-label':         { en:'Male', ko:'남성' },
+  'gb-f-label':         { en:'Female', ko:'여성' },
+  'btn-step1-next':     { en:'Continue →', ko:'다음 →' },
+  'step2-title':        { en:'Birth time (optional)', ko:'태어난 시간 (선택)' },
+  'label-time':         { en:'Time of birth', ko:'출생 시각' },
+  'opt-hour':           { en:'Hour', ko:'시' },
+  'opt-min':            { en:'Minute', ko:'분' },
+  'notime-label':       { en:"I don't know my birth time", ko:'태어난 시간을 모릅니다' },
+  'btn-back-label':     { en:'Back', ko:'이전' },
+  'btn-generate':       { en:'See My Reading →', ko:'리포트 보기 →' },
+  'ch1-title':          { en:'Why You Are This Way', ko:'당신이 이런 사람인 이유' },
+  'ch1-tagline':        { en:'You were this person from the beginning.', ko:'당신은 처음부터 이런 사람이었습니다.' },
+  'ch2-title':          { en:"What You've Been Through", ko:'당신이 겪어온 것들' },
+  'ch2-tagline':        { en:'The chart remembers your past.', ko:'사주는 당신의 과거를 알고 있습니다.' },
+  'ch3-title':          { en:'Where You Stand Now', ko:'지금 당신이 서 있는 곳' },
+  'ch3-tagline':        { en:"The energy you're moving through today.", ko:'지금 이 순간, 당신의 에너지.' },
+  'ch4-title':          { en:"Where You're Going", ko:'당신이 가야 할 곳' },
+  'ch4-tagline':        { en:'The story not yet written.', ko:'아직 쓰이지 않은 이야기.' },
+  'acc-pillars-label':  { en:'Your Four Pillars', ko:'사주 원국' },
+  'acc-elements-label': { en:'Energy Composition', ko:'오행 분포' },
+  'pillar-note':        { en:'★ Day Pillar (日柱) is your core identity.', ko:'★ 일주(日柱)가 당신의 핵심입니다.' },
+  'sl-origin':          { en:'Origin', ko:'탄생 이야기' },
+  'sl-shadow':          { en:'Shadow', ko:'그림자' },
+  'sl-invitation':      { en:'Invitation', ko:'초대' },
+  'sl-strength':        { en:'Your strengths now', ko:'지금 당신의 강점' },
+  'current-badge':      { en:'Current Cycle', ko:'현재 대운' },
+  'today-label':        { en:"Today's Energy", ko:'오늘의 에너지' },
+  'bridge-12a':         { en:'There is a reason you became this person.', ko:'당신이 이런 사람이 된 데는 이유가 있습니다.' },
+  'bridge-12b':         { en:"Let's look at the time that shaped you.", ko:'당신을 만들어온 시간을 돌아봅시다.' },
+  'bridge-23a':         { en:'All that time behind you.', ko:'그 모든 시간이 지나.' },
+  'bridge-23b':         { en:'And here you are, right now.', ko:'지금 이 순간, 당신은 여기 있습니다.' },
+  'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
+  'bridge-34b':         { en:'What comes next?', ko:'그렇다면, 다음은 무엇일까요?' },
+  'paywall-hook':       { en:"Aren't you curious what comes next?", ko:'다음 이야기가 궁금하지 않으신가요?' },
+  'paywall-sub':        { en:'The next decade of your cycle. When opportunity arrives.<br>When to move carefully. What the chart says about you.', ko:'다음 10년의 흐름. 기회가 오는 시기.<br>조심해야 할 때. 사주가 당신에게 하는 말.' },
+  'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
+  'paywall-trust-text': { en:'Everything you\'ve read so far — your identity, your past cycles, your current energy — came directly from your chart. The future cycles are calculated the same way.', ko:'지금까지 읽으신 모든 내용 — 정체성, 과거 대운, 현재 에너지 — 은 모두 실제 사주에서 나왔습니다. 미래 대운도 같은 방식으로 계산됩니다.' },
+  'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
+  'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
+  'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase()));
+  // update static strings
+  Object.keys(T).forEach(id => {
+    const el = document.getElementById(id);
+    if (el && T[id][lang]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'OPTION') el.placeholder = T[id][lang];
+      else el.innerHTML = T[id][lang];
+    }
+  });
+  // re-render dynamic content if report exists
+  if (reportData) renderReport(reportData);
+}
+
+// ═══════════════════════════════════════════════
+// CALCULATION FUNCTIONS
+// ═══════════════════════════════════════════════
+function calcSolarTermDate(year, termIndex) {
+  const C = (year % 100 < 20) ? ST_BASE_19[termIndex] : ST_BASE_20[termIndex];
+  const Y = year % 100;
+  return Math.trunc(Y * 0.2422 + C) - Math.trunc(Y / 4);
+}
+
+function getYearPillar(year, month, day) {
+  const lichunDay = calcSolarTermDate(year, 1);
+  const effectiveYear = (month < 2 || (month === 2 && day < lichunDay)) ? year - 1 : year;
+  const stemIdx = ((effectiveYear - 4) % 10 + 10) % 10;
+  const branchIdx = ((effectiveYear - 4) % 12 + 12) % 12;
+  return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
+}
+
+function getMonthPillar(year, month, day) {
+  const termDay = calcSolarTermDate(year, month - 1);
+  const monthIndex = (day < termDay) ? month - 2 : month - 1;
+  const adjustedMonth = ((monthIndex % 12) + 12) % 12;
+  const yearStemIdx = ((year - 4) % 10 + 10) % 10;
+  const monthStemStart = (yearStemIdx % 5) * 2;
+  const stemIdx = (monthStemStart + adjustedMonth) % 10;
+  const branchIdx = (adjustedMonth + 2) % 12;
+  return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
+}
+
+function getDayPillar(year, month, day) {
+  function toJulian(y, m, d) {
+    if (m <= 2) { y--; m += 12; }
+    const A = Math.floor(y / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524;
+  }
+  const jd = toJulian(year, month, day);
+  const stemIdx = ((jd - 11) % 10 + 10) % 10;
+  const branchIdx = ((jd - 11) % 12 + 12) % 12;
+  return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
+}
+
+function getHourPillar(dayStemIdx, hour) {
+  const branchIdx = hour === 23 ? 0 : Math.floor((hour + 1) / 2) % 12;
+  const stemStart = (dayStemIdx % 5) * 2;
+  const stemIdx = (stemStart + branchIdx) % 10;
+  return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
+}
+
+function calcFourPillars(year, month, day, hour, gender, noTime) {
+  const yearPillar  = getYearPillar(year, month, day);
+  const monthPillar = getMonthPillar(year, month, day);
+  const dayPillar   = getDayPillar(year, month, day);
+  const hourPillar  = noTime ? null : getHourPillar(dayPillar.stemIdx, hour);
+
+  const elements = { Wood:0, Fire:0, Earth:0, Metal:0, Water:0 };
+  [yearPillar, monthPillar, dayPillar, hourPillar].forEach(p => {
+    if (!p) return;
+    elements[p.element]++;
+    elements[p.branchElement]++;
+  });
+
+  const yearYang = yearPillar.stemIdx % 2 === 0;
+  const forward  = (yearYang && gender === 'M') || (!yearYang && gender === 'F');
+
+  const currentYear = new Date().getFullYear();
+  const personAge   = currentYear - year;
+
+  const daeun = [];
+  for (let i = 0; i < 9; i++) {
+    const age = 5 + i * 10;
+    const startYear = year + age;
+    const endYear   = startYear + 9;
+    const mIdx = ((monthPillar.branchIdx + (forward ? i+1 : -(i+1))) % 12 + 12) % 12;
+    const sIdx = ((monthPillar.stemIdx  + (forward ? i+1 : -(i+1))) % 10 + 10) % 10;
+    daeun.push({
+      age, startYear, endYear,
+      startAge: age, endAge: age + 9,
+      stem: STEMS[sIdx], branch: BRANCHES[mIdx],
+      stemKr: STEM_KR[sIdx], branchKr: BRANCH_KR[mIdx],
+      element: STEM_ELEMENTS[sIdx], branchElement: BRANCH_ELEMENTS[mIdx],
+      stemIdx: sIdx, branchIdx: mIdx,
+      isCurrent: personAge >= age && personAge < age + 10,
+      isPast: personAge >= age + 10,
+      isFuture: personAge < age,
+    });
+  }
+
+  return { yearPillar, monthPillar, dayPillar, hourPillar, elements, daeun, noTime };
+}
+
+// ═══════════════════════════════════════════════
+// DAY MASTER DATA (Storyteller Voice)
+// ═══════════════════════════════════════════════
+const DM = {
+  '甲': {
+    labelEn: 'Yang Wood · The Ancient Tree', labelKo: '갑목 · 거목',
+    hookEn: "You've had a direction your whole life — and you've never quite been able to explain it to anyone who asked.",
+    hookKo: "당신은 평생 방향이 있었습니다 — 그리고 그것을 물어보는 누구에게도 설명하지 못했습니다.",
+    originEn: "You came into this world already oriented — toward something, somewhere, some version of what things should be. Not because anyone told you to. Because you were built that way. 甲木 is the first of the ten stems, and it carries that — the pressure of first: first to move, first to name the problem, first to walk into the room that everyone else is still deciding whether to enter.\n\nThis is not ambition in the ordinary sense. Ambition can be given up. What you have is structural. You can't stop growing any more than the oak can stop growing. It just costs differently depending on the season.",
+    originKo: "당신은 이 세상에 이미 방향이 잡힌 채 왔습니다 — 무언가를 향해, 어딘가를 향해, 어떤 것이 되어야 하는 모습을 향해. 누가 시켜서가 아니라. 그렇게 만들어졌기 때문에. 甲木은 십간의 첫 번째이고, 그것을 담고 있습니다 — 첫 번째의 압박: 먼저 움직이고, 먼저 문제를 명명하고, 모두가 아직 들어갈지 결정 중인 방에 먼저 들어갑니다.",
+    shadowEn: "Here's the cost: you've walked toward so many things that you sometimes don't know how to stay. Not from boredom — from the relentless pull of what's next. The people who love you have learned to grab onto the trunk. The ones who couldn't hold on are gone, and some part of you wonders if you should have slowed down.",
+    shadowKo: "대가가 있습니다: 너무 많은 것을 향해 걸어왔기 때문에 때로 어떻게 머물러야 할지 모릅니다. 지루함이 아니라 — 다음의 끊임없는 당김 때문에. 당신을 사랑하는 사람들은 줄기를 잡는 법을 배웠습니다. 잡지 못한 사람들은 떠났고, 당신의 일부는 속도를 늦춰야 했을지 의문입니다.",
+    invitationEn: "The oak doesn't just grow up. At some point, it grows deep. The chart asks: what are you rooting yourself in?",
+    invitationKo: "거목은 위로만 자라지 않습니다. 어느 순간, 깊이 자랍니다. 사주가 묻습니다: 당신은 무엇에 뿌리를 내리고 있나요?",
+    keywordsEn: ['Growth', 'Direction', 'Integrity', 'Pioneer'],
+    keywordsKo: ['성장', '방향', '성실', '개척'],
+  },
+  '乙': {
+    labelEn: 'Yin Wood · The Living Vine', labelKo: '을목 · 생명의 덩굴',
+    hookEn: "You've always found the way around — and people keep mistaking that for not having a plan.",
+    hookKo: "당신은 항상 돌아가는 길을 찾아왔습니다 — 그리고 사람들은 그것을 계획이 없다고 착각합니다.",
+    originEn: "The vine doesn't fight the wall. It climbs it. This is not compromise — this is the most sophisticated survival strategy in the room, and you have been running it since before you had words for what you were doing. 乙木 adapts not because it lacks conviction, but because it understands something that rigid things never learn: the path isn't always straight.\n\nYou have been underestimated more times than you can count. You don't particularly mind. The vine has already reached the top by the time the oak is still arguing about which direction to grow.",
+    originKo: "덩굴은 벽과 싸우지 않습니다. 그것을 올라갑니다. 이것은 타협이 아닙니다 — 이것은 방 안에서 가장 정교한 생존 전략이고, 당신은 무엇을 하는지 설명할 말이 있기도 전부터 그것을 실행해왔습니다. 乙木은 확신이 없어서 적응하는 것이 아니라, 단단한 것들이 결코 배우지 못하는 것을 이해하기 때문입니다: 길이 항상 직선은 아닙니다.",
+    shadowEn: "But the vine that never stops adapting can lose the shape of itself. You've been so many things to so many people that there are moments — usually quiet moments, usually alone — where you genuinely aren't sure what you want. Not what would be best. Not what would be kind. What you want.",
+    shadowKo: "그러나 멈추지 않고 적응하는 덩굴은 자신의 형태를 잃을 수 있습니다. 당신은 너무 많은 사람들에게 너무 많은 것이었기 때문에 — 보통 조용한 순간, 보통 혼자일 때 — 진정으로 자신이 무엇을 원하는지 확신하지 못합니다.",
+    invitationEn: "The vine knows how to reach. Does it know how to ask?",
+    invitationKo: "덩굴은 뻗는 법을 알고 있습니다. 요청하는 법도 알고 있나요?",
+    keywordsEn: ['Adaptability', 'Intuition', 'Elegance', 'Resilience'],
+    keywordsKo: ['적응력', '직관', '우아함', '회복력'],
+  },
+  '丙': {
+    labelEn: 'Yang Fire · The Sun', labelKo: '병화 · 태양',
+    hookEn: "You've never entered a room quietly — and you've spent years wondering if that's a problem.",
+    hookKo: "당신은 조용히 방에 들어간 적이 없습니다 — 그리고 그것이 문제인지 오랫동안 고민해왔습니다.",
+    originEn: "You were born as the sun: full-spectrum, unfiltered, and non-negotiable. Not a lamp you can dim when the room is too sensitive. Not a spotlight you point somewhere useful. The sun doesn't perform — it simply is, and the world organizes itself around that.\n\nBefore you understood charisma, you had it. Before you knew what 'taking up space' meant, people were already orbiting you — some grateful, some resentful, most without understanding why. That was never arrogance. That was 丙火 doing what fire does: rising.",
+    originKo: "당신은 태양으로 태어났습니다: 전체 스펙트럼, 필터 없음, 협상 불가. 방이 너무 민감할 때 낮출 수 있는 램프가 아닙니다. 유용한 곳에 가리키는 스포트라이트도 아닙니다. 태양은 연기하지 않습니다 — 단순히 존재하고, 세상이 그 주위에 조직됩니다.\n\n카리스마를 이해하기 전에, 당신은 그것을 갖고 있었습니다. '공간을 차지하는 것'이 무엇을 의미하는지 알기 전에, 사람들은 이미 당신을 중심으로 공전하고 있었습니다.",
+    shadowEn: "Here's what the sun doesn't see: it blinds people who look directly at it. The intensity you bring to every room — the warmth, the energy, the brightness — can overwhelm the people who love you most. Not because you're too much. Because you burn without meaning to.\n\nThere is also this: you need to be seen. Not just noticed — seen. Witnessed. When you don't get that, something dims in you.",
+    shadowKo: "태양이 보지 못하는 것이 있습니다: 직접 바라보는 사람들을 눈멀게 합니다. 당신이 모든 방에 가져오는 강도 — 따뜻함, 에너지, 밝기 — 는 당신을 가장 사랑하는 사람들을 압도할 수 있습니다.\n\n또한 이것이 있습니다: 당신은 보이길 필요로 합니다. 단지 알아채지는 것이 아니라 — 보이는 것. 목격되는 것.",
+    invitationEn: "Who gets to see you when you're not performing?",
+    invitationKo: "당신이 연기하지 않을 때 당신을 볼 수 있는 사람은 누구인가요?",
+    keywordsEn: ['Radiance', 'Charisma', 'Generosity', 'Dignity'],
+    keywordsKo: ['빛남', '카리스마', '관대함', '존엄'],
+  },
+  '丁': {
+    labelEn: 'Yin Fire · The Candle', labelKo: '정화 · 촛불',
+    hookEn: "You've been called cold by people who had no idea how much you were holding back.",
+    hookKo: "당신은 얼마나 많은 것을 참고 있는지 전혀 모르는 사람들에게 차갑다는 말을 들어왔습니다.",
+    originEn: "You don't fill the room with light. You illuminate one thing at a time — the face across from you, the problem no one else is looking at, the corner where someone is alone. 丁Fire is concentrated warmth. Its power is in precision, not size. And you have always been precise about who gets the full light.\n\nThe ones you've let close know what no one else knows: underneath the composed exterior, you feel everything. More than you show. More than most people are built to feel.",
+    originKo: "당신은 방을 빛으로 가득 채우지 않습니다. 한 번에 하나씩 비춥니다 — 맞은편 얼굴, 아무도 보지 않는 문제, 혼자인 구석의 사람. 丁火는 집중된 따뜻함입니다. 그 힘은 크기가 아니라 정밀함에 있습니다.",
+    shadowEn: "When 丁Fire goes out, it doesn't announce it. It just gets dimmer, and dimmer, until one day the room is dark and you wonder when it happened. You absorb other people's emotional weather without realizing it. You can be hurt by something that happened six months ago while appearing completely fine.",
+    shadowKo: "丁火가 꺼질 때, 그것을 알리지 않습니다. 그냥 점점 희미해집니다, 어느 날 방이 어두워지고 언제 그렇게 됐는지 의문이 생길 때까지.",
+    invitationEn: "The flame doesn't have to be small to be selective. Who in your life has earned the full light?",
+    invitationKo: "불꽃은 선택적이기 위해 작을 필요가 없습니다. 삶에서 완전한 빛을 얻을 자격이 있는 사람은 누구인가요?",
+    keywordsEn: ['Depth', 'Devotion', 'Perception', 'Constancy'],
+    keywordsKo: ['깊이', '헌신', '통찰', '항구성'],
+  },
+  '戊': {
+    labelEn: 'Yang Earth · The Mountain', labelKo: '무토 · 산',
+    hookEn: "People have been leaning on you your whole life — and most of them have never once asked if you were tired.",
+    hookKo: "사람들은 평생 당신에게 기대왔습니다 — 그리고 그들 대부분은 당신이 지쳤는지 한 번도 묻지 않았습니다.",
+    originEn: "You are the fixed point in the lives of the people around you. In a world full of people who destabilize at the first sign of turbulence, you are the thing that doesn't move. Not because you're not affected — you are, deeply — but because you've learned, probably very young, that someone has to be the mountain.\n\n戊Earth doesn't perform stability. It is stability. Your presence communicates, without words, that whatever is happening can be survived.",
+    originKo: "당신은 주변 사람들의 삶에서 고정점입니다. 혼란의 첫 신호에 불안정해지는 사람들로 가득 찬 세상에서, 당신은 움직이지 않는 것입니다. 영향을 받지 않아서가 아니라 — 당신은 깊이 영향을 받습니다 — 아마도 아주 어렸을 때, 누군가는 산이 되어야 한다는 것을 배웠기 때문입니다.",
+    shadowEn: "The mountain absorbs everything and shows nothing on the surface — which means the rumblings go deep, and when something finally breaks, it breaks completely. There is accumulated suppression in you. Too many small surrenders. The earthquake that comes when you've been still for too long.",
+    shadowKo: "산은 모든 것을 흡수하고 표면에는 아무것도 보이지 않습니다 — 즉, 떨림이 깊어지고, 무언가 마침내 깨지면 완전히 깨집니다. 당신 안에는 쌓인 억압이 있습니다.",
+    invitationEn: "You've been the earth that everyone plants their roots in. What are you rooting yourself in?",
+    invitationKo: "당신은 모든 사람이 뿌리를 내리는 땅이었습니다. 당신은 무엇에 뿌리를 내리고 있나요?",
+    keywordsEn: ['Stability', 'Patience', 'Trust', 'Foundation'],
+    keywordsKo: ['안정', '인내', '신뢰', '기반'],
+  },
+  '己': {
+    labelEn: 'Yin Earth · The Fertile Field', labelKo: '기토 · 비옥한 들판',
+    hookEn: "You've spent so much of your life making sure everyone else was taken care of that you've become the last person on your own list.",
+    hookKo: "당신은 삶의 많은 시간을 다른 모든 사람이 돌봐지도록 하는 데 보냈고, 자신의 목록에서 마지막 사람이 되었습니다.",
+    originEn: "Fertile soil makes everything around it grow. The garden doesn't exist without the soil — but the garden gets all the credit. 己Earth is the infrastructure of other people's flourishing. That's not a lesser role. That's the role without which everything else fails.\n\nYou see people. Not just what they say or do — what they need, sometimes before they see it themselves. This is a kind of intelligence that doesn't get named on resumes.",
+    originKo: "비옥한 토양은 주변의 모든 것을 자라게 합니다. 정원은 토양 없이 존재하지 않습니다 — 하지만 정원이 모든 공로를 얻습니다. 己土는 다른 사람들의 번영을 위한 기반입니다.",
+    shadowEn: "The soil that gives everything can be depleted. You have an extraordinary capacity for generosity, and you struggle to recognize when you've exceeded your own resources. Mistaking being needed for being loved — these are not the same thing, and somewhere you know that.",
+    shadowKo: "모든 것을 주는 토양은 고갈될 수 있습니다. 당신은 관대함에 대한 비범한 능력이 있고, 자신의 자원을 초과했을 때를 인식하는 데 어려움을 겪습니다.",
+    invitationEn: "What would it feel like to let someone take care of you?",
+    invitationKo: "누군가가 당신을 돌보도록 허락하면 어떤 느낌일까요?",
+    keywordsEn: ['Nourishment', 'Care', 'Practicality', 'Community'],
+    keywordsKo: ['영양', '돌봄', '실용성', '공동체'],
+  },
+  '庚': {
+    labelEn: 'Yang Metal · The Iron Sword', labelKo: '경금 · 쇠검',
+    hookEn: "You've been saying the thing everyone else was thinking — and watching them flinch — your entire life.",
+    hookKo: "당신은 평생 모두가 생각하던 것을 말해왔습니다 — 그리고 그들이 움츠러드는 것을 지켜봤습니다.",
+    originEn: "You came into this world as raw ore: dense, heavy, resistant to pressure. That wasn't a mistake in the blueprint. 庚Metal is forged in autumn, the season when the world stops growing and starts hardening. Before anyone taught you what 'principle' meant, you already had one: things are right or they're wrong, and pretending otherwise wastes everyone's time.\n\nWhat looks like bluntness from the outside is something older — it's the metal testing its own edge. Every direct word you've spoken, every moment you refused to bend when everyone expected you to, that was you becoming the thing you were always meant to be: sharp, honest, unambiguous.",
+    originKo: "당신은 가공되지 않은 광석으로 이 세상에 왔습니다: 밀도 있고, 무겁고, 압박에 저항적입니다. 그것은 설계의 실수가 아니었습니다. 庚金은 가을에 단련됩니다, 세상이 성장을 멈추고 굳어지기 시작하는 계절.\n\n외부에서 무뚝뚝함처럼 보이는 것은 더 오래된 무언가입니다 — 자신의 날을 시험하는 금속입니다.",
+    shadowEn: "The blade that never rests gets brittle. The same directness that makes you trustworthy in a crisis makes you feel unsafe in small talk. You are not broken. You are a precision instrument in a world that mostly needs spoons. But: the people closest to you sometimes grip you carefully, like something that could cut.",
+    shadowKo: "쉬지 않는 날은 부러지기 쉽습니다. 위기에서 당신을 신뢰할 수 있게 만드는 동일한 직접성이 가벼운 대화에서 불안하게 느끼게 만듭니다.",
+    invitationEn: "The blade that never rests gets brittle. Who are you protecting yourself from?",
+    invitationKo: "쉬지 않는 날은 부러지기 쉽습니다. 당신은 누구로부터 자신을 보호하고 있나요?",
+    keywordsEn: ['Precision', 'Justice', 'Courage', 'Clarity'],
+    keywordsKo: ['정밀함', '정의', '용기', '명확성'],
+  },
+  '辛': {
+    labelEn: 'Yin Metal · The Refined Jewel', labelKo: '신금 · 정련된 보석',
+    hookEn: "You've always seen what was wrong the moment you walked in — and spent years wondering why no one else did.",
+    hookKo: "당신은 들어가는 순간 무엇이 잘못되었는지 항상 보았습니다 — 그리고 왜 다른 사람들은 그러지 않는지 오랫동안 의문이었습니다.",
+    originEn: "辛Metal is not raw iron. It's the gem that emerged from the compression. Every standard you hold, every flaw you notice, every moment you've refused to settle for 'fine' when you could see 'excellent' — that's the jewel knowing its own value.\n\nYou have an internal quality sensor that runs constantly, automatically, below conscious awareness. It catches inconsistencies. It notices what's off. It finds the gap between what's promised and what's delivered.",
+    originKo: "辛金은 가공되지 않은 철이 아닙니다. 압축에서 나온 보석입니다. 당신이 지키는 모든 기준, 당신이 알아채는 모든 결함 — 그것은 보석이 자신의 가치를 아는 것입니다.",
+    shadowEn: "When you're hurt, you don't break. You sharpen. And the people who love you sometimes can't reach the blade. Your composure and standards can make you appear unreachable — and people who might love you deeply sometimes don't try because they assume you wouldn't want them to.",
+    shadowKo: "상처를 받으면 부러지지 않습니다. 날카로워집니다. 그리고 당신을 사랑하는 사람들이 때로 날에 닿지 못합니다.",
+    invitationEn: "The most beautiful swords have a name. What is yours?",
+    invitationKo: "가장 아름다운 검에는 이름이 있습니다. 당신의 이름은 무엇인가요?",
+    keywordsEn: ['Excellence', 'Discernment', 'Refinement', 'Precision'],
+    keywordsKo: ['탁월함', '분별력', '정련', '정밀함'],
+  },
+  '壬': {
+    labelEn: 'Yang Water · The Great River', labelKo: '임수 · 대강',
+    hookEn: "You've known more about the people in your life than you've ever told them — and they have no idea.",
+    hookKo: "당신은 삶의 사람들에 대해 그들에게 말한 것보다 훨씬 더 많이 알고 있습니다 — 그리고 그들은 전혀 모릅니다.",
+    originEn: "You were born as water that has no bottom. Not the ocean — the great river: moving, navigating, reading every terrain it passes through without judgment and without stopping. Other people are sitting on the riverbank wondering what the water is thinking. The water is already three miles downstream.\n\nYou absorb everything. A comment in passing. A shift in someone's energy. A pattern in numbers that no one else noticed. This isn't effort — it's your natural state.",
+    originKo: "당신은 바닥이 없는 물로 태어났습니다. 대양이 아니라 — 대강: 움직이고, 항해하고, 통과하는 모든 지형을 판단 없이, 멈추지 않고 읽습니다. 다른 사람들은 강둑에 앉아 물이 무엇을 생각하는지 의문입니다. 물은 이미 3마일 하류에 있습니다.",
+    shadowEn: "Nothing contains you for long. Not a job. Not a city. Not a relationship. When something starts to feel like a cage — even a gilded one — part of you is already planning how to flow around it. The people who love you learn this early. You carry a loneliness that doesn't come from being alone — it comes from knowing too much and choosing, constantly, how much to say.",
+    shadowKo: "아무것도 당신을 오래 담지 못합니다. 직업도, 도시도, 관계도. 무언가가 새장처럼 느껴지기 시작하면 — 황금 새장이라도 — 당신의 일부는 이미 어떻게 흘러 지나갈지 계획하고 있습니다.",
+    invitationEn: "You've spent so much energy understanding everyone else. What would happen if you let someone understand you?",
+    invitationKo: "당신은 다른 모든 사람을 이해하는 데 너무 많은 에너지를 쏟았습니다. 누군가가 당신을 이해하도록 허락하면 어떻게 될까요?",
+    keywordsEn: ['Intelligence', 'Depth', 'Adaptability', 'Mystery'],
+    keywordsKo: ['지능', '깊이', '적응력', '신비'],
+  },
+  '癸': {
+    labelEn: 'Yin Water · The Mountain Spring', labelKo: '계수 · 산속의 샘',
+    hookEn: "You feel things that haven't happened yet — and you've spent years trying to figure out if that makes you sensitive or simply awake.",
+    hookKo: "당신은 아직 일어나지 않은 것들을 느낍니다 — 그리고 그것이 당신을 예민하게 만드는지 아니면 단순히 깨어있게 만드는지 오랫동안 알아내려 했습니다.",
+    originEn: "癸Water is the rain and the dew — not the flood, not the ocean. It seeps. It infiltrates. It nurtures things that don't even know they're being nurtured. You absorb the emotional frequency of a room before anyone has spoken. You see the best version of everyone — that's a kind of love. It's also, sometimes, a way of avoiding the version that's actually there.\n\nYou have an interior life of remarkable richness. What emerges in the right conversation, with the right person, is extraordinary.",
+    originKo: "癸水는 비와 이슬입니다 — 홍수도, 대양도 아닙니다. 스며듭니다. 침투합니다. 양육받는 것조차 모르는 것들을 양육합니다. 당신은 누구도 말하기 전에 방의 감정 주파수를 흡수합니다.",
+    shadowEn: "Water that absorbs everything eventually becomes murky. You carry everyone else's emotional weather — and sometimes you don't know where you end and another person begins. The exhaustion of being this open is real, and it's rarely acknowledged.",
+    shadowKo: "모든 것을 흡수하는 물은 결국 탁해집니다. 당신은 모두의 감정적 날씨를 지고 다닙니다 — 그리고 때로 당신이 어디서 끝나고 다른 사람이 어디서 시작하는지 모릅니다.",
+    invitationEn: "You've been rained on everyone else's thirsty ground. What would it feel like to stay somewhere long enough to see what grows?",
+    invitationKo: "당신은 모든 사람의 목마른 땅에 비를 내렸습니다. 무언가가 자라는 것을 볼 만큼 충분히 한 곳에 머문다면 어떤 느낌일까요?",
+    keywordsEn: ['Intuition', 'Creativity', 'Sensitivity', 'Persistence'],
+    keywordsKo: ['직관', '창의성', '감수성', '끈기'],
+  },
+};
+
+// ═══════════════════════════════════════════════
+// DAEUN NARRATIVE SYSTEM
+// ═══════════════════════════════════════════════
+const ELEM_RELATION_CYCLE = ['Wood','Fire','Earth','Metal','Water'];
+
+function getElementRelation(dayElement, daeunElement) {
+  const idx = d => ELEM_RELATION_CYCLE.indexOf(d);
+  const di  = idx(dayElement), ri = idx(daeunElement);
+  if (di === -1 || ri === -1) return 'neutral';
+  const diff = ((ri - di) + 5) % 5;
+  switch(diff) {
+    case 0: return 'same';
+    case 1: return 'generated'; // daeun generates day
+    case 2: return 'controlled'; // daeun controls day
+    case 3: return 'controlling'; // day controls daeun
+    case 4: return 'generating'; // day generates daeun
+    default: return 'neutral';
+  }
+}
+
+const DAEUN_NARRATIVE_EN = {
+  same:       (age) => age < 20 ? "The energy of this period matched you perfectly — everything felt either too fast or, briefly, exactly right. There was a kind of intensity to your early years that others around you didn't quite share." : "This was a period of heightened competition and comparison. You found mirrors everywhere — people who reflected back who you were, sometimes flattering, sometimes uncomfortable. The decade asked: do you know yourself?",
+  generated:  (age) => "This period carried a natural current in your direction. Things had a way of aligning — not perfectly, not without effort, but the conditions were favorable. Many people with your chart describe this kind of decade as the one where opportunities arrived without being chased.",
+  generating: (age) => "This was a giving period — one where you poured your energy outward. Relationships, work, creative output. The resource flowed from you. Looking back, it may have felt generous or depleting depending on whether the giving was chosen.",
+  controlled: (age) => age < 25 ? "This period had a quality of friction to it. Something kept not quite going the way you intended. That wasn't punishment — it was the chart building in resistance while your character was still forming." : "There was pressure in this decade. Things that should have been easier weren't. The question the period kept asking was: are you doing this because you want to, or because you don't know another way?",
+  controlling:(age) => "This was a period of forward motion. You were in charge of the energy — pushing, building, deciding. It cost you something. The drive that made things happen had a price, usually in relationships or rest.",
+};
+
+const DAEUN_NARRATIVE_KO = {
+  same:       (age) => age < 20 ? "이 시기의 에너지는 당신과 완벽하게 맞았습니다 — 모든 것이 너무 빠르거나, 잠깐 정확히 맞는 느낌이었습니다. 주변의 타인들이 완전히 공유하지 못하는 강도가 어린 시절에 있었습니다." : "이 시기는 경쟁과 비교가 고조된 시기였습니다. 어디에서나 거울을 찾았습니다 — 당신이 누구인지 반영하는 사람들. 10년이 물었습니다: 당신은 자신을 아는가?",
+  generated:  (age) => "이 시기는 당신 방향으로 자연스러운 흐름이 있었습니다. 완벽하지 않아도, 노력 없이도 아니지만 조건이 유리했습니다. 당신의 사주를 가진 많은 사람들이 이런 10년을 기회가 쫓지 않아도 찾아온 시기로 묘사합니다.",
+  generating: (age) => "이것은 베푸는 시기였습니다 — 에너지를 밖으로 쏟아냈습니다. 관계, 일, 창의적 산출물. 자원이 당신으로부터 흘렀습니다. 돌이켜보면, 그 베풀기가 선택이었는지에 따라 관대하거나 고갈되는 느낌이었을 겁니다.",
+  controlled: (age) => age < 25 ? "이 시기는 마찰의 질이 있었습니다. 의도한 대로 잘 되지 않는 무언가가 있었습니다. 그것은 처벌이 아니었습니다 — 성격이 아직 형성되는 동안 저항을 쌓는 사주였습니다." : "이 10년에는 압박이 있었습니다. 더 쉬워야 할 것들이 그렇지 않았습니다. 시기가 계속 물었습니다: 원해서 하는 건가, 아니면 다른 방법을 모르는 건가?",
+  controlling:(age) => "이것은 앞으로 나아가는 시기였습니다. 당신이 에너지를 통제하고 있었습니다 — 밀고, 쌓고, 결정했습니다. 무언가를 댓가로 치렀습니다. 일을 이루게 만든 추진력에는 보통 관계나 휴식에서 대가가 있었습니다.",
+};
+
+function getLifeStageEn(age) {
+  if (age < 15) return 'Childhood';
+  if (age < 25) return 'Adolescence';
+  if (age < 35) return 'Young Adult';
+  if (age < 45) return 'Early Midlife';
+  if (age < 55) return 'Midlife';
+  return 'Later Years';
+}
+function getLifeStageKo(age) {
+  if (age < 15) return '아동기';
+  if (age < 25) return '청소년기';
+  if (age < 35) return '청년기';
+  if (age < 45) return '중년 초반';
+  if (age < 55) return '중년';
+  return '노년기';
+}
+
+// ═══════════════════════════════════════════════
+// ELEMENTS NARRATIVE
+// ═══════════════════════════════════════════════
+const ELEM_NARRATIVE_EN = {
+  Wood:  { heavy:"You are always moving toward something. The problem is that you're sometimes not sure what — only that staying still feels like dying. This isn't ambition. This is a body that was built for growth.", lacking:"Without Wood, the direction takes longer to feel certain about. You can see clearly where you are. The destination requires intention." },
+  Fire:  { heavy:"Everything you feel, you feel at full volume. Joy is enormous. Frustration is enormous. The people around you have learned to read your face like weather.", lacking:"Without Fire, the warmth is there — but it runs internal. You feel more than you show. This isn't coldness. It's a banked fire: enormous heat, very little visible flame." },
+  Earth: { heavy:"You are the person others stabilize against. Your presence has a density to it — not heavy, just there in a way that makes people feel the ground beneath their feet.", lacking:"Without Earth, the center takes work to find. You're brilliant in motion and sometimes unmoored when the world stops." },
+  Metal: { heavy:"You have a precision about you — in what you say, what you keep, who you let close. People experience this as control. From inside, it feels like clarity.", lacking:"Without Metal, the edges are softer than they should be. Saying no takes more energy than it costs most people." },
+  Water: { heavy:"You think in currents. Ideas flow into other ideas. Plans branch into alternatives. When the world asks you to stop and commit to one path, part of you is always grieving the paths you didn't take.", lacking:"Without Water, the introspection doesn't come automatically. You live outward — visible, active, present. The inner life is quieter, and that's not a problem. It's a different kind of clarity." },
+};
+const ELEM_NARRATIVE_KO = {
+  Wood:  { heavy:"당신은 항상 무언가를 향해 움직입니다. 문제는 그것이 무엇인지 때때로 확신하지 못한다는 것입니다 — 가만히 있는 것이 죽어가는 것 같다는 것만 알고 있습니다.", lacking:"木 없이, 방향을 확신하는 데 더 오래 걸립니다. 당신이 어디 있는지는 명확하게 볼 수 있습니다. 목적지에는 의도가 필요합니다." },
+  Fire:  { heavy:"느끼는 모든 것을 최고 음량으로 느낍니다. 기쁨이 거대합니다. 좌절도 거대합니다. 주변 사람들은 당신의 얼굴을 날씨처럼 읽는 법을 배웠습니다.", lacking:"火 없이, 따뜻함은 있습니다 — 하지만 내면에서 흐릅니다. 보이는 것보다 더 많이 느낍니다. 차가움이 아닙니다. 잠재된 불입니다." },
+  Earth: { heavy:"당신은 타인들이 안정을 찾는 사람입니다. 당신의 존재에는 밀도가 있습니다 — 무겁지는 않지만, 사람들이 발 아래 땅을 느끼게 하는 방식으로 거기 있습니다.", lacking:"土 없이, 중심을 찾는 데 노력이 필요합니다. 움직임 속에서는 탁월하지만 세상이 멈출 때 방향을 잃을 수 있습니다." },
+  Metal: { heavy:"당신에게는 정밀함이 있습니다 — 말하는 것, 지키는 것, 가까이 허락하는 사람에 대해. 사람들은 이것을 통제로 경험합니다. 내부에서는 명확성으로 느낍니다.", lacking:"金 없이, 경계가 있어야 할 것보다 부드럽습니다. 아니오라고 말하는 것이 대부분의 사람들보다 더 많은 에너지가 필요합니다." },
+  Water: { heavy:"생각은 흐름으로 움직입니다. 아이디어가 다른 아이디어로 흐릅니다. 세상이 한 길에 멈추고 헌신하도록 요구할 때, 당신의 일부는 항상 선택하지 않은 길을 애도합니다.", lacking:"水 없이, 내성이 자동으로 오지 않습니다. 외향적으로 살아갑니다 — 보이고, 능동적이고, 현존합니다. 내면의 삶이 더 조용합니다." },
+};
+
+// ═══════════════════════════════════════════════
+// TODAY ENERGY HINT
+// ═══════════════════════════════════════════════
+function getTodayHintEn(element) {
+  const now = new Date();
+  const day = now.getDay();
+  const hints = {
+    Wood: ["Today the Wood energy says: start something. Even a small thing. The forward motion matters more than the destination right now.", "Rest is not retreat. Even Oak needs a dormant season.", "Someone in your orbit is watching you more carefully than you know. Walk with your full posture today."],
+    Fire: ["Bring the full light today. Someone needs it.", "The sun doesn't ask if today is a good day to rise. Neither should you.", "Channel the warmth inward for a moment. What do you need that you haven't asked for?"],
+    Earth: ["Ground first, move second. Whatever felt urgent yesterday — sleep on it one more day.", "Your stability is someone else's anchor right now. You probably don't know who.", "When was the last time the mountain moved? If it's been too long — now."],
+    Metal: ["Precision is your gift today. Cut to the thing that matters.", "Not every conversation needs your full edge. Save it for what deserves it.", "The gem doesn't perform. It simply is. Be yourself without explanation today."],
+    Water: ["Let the current take you somewhere unexpected today. Resist the urge to map everything.", "The river flows best when it doesn't question the landscape.", "Someone needs your depth today. Let them in, just a little."],
+  };
+  const arr = hints[element] || hints.Wood;
+  return arr[day % arr.length];
+}
+function getTodayHintKo(element) {
+  const now = new Date();
+  const day = now.getDay();
+  const hints = {
+    Wood: ["오늘 木의 에너지가 말합니다: 무언가를 시작하세요. 작은 것이라도. 지금은 목적지보다 앞으로 나아가는 움직임이 중요합니다.", "휴식은 후퇴가 아닙니다. 거목도 휴면기가 필요합니다.", "당신의 궤도에 있는 누군가가 당신이 아는 것보다 더 주의 깊게 당신을 지켜보고 있습니다."],
+    Fire: ["오늘 완전한 빛을 가져오세요. 누군가 그것이 필요합니다.", "태양은 오늘이 떠오르기 좋은 날인지 묻지 않습니다. 당신도 그럴 필요 없습니다.", "잠시 따뜻함을 내면으로 돌리세요. 아직 요청하지 않은 무엇이 필요한가요?"],
+    Earth: ["먼저 땅을 다지고, 그 다음 움직이세요.", "당신의 안정이 지금 누군가의 닻입니다. 아마 누구인지 모를 겁니다.", "산이 마지막으로 움직인 게 언제였나요? 너무 오래되었다면 — 지금입니다."],
+    Metal: ["오늘은 정밀함이 당신의 선물입니다. 중요한 것에 집중하세요.", "모든 대화에 날카로운 날이 필요하지 않습니다. 그럴 가치가 있는 것을 위해 아껴두세요.", "보석은 연기하지 않습니다. 단순히 존재합니다. 오늘은 설명 없이 자신이 되세요."],
+    Water: ["오늘은 흐름이 예상치 못한 곳으로 데려가도록 두세요.", "강은 지형에 의문을 품지 않을 때 가장 잘 흐릅니다.", "오늘 누군가 당신의 깊이가 필요합니다. 조금만 들이세요."],
+  };
+  const arr = hints[element] || hints.Wood;
+  return arr[day % arr.length];
+}
+
+// ═══════════════════════════════════════════════
+// CURRENT DAEUN NARRATIVE
+// ═══════════════════════════════════════════════
+function getCurrentNarrativeEn(daeun, dayElement) {
+  const rel = getElementRelation(dayElement, daeun.element);
+  const map = {
+    same: `You are in a decade of mirrors. The energy surrounding you reflects your own nature back — intensified. Collaboration or competition, depending on which way you face. This is a time when your identity is being tested and clarified.`,
+    generated: `The energy of this cycle flows in your direction. You didn't have to chase it — it arrived. This is a supportive decade: conditions that make your natural strengths more effective, opportunities that align with who you already are.`,
+    generating: `This decade has been asking something of you. Your energy is flowing outward — into work, relationships, projects. The question to sit with: is this giving chosen, or have you simply not stopped to decide?`,
+    controlled: `There's friction in this decade. Not punishment — resistance that reveals structure. Things that were propped up are being tested for their foundations. This is the decade that separates what you actually are from what you were pretending.`,
+    controlling: `You are driving the energy of this cycle. The initiative is yours. So are the consequences. This is a decade for bold movement — but the metal that strikes too hard against stone can crack. Know when to force and when to wait.`,
+  };
+  return map[rel] || map.same;
+}
+function getCurrentNarrativeKo(daeun, dayElement) {
+  const rel = getElementRelation(dayElement, daeun.element);
+  const map = {
+    same: `당신은 거울의 10년 안에 있습니다. 주변의 에너지가 당신 자신의 본성을 다시 반영합니다 — 강화된 형태로. 어떤 방향을 향하느냐에 따라 협력 또는 경쟁. 이것은 정체성이 시험되고 명확해지는 시간입니다.`,
+    generated: `이 대운의 에너지는 당신의 방향으로 흐릅니다. 쫓지 않아도 도착했습니다. 이것은 지지하는 10년입니다: 당신의 자연스러운 강점을 더 효과적으로 만드는 조건들.`,
+    generating: `이 10년은 당신에게 무언가를 요구해왔습니다. 당신의 에너지는 밖으로 흐르고 있습니다 — 일, 관계, 프로젝트로. 앉아서 생각해볼 질문: 이 베풀기는 선택인가요, 아니면 단순히 멈추지 않은 건가요?`,
+    controlled: `이 10년에는 마찰이 있습니다. 처벌이 아니라 — 구조를 드러내는 저항. 받쳐져 있던 것들이 기반을 시험받고 있습니다.`,
+    controlling: `당신은 이 대운의 에너지를 이끌고 있습니다. 주도권은 당신의 것입니다. 결과도 마찬가지입니다. 이것은 대담한 움직임의 10년입니다 — 하지만 돌에 너무 강하게 부딪히는 금속은 금이 갈 수 있습니다.`,
+  };
+  return map[rel] || map.same;
+}
+
+// ═══════════════════════════════════════════════
+// FORM LOGIC
+// ═══════════════════════════════════════════════
+function populateTimeSelects() {
+  const hourSel = document.getElementById('inp-hour');
+  const minSel  = document.getElementById('inp-minute');
+  hourSel.innerHTML = `<option value="">Hour</option>`;
+  for (let h = 0; h < 24; h++) {
+    const lbl = h === 0 ? '0 (midnight)' : h === 12 ? '12 (noon)' : `${h}`;
+    hourSel.innerHTML += `<option value="${h}">${lbl.padStart(2,'0')}:xx</option>`;
+  }
+  minSel.innerHTML = `<option value="">Minute</option>`;
+  for (let m = 0; m < 60; m += 5) {
+    minSel.innerHTML += `<option value="${m}">${String(m).padStart(2,'0')}</option>`;
+  }
+}
+
+function selectGender(g) {
+  selectedGender = g;
+  document.getElementById('gb-m').classList.toggle('selected', g === 'M');
+  document.getElementById('gb-f').classList.toggle('selected', g === 'F');
+}
+
+function toggleTime() {
+  const checked = document.getElementById('chk-notime').checked;
+  document.getElementById('inp-hour').disabled   = checked;
+  document.getElementById('inp-minute').disabled = checked;
+}
+
+function nextStep() {
+  const name   = document.getElementById('inp-name').value.trim();
+  const date   = document.getElementById('inp-date').value;
+  const gErr   = !selectedGender;
+  const nameErr= !name;
+  const dateErr= !date;
+
+  if (nameErr) { showErrEl('err-name'); return; }
+  if (dateErr) { showErrEl('err-date'); return; }
+  if (gErr)    { showErrEl('err-gender'); return; }
+
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('dot1').classList.remove('active');
+  document.getElementById('dot2').classList.add('active');
+}
+
+function prevStep() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('dot2').classList.remove('active');
+  document.getElementById('dot1').classList.add('active');
+}
+
+function showErrEl(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function generateReport() {
+  const name    = document.getElementById('inp-name').value.trim();
+  const date    = document.getElementById('inp-date').value;
+  const noTime  = document.getElementById('chk-notime').checked;
+  const hour    = noTime ? 12 : parseInt(document.getElementById('inp-hour').value) || 12;
+  const [year, month, day] = date.split('-').map(Number);
+
+  const pillars = calcFourPillars(year, month, day, hour, selectedGender, noTime);
+
+  reportData = { name, year, month, day, hour, noTime, gender: selectedGender, pillars };
+
+  // check unlock from URL
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('order_id') || localStorage.getItem('momentor_unlocked') === 'true') {
+    reportData.unlocked = true;
+    if (params.get('order_id')) localStorage.setItem('momentor_unlocked', 'true');
+  }
+
+  document.getElementById('section-form').style.display    = 'none';
+  document.getElementById('section-results').classList.add('visible');
+  document.getElementById('chapterNav').classList.add('visible');
+
+  renderReport(reportData);
+  initReveal();
+  initChapterNav();
+}
+
+// ═══════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════
+function renderReport(data) {
+  const { name, pillars } = data;
+  const lang = currentLang;
+  const dp   = pillars.dayPillar;
+  const dm   = DM[dp.stem] || DM['甲'];
+
+  // ── Chapter 1 ──────────────────────────
+  document.getElementById('dm-char').textContent  = dp.stem + dp.branch;
+  document.getElementById('dm-label').textContent = lang === 'en' ? dm.labelEn : dm.labelKo;
+  document.getElementById('dm-hook').textContent  = lang === 'en' ? dm.hookEn  : dm.hookKo;
+
+  // identity tags
+  const elemName = lang === 'en' ? dp.element : ELEM_KR[dp.element];
+  const tags = [
+    `<span>✦</span>${elemName}`,
+    `<span>✦</span>${dp.branch} (${lang === 'en' ? dp.branchElement : ELEM_KR[dp.branchElement]})`,
+    `<span>✦</span>${dp.stem}${dp.branch}`,
+  ];
+  document.getElementById('identity-tags').innerHTML = tags.map(t => `<div class="identity-tag">${t}</div>`).join('');
+
+  // story body
+  document.getElementById('dm-body1').textContent = lang === 'en' ? dm.originEn     : dm.originKo;
+  document.getElementById('dm-body2').textContent = lang === 'en' ? dm.shadowEn     : dm.shadowKo;
+  document.getElementById('dm-body3').textContent = lang === 'en' ? dm.invitationEn : dm.invitationKo;
+
+  // pillars grid
+  const pLabels = lang === 'en' ? ['Year','Month','Day','Hour'] : ['년주','월주','일주','시주'];
+  const cols    = [pillars.yearPillar, pillars.monthPillar, pillars.dayPillar, pillars.hourPillar];
+  document.getElementById('pillar-grid').innerHTML = cols.map((p, i) => {
+    if (!p) return `<div class="pillar-col"><span class="pillar-label">${pLabels[i]}</span><span class="pillar-stem-char" style="color:var(--text-muted)">—</span></div>`;
+    return `<div class="pillar-col ${i===2?'day-col':''}">
+      <span class="pillar-label">${pLabels[i]}${i===2?' ★':''}</span>
+      <span class="pillar-stem-char">${p.stem}</span>
+      <span class="pillar-branch-char">${p.branch}</span>
+      <div><span class="pillar-elem-dot elem-${p.element}"></span></div>
+    </div>`;
+  }).join('');
+
+  // elements grid
+  const elems = ['Wood','Fire','Earth','Metal','Water'];
+  const eLabels = lang === 'en' ? {Wood:'Wood',Fire:'Fire',Earth:'Earth',Metal:'Metal',Water:'Water'} : ELEM_KR;
+  const maxVal = Math.max(...elems.map(e => pillars.elements[e]));
+  document.getElementById('elements-grid').innerHTML = elems.map(e => {
+    const val = pillars.elements[e];
+    const h   = maxVal ? Math.round((val / maxVal) * 50) + 10 : 10;
+    return `<div class="elem-col">
+      <div class="elem-bar-wrap"><div class="elem-bar elem-${e}" style="height:${h}px"></div></div>
+      <div class="elem-count">${val}</div>
+      <div class="elem-name">${eLabels[e]}</div>
+    </div>`;
+  }).join('');
+
+  // elements narrative
+  const dominant = elems.reduce((a,b) => pillars.elements[a] >= pillars.elements[b] ? a : b);
+  const lacking  = elems.reduce((a,b) => pillars.elements[a] <= pillars.elements[b] ? a : b);
+  const narr = lang === 'en' ? ELEM_NARRATIVE_EN : ELEM_NARRATIVE_KO;
+  const elemText = pillars.elements[dominant] >= 3
+    ? narr[dominant].heavy
+    : (pillars.elements[lacking] === 0 ? narr[lacking].lacking : (lang === 'en' ? `Your energy is balanced across all five elements — a rare chart. This gives you unusual flexibility, but can also mean the center is harder to find.` : `당신의 에너지는 오행 전체에 걸쳐 균형 잡혀 있습니다 — 드문 사주입니다. 이것은 비범한 유연성을 주지만, 중심을 찾기 어려울 수도 있습니다.`));
+  document.getElementById('elements-narrative').textContent = elemText;
+
+  // ── Chapter 2: Past Daeun ──────────────────
+  const pastDaeun = pillars.daeun.filter(d => d.isPast);
+  const resEl = lang === 'en' ? '💬 Does this time feel familiar?' : '💬 이 시기가 기억나시나요?';
+  document.getElementById('past-daeun-list').innerHTML = pastDaeun.map(d => {
+    const rel  = getElementRelation(dp.element, d.element);
+    const narr = lang === 'en' ? DAEUN_NARRATIVE_EN[rel](d.startAge) : DAEUN_NARRATIVE_KO[rel](d.startAge);
+    const ls   = lang === 'en' ? getLifeStageEn(d.startAge) : getLifeStageKo(d.startAge);
+    const pChar= lang === 'en' ? `${d.stem} ${d.branch}` : `${d.stemKr}${d.branchKr}`;
+    return `<div class="daeun-card">
+      <div class="daeun-top">
+        <span class="daeun-era-badge era-past">${lang==='en'?'PAST':'과거'}</span>
+        <span class="daeun-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</span>
+      </div>
+      <div class="daeun-lifestage">${ls}</div>
+      <div class="daeun-pillars">${d.stem}<span>${d.branch}</span></div>
+      <p class="daeun-narrative">${narr}</p>
+      <p class="daeun-resonance">${resEl}</p>
+    </div>`;
+  }).join('') || `<p style="color:var(--text-muted);font-style:italic;padding:12px 0">${lang==='en'?'Your story is just beginning — no past cycles to reflect on yet.':'아직 과거 대운이 없습니다. 이야기는 이제 시작됩니다.'}</p>`;
+
+  // ── Chapter 3: Current Daeun ──────────────
+  const curDaeun = pillars.daeun.find(d => d.isCurrent);
+  if (curDaeun) {
+    document.getElementById('current-pillar-chars').textContent = `${curDaeun.stem}${curDaeun.branch}`;
+    const curNarr = lang === 'en' ? getCurrentNarrativeEn(curDaeun, dp.element) : getCurrentNarrativeKo(curDaeun, dp.element);
+    document.getElementById('current-desc').textContent = curNarr;
+  } else {
+    document.getElementById('current-pillar-chars').textContent = '—';
+    document.getElementById('current-desc').textContent = lang === 'en' ? 'Calculating your current cycle...' : '현재 대운을 계산 중입니다...';
+  }
+
+  // strengths grid
+  const kw = lang === 'en' ? dm.keywordsEn : dm.keywordsKo;
+  document.getElementById('strength-grid').innerHTML = kw.map((k, i) =>
+    `<div class="strength-item ${i<2?'highlight':''}">${k}</div>`
+  ).join('');
+
+  // today hint
+  document.getElementById('today-text').textContent = lang === 'en' ? getTodayHintEn(dp.element) : getTodayHintKo(dp.element);
+
+  // past→present link
+  if (curDaeun && pastDaeun.length > 0) {
+    const prev = pastDaeun[pastDaeun.length - 1];
+    const pText = lang === 'en'
+      ? `${prev.stem}${prev.branch} (${prev.startYear}–${prev.endYear}) carried ${prev.element} energy. Now in ${curDaeun.stem}${curDaeun.branch}, you're moving through ${curDaeun.element}. That shift isn't random. The chart was always taking you somewhere.`
+      : `${prev.stemKr}${prev.branchKr} (${prev.startYear}–${prev.endYear}) 대운은 ${ELEM_KR[prev.element]}의 에너지였습니다. 이제 ${curDaeun.stemKr}${curDaeun.branchKr} 대운에서 ${ELEM_KR[curDaeun.element]}을 통과하고 있습니다. 이 전환은 우연이 아닙니다.`;
+    document.getElementById('past-present-link').textContent = pText;
+  }
+
+  // ── Chapter 4: Future Daeun ───────────────
+  const futureDaeun = pillars.daeun.filter(d => d.isFuture).slice(0, 3);
+  if (data.unlocked) {
+    // unlock chapter 4 fully
+    document.getElementById('future-daeun-list').innerHTML = futureDaeun.map((d, i) => {
+      const rel  = getElementRelation(dp.element, d.element);
+      const narr = lang === 'en' ? DAEUN_NARRATIVE_EN[rel](d.startAge) : DAEUN_NARRATIVE_KO[rel](d.startAge);
+      return `<div class="future-daeun-card">
+        <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
+        <div class="fdc-pillar">${d.stem}${d.branch}</div>
+        <p class="fdc-teaser">${narr}</p>
+      </div>`;
+    }).join('');
+    document.getElementById('paywall-cta').style.display = 'none';
+  } else {
+    // blur preview
+    document.getElementById('future-daeun-list').innerHTML = futureDaeun.map((d, i) => {
+      const teaser = lang === 'en'
+        ? `In this decade, the energy of ${d.element} meets your ${dp.element} nature. The chart has a story for this period — one that begins with...`
+        : `이 10년에는 ${ELEM_KR[d.element]}의 에너지가 당신의 ${ELEM_KR[dp.element]} 본성을 만납니다. 이 시기를 위한 이야기가 있습니다...`;
+      const cls = i === 0 ? 'partial' : 'locked';
+      return `<div class="future-daeun-card ${cls}">
+        <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
+        <div class="fdc-pillar">${d.stem}${d.branch}</div>
+        <p class="fdc-teaser">${teaser}</p>
+        ${i===0 ? '<div class="fdc-fade"></div>' : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // update paywall CTA text with personalization
+  const nextDaeun = futureDaeun[0];
+  if (nextDaeun && !data.unlocked) {
+    const hookText = lang === 'en'
+      ? `${name}, your next cycle begins in ${nextDaeun.startYear}.\nAren't you curious what it holds?`
+      : `${name}, 다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.\n무엇이 기다리는지 궁금하지 않으신가요?`;
+    document.getElementById('paywall-hook').textContent = hookText;
+  }
+
+  // update static i18n strings
+  Object.keys(T).forEach(id => {
+    const el = document.getElementById(id);
+    if (el && T[id][lang]) el.innerHTML = T[id][lang];
+  });
+}
+
+// ═══════════════════════════════════════════════
+// REVEAL ON SCROLL
+// ═══════════════════════════════════════════════
+function initReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+}
+
+// ═══════════════════════════════════════════════
+// CHAPTER NAV
+// ═══════════════════════════════════════════════
+function initChapterNav() {
+  const dots = document.querySelectorAll('.cnav-dot');
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const ch = document.getElementById('chapter-' + dot.dataset.ch);
+      if (ch) ch.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  const chapters = [1,2,3,4].map(n => document.getElementById('chapter-' + n)).filter(Boolean);
+  const chObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id.replace('chapter-','');
+        dots.forEach(d => d.classList.toggle('active', d.dataset.ch === id));
+      }
+    });
+  }, { threshold: 0.3 });
+  chapters.forEach(c => chObs.observe(c));
+}
+
+// ═══════════════════════════════════════════════
+// ACCORDION
+// ═══════════════════════════════════════════════
+function toggleAccordion(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  populateTimeSelects();
+  setLang('en');
+
+  // check if returning after payment
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('order_id')) {
+    localStorage.setItem('momentor_unlocked', 'true');
+    showToast('✦ Your full reading is now unlocked!');
+  }
+});
+</script>
+</body>
+</html>
