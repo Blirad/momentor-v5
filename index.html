@@ -392,10 +392,11 @@
     letter-spacing: -0.01em;
   }
   .bridge-question {
-    font-size: 20px !important;
+    font-size: 26px !important;
     color: var(--gold) !important;
     font-style: normal !important;
     margin-top: 6px;
+    text-shadow: 0 0 20px rgba(232,197,71,0.5);
   }
 
   /* ─── CARDS ─── */
@@ -455,7 +456,7 @@
     filter: drop-shadow(0 0 50px rgba(201,169,110,0.8));
   }
   .dm-label {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--gold-soft);
     letter-spacing: .1em;
     margin-bottom: 20px;
@@ -1180,6 +1181,69 @@
     font-size: 14px;
     padding: 16px;
   }
+  /* ─── SOCIAL PROOF INLINE (after DM hero) ─── */
+  .social-proof-inline {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    padding: 10px 0;
+    letter-spacing: 0.04em;
+  }
+  .social-proof-inline .sp-stars-inline { color: #F5C842; }
+
+  /* ─── MOBILE CHAPTER BOTTOM NAV ─── */
+  .mobile-chapter-nav {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 200;
+    background: rgba(13,11,30,0.96);
+    border-top: 1px solid rgba(201,169,110,0.2);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom,0px));
+    justify-content: space-around;
+    align-items: center;
+  }
+  .mobile-chapter-nav.visible { display: flex; }
+  .mcnav-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: color 0.2s;
+    min-height: 44px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mcnav-btn.active { color: var(--gold); }
+  @media (min-width: 481px) { .mobile-chapter-nav { display: none !important; } }
+
+  /* ─── PRICE ANCHOR ─── */
+  .price-anchor-text {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  /* ─── TIME INCENTIVE UPDATED ─── */
+  .time-incentive-gold {
+    font-size: 13px;
+    color: var(--gold-soft);
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
   /* ─── FORM TAGLINE2 ─── */
   .form-tagline2 {
     font-size: 13px;
@@ -1346,7 +1410,7 @@
     .form-row { grid-template-columns: 1fr; }
     .pillar-grid { gap: 5px; }
     .pillar-stem-char { font-size: 24px; }
-    .chapter-nav { display: none !important; }
+    .chapter-nav { display: none; }
     .strength-grid { grid-template-columns: 1fr; }
     .gender-select { grid-template-columns: repeat(3, 1fr); }
   }
@@ -1378,12 +1442,14 @@
 <!-- EXIT INTENT POPUP -->
 <div class="exit-popup" id="exit-popup">
   <div class="exit-popup-inner">
-    <div class="exit-popup-hook">Wait — your chart is still here.</div>
-    <p class="exit-popup-sub" id="exit-popup-sub">The decades ahead are written. The reading takes 3 minutes to unlock and stays yours forever.</p>
-    <a class="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="document.getElementById('exit-popup').classList.remove('show'); openPayModal(); return false;" style="max-width:none">
-      See My Full Forecast — $7.99
-    </a>
-    <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">No thanks, I'll pass on knowing what's next.</span>
+    <div class="exit-popup-hook">Get your Day Master summary — free.</div>
+    <p class="exit-popup-sub">Just your email. We'll send you a 3-line essence of your chart.</p>
+    <div id="exit-popup-form">
+      <input type="email" id="exit-email-input" placeholder="your@email.com" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-sans);outline:none;margin-bottom:12px;box-sizing:border-box">
+      <button onclick="submitExitEmail()" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send my summary →</button>
+    </div>
+    <div id="exit-popup-thanks" style="display:none;padding:12px 0;color:var(--gold);font-family:var(--font-serif);font-size:16px">✦ Check your inbox soon.</div>
+    <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">No thanks, I'll pass.</span>
   </div>
 </div>
 
@@ -1393,6 +1459,14 @@
   <div class="cnav-dot" data-ch="2" title="Ch.2"></div>
   <div class="cnav-dot" data-ch="3" title="Ch.3"></div>
   <div class="cnav-dot" data-ch="4" title="Ch.4"></div>
+</div>
+
+<!-- MOBILE CHAPTER BOTTOM NAV -->
+<div class="mobile-chapter-nav" id="mobileChapterNav">
+  <button class="mcnav-btn active" data-ch="1" onclick="mobileNavTo(1)">Ⅰ</button>
+  <button class="mcnav-btn" data-ch="2" onclick="mobileNavTo(2)">Ⅱ</button>
+  <button class="mcnav-btn" data-ch="3" onclick="mobileNavTo(3)">Ⅲ</button>
+  <button class="mcnav-btn" data-ch="4" onclick="mobileNavTo(4)">Ⅳ</button>
 </div>
 
 <!-- SITE HEADER -->
@@ -1408,7 +1482,7 @@
 <section id="section-form">
   <div class="container">
     <div class="form-intro">
-      <h1 id="form-title">The chart that knows the thing<br>you've never told anyone.</h1>
+      <h1 id="form-title">More precise than astrology. Older than the zodiac.<br>Your chart, to the exact hour.</h1>
       <p id="form-subtitle">Your Four Pillars chart — read by humans, not AI.<br>Frighteningly accurate. Written for you alone.</p>
       <p class="form-tagline2" id="form-tagline2" style="margin-top:12px;font-size:13px;color:var(--text-muted);font-style:italic">Western astrology maps the sky. Saju maps the person.</p>
     </div>
@@ -1474,7 +1548,7 @@
     <div class="form-step" id="step2">
       <button class="btn-secondary" onclick="prevStep()">← <span id="btn-back-label">Back</span></button>
       <h2 id="step2-title">Birth time (optional)</h2>
-      <p class="time-incentive">Adding your birth time unlocks your Hour Pillar — the most personal of the four.</p>
+      <p class="time-incentive-gold">✦ Add your birth hour → unlock your Hour Pillar for a more precise reading</p>
       <div class="form-group">
         <label id="label-time">Time of birth</label>
         <div class="form-row">
@@ -1508,7 +1582,7 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="story-chapter" id="chapter-1">
       <div class="chapter-header reveal">
-        <span class="chapter-badge">Chapter 1</span>
+        <span class="chapter-badge">Ⅰ — Origin</span>
         <h2 class="chapter-title" id="ch1-title">Why You Are This Way</h2>
         <p class="chapter-tagline" id="ch1-tagline">You were this person from the beginning.</p>
       </div>
@@ -1523,6 +1597,11 @@
 
       <!-- Identity Tags -->
       <div class="identity-tags reveal" id="identity-tags"></div>
+
+      <!-- Social Proof Inline (P0-3) -->
+      <div class="social-proof-inline reveal" id="social-proof-inline">
+        Explored by 12,000+ readers &nbsp; <span class="sp-stars-inline">★★★★★</span> 4.9/5
+      </div>
 
       <!-- Story Body -->
       <div class="card reveal" id="dm-story-card">
@@ -1592,7 +1671,7 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="story-chapter" id="chapter-2">
       <div class="chapter-header reveal">
-        <span class="chapter-badge">Chapter 2</span>
+        <span class="chapter-badge">Ⅱ — Pattern</span>
         <h2 class="chapter-title" id="ch2-title">What You've Been Through</h2>
         <p class="chapter-tagline" id="ch2-tagline">The chart remembers your past.</p>
       </div>
@@ -1614,7 +1693,7 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="story-chapter" id="chapter-3">
       <div class="chapter-header reveal">
-        <span class="chapter-badge">Chapter 3</span>
+        <span class="chapter-badge">Ⅲ — Turning Point</span>
         <h2 class="chapter-title" id="ch3-title">Where You Stand Now</h2>
         <p class="chapter-tagline" id="ch3-tagline">The energy you're moving through today.</p>
       </div>
@@ -1696,7 +1775,7 @@
     <!-- ══════════════════════════════════════════ -->
     <div class="story-chapter" id="chapter-4">
       <div class="chapter-header reveal">
-        <span class="chapter-badge">Chapter 4</span>
+        <span class="chapter-badge">Ⅳ — What Comes Next</span>
         <h2 class="chapter-title" id="ch4-title">Where You're Going</h2>
         <p class="chapter-tagline" id="ch4-tagline">The story not yet written.</p>
       </div>
@@ -1746,6 +1825,8 @@
           <p class="paywall-sub" id="paywall-sub">What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
           <!-- [3] 앵커링 -->
           <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
+          <!-- P1-3: Price anchoring -->
+          <p class="price-anchor-text">A professional reading costs $150+. This is your chart, calculated the same way, for $7.99.</p>
           <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
             Show me what the chart knows →
           </a>
@@ -1815,7 +1896,7 @@ let reportData = null;
 // I18N
 // ═══════════════════════════════════════════════
 const T = {
-  'form-title':         { en:'The chart that knows the thing\nyou\'ve never told anyone.', ko:'당신이 누구에게도 말하지 않은 것을 아는 차트.' },
+  'form-title':         { en:'More precise than astrology. Older than the zodiac.<br>Your chart, to the exact hour.', ko:'점성술보다 정밀하게. 별자리보다 오래된 지혜.<br>당신의 사주, 정확히 태어난 시간까지.' },
   'form-subtitle':      { en:'Your Four Pillars chart — read by humans, not AI.\nFrighteningly accurate. Written for you alone.', ko:'당신의 사주 — AI가 아닌 사람이 읽습니다. 소름 돋을 만큼 정확하게. 오직 당신만을 위해 쓰여진.' },
   'step1-title':        { en:'Tell me about yourself', ko:'당신에 대해 알려주세요' },
   'label-name':         { en:'Your name', ko:'이름' },
@@ -2484,7 +2565,7 @@ function populateTimeSelects() {
 
 function populateDateSelects() {
   const yearSel = document.getElementById('inp-year');
-  const maxYear = new Date().getFullYear();
+  const maxYear = 2007;
   yearSel.innerHTML = `<option value="">Year</option>`;
   for (let y = maxYear; y >= 1930; y--) {
     yearSel.innerHTML += `<option value="${y}">${y}</option>`;
@@ -2865,29 +2946,43 @@ function renderReport(data) {
     }).join('');
     document.getElementById('paywall-cta').style.display = 'none';
   } else {
-    // blur preview
-    document.getElementById('future-daeun-list').innerHTML = futureDaeun.map((d, i) => {
+    // blur preview — P0-1: first card shows 2 sentences, 3rd+ blurred; P1-7: third card → hint text
+    document.getElementById('future-daeun-list').innerHTML = futureDaeun.slice(0, 2).map((d, i) => {
       const futureOpeners = [
-        "This decade begins with a question you've been postponing. The chart says it's time.",
-        "Something you built in your 30s and 40s starts to bear fruit — or reveal its cracks.",
-        "The energy shifts toward what lasts. What you leave behind. What carries your name."
+        "This decade begins with a question you've been postponing. The chart says it's time. Something shifts in the foundation — the kind that happens once per life.",
+        "Something you built in your 30s and 40s starts to bear fruit — or reveal its cracks. The energy of this cycle asks: what did you actually build it for?"
       ];
       const futureOpenersKo = [
-        "이 10년은 미뤄왔던 질문으로 시작됩니다. 이제 때가 되었다고 사주가 말합니다.",
-        "30대와 40대에 쌓아온 것이 열매를 맺거나, 균열을 드러낼 시기입니다.",
-        "에너지는 오래 지속되는 것, 남기는 것, 당신의 이름을 담은 것을 향해 이동합니다."
+        "이 10년은 미뤄왔던 질문으로 시작됩니다. 이제 때가 되었다고 사주가 말합니다. 평생 한 번 오는 근본적인 전환이 찾아옵니다.",
+        "30대와 40대에 쌓아온 것이 열매를 맺거나, 균열을 드러낼 시기입니다. 이 대운의 에너지는 묻습니다: 진정 무엇을 위해 쌓았는가?"
       ];
-      const teaser = lang === 'en'
-        ? futureOpeners[i] || `In this decade, the energy of ${d.element} meets your ${dp.element} nature. The chart has a story for this period — one that begins with...`
-        : futureOpenersKo[i] || `이 10년에는 ${ELEM_KR[d.element]}의 에너지가 당신의 ${ELEM_KR[dp.element]} 본성을 만납니다. 이 시기를 위한 이야기가 있습니다...`;
-      const cls = i === 0 ? 'partial' : 'locked';
-      return `<div class="future-daeun-card ${cls}">
-        <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
-        <div class="fdc-pillar">${d.stem}${d.branch}</div>
-        <p class="fdc-teaser">${teaser}</p>
-        ${i===0 ? '<div class="fdc-fade"></div>' : ''}
-      </div>`;
-    }).join('') + `<div class="more-decades-hint"><p>+ 2 more decades in your chart</p></div>`;
+      const fullTeaser = lang === 'en'
+        ? (futureOpeners[i] || `In this decade, the energy of ${d.element} meets your ${dp.element} nature.`)
+        : (futureOpenersKo[i] || `이 10년에는 ${ELEM_KR[d.element]}의 에너지가 당신의 ${ELEM_KR[dp.element]} 본성을 만납니다.`);
+
+      if (i === 0) {
+        // P0-1: split sentences — first 2 visible, rest blurred
+        const sentences = fullTeaser.match(/[^.!?]+[.!?]+/g) || [fullTeaser];
+        const visiblePart = sentences.slice(0, 2).join(' ');
+        const blurredPart = sentences.slice(2).join(' ');
+        return `<div class="future-daeun-card partial">
+          <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
+          <div class="fdc-pillar">${d.stem}${d.branch}</div>
+          <p class="fdc-teaser">${visiblePart}${blurredPart ? `<span style="filter:blur(4px);user-select:none;display:inline"> ${blurredPart}</span>` : ''}</p>
+          <div class="fdc-fade"></div>
+        </div>`;
+      } else {
+        // second card: fully blurred (locked)
+        return `<div class="future-daeun-card locked">
+          <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
+          <div class="fdc-pillar">${d.stem}${d.branch}</div>
+          <p class="fdc-teaser">${fullTeaser}</p>
+        </div>`;
+      }
+    }).join('')
+    // P1-7: third locked card → hint text
+    + `<div style="text-align:center;padding:20px 16px;color:var(--text-muted);font-family:var(--font-serif);font-size:15px;font-style:italic;border:1px dashed rgba(201,169,110,0.15);border-radius:12px;margin-top:8px">더 많은 대운이 기다립니다 ✦</div>`
+    + `<div class="more-decades-hint"><p>+ more decades in your chart</p></div>`;
   }
 
   // update paywall CTA text with personalization
@@ -2901,9 +2996,10 @@ function renderReport(data) {
     const subEl = document.getElementById('paywall-hook-sub');
     if (subEl && nextDaeun) {
       const safeName = escapeHtml(name);
+      const nextYear = nextDaeun.startYear;
       subEl.innerHTML = lang === 'en'
-        ? `${safeName ? safeName + ' — t' : 'T'}he chart already knows what ${nextDaeun.startYear} brings.`
-        : `${safeName ? safeName + ', ' : ''}다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.`;
+        ? `${safeName ? escapeHtml(safeName) + ', your' : 'Your'} next decade begins in ${nextYear}.<br>The chart already has an answer. Want to hear it?`
+        : `${safeName ? escapeHtml(safeName) + ', ' : ''}다음 대운은 ${nextYear}년에 시작됩니다.<br>사주는 이미 답을 알고 있습니다.`;
     }
   }
 
@@ -2953,10 +3049,23 @@ function initChapterNav() {
       if (e.isIntersecting) {
         const id = e.target.id.replace('chapter-','');
         dots.forEach(d => d.classList.toggle('active', d.dataset.ch === id));
+        // sync mobile nav
+        document.querySelectorAll('.mcnav-btn').forEach(b => b.classList.toggle('active', b.dataset.ch === id));
       }
     });
   }, { threshold: 0.3 });
   chapters.forEach(c => chObs.observe(c));
+
+  // P1-2: Show mobile chapter nav when results visible
+  const mobileNav = document.getElementById('mobileChapterNav');
+  if (mobileNav && window.innerWidth <= 480) {
+    mobileNav.classList.add('visible');
+  }
+}
+
+function mobileNavTo(n) {
+  const ch = document.getElementById('chapter-' + n);
+  if (ch) ch.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ═══════════════════════════════════════════════
@@ -2974,7 +3083,17 @@ function toggleAccordion(header) {
 document.addEventListener('DOMContentLoaded', () => {
   populateTimeSelects();
   populateDateSelects();
-  setLang('en');
+  // P2-3: Language auto-detection
+  const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  const isKorean = navLang.startsWith('ko');
+  if (isKorean) {
+    setLang('ko');
+  } else {
+    // Non-Korean browser: hide lang toggle
+    const lt = document.querySelector('.lang-toggle');
+    if (lt) lt.style.display = 'none';
+    setLang('en');
+  }
   checkShareParams();
   // PWA service worker
   if ('serviceWorker' in navigator) {
@@ -3267,34 +3386,36 @@ function checkShareParams() {
 // EXIT INTENT (P0 기술 제약)
 // ═══════════════════════════════════════════════
 let _exitShown = false;
-function initExitIntent() {
+function showExitPopup() {
   if (_exitShown) return;
+  if (sessionStorage.getItem('exit_popup_shown')) return;
+  _exitShown = true;
+  sessionStorage.setItem('exit_popup_shown', '1');
+  document.getElementById('exit-popup').classList.add('show');
+}
+function submitExitEmail() {
+  const val = (document.getElementById('exit-email-input').value || '').trim();
+  if (!val || !val.includes('@')) { showToast('Please enter a valid email.'); return; }
+  console.log('[Exit Intent] email captured:', val);
+  sessionStorage.setItem('exit_email', val);
+  document.getElementById('exit-popup-form').style.display = 'none';
+  document.getElementById('exit-popup-thanks').style.display = 'block';
+  setTimeout(() => document.getElementById('exit-popup').classList.remove('show'), 2000);
+}
+function initExitIntent() {
+  if (sessionStorage.getItem('exit_popup_shown')) return;
   const isMobile = window.innerWidth < 768 || /Mobi/i.test(navigator.userAgent);
   if (!isMobile) {
-    // Desktop: mouseleave (heading to address bar)
+    // Desktop: mouseleave toward top (heading to address bar)
     document.addEventListener('mouseleave', function onMouseLeave(e) {
-      if (e.clientY < 0 && !_exitShown) {
-        _exitShown = true;
-        document.getElementById('exit-popup').classList.add('show');
+      if (e.clientY < 0) {
         document.removeEventListener('mouseleave', onMouseLeave);
+        showExitPopup();
       }
     });
   } else {
-    // Mobile: scroll 70% + 3초 타이머
-    let timer70Started = false;
-    const scrollThreshold = () => {
-      const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      if (scrolled > 0.70 && !timer70Started && !_exitShown) {
-        timer70Started = true;
-        setTimeout(() => {
-          if (!_exitShown) {
-            _exitShown = true;
-            document.getElementById('exit-popup').classList.add('show');
-          }
-        }, 3000);
-      }
-    };
-    window.addEventListener('scroll', scrollThreshold, { passive: true });
+    // Mobile: 30초 후 표시
+    setTimeout(() => { showExitPopup(); }, 30000);
   }
 }
 
