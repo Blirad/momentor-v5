@@ -1518,6 +1518,197 @@
   @media (max-width: 390px) {
     .container { padding: 0 20px; }
   }
+/* ── 희소성 훅 ── */
+.rarity-hook {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 4vw, 24px);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  margin: 0 0 20px;
+  font-style: italic;
+}
+.rarity-hook .pillar-highlight {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.15em;
+  color: #e8c97a;
+}
+
+/* ── 오행 감정 훅 ── */
+.element-hook-text {
+  font-family: var(--font-serif);
+  font-size: clamp(15px, 3.5vw, 18px);
+  color: rgba(255,255,255,0.85);
+  line-height: 1.75;
+  text-align: center;
+  white-space: pre-line;
+  margin: 0 0 20px;
+}
+
+/* ── trait pill (텍스트만) ── */
+.trait-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(201,169,110,0.1);
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 24px;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: #c9a96e;
+}
+
+/* ── 신강/신약 뱃지 ── */
+.strength-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 16px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.strength-badge.strong { color: #5de8a0; background: rgba(93,232,160,0.12); border: 1px solid rgba(93,232,160,0.25); }
+.strength-badge.weak { color: #ff7eb3; background: rgba(255,126,179,0.12); border: 1px solid rgba(255,126,179,0.25); }
+
+/* ── 유명인 배지 ── */
+.celebrity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(201,169,110,0.08);
+  border: 1px solid rgba(201,169,110,0.25);
+  border-radius: 20px;
+  font-size: 13px;
+  color: rgba(201,169,110,0.9);
+  font-family: var(--font-serif);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.celebrity-icon { font-size: 10px; }
+
+/* ── Shadow 페이월 ── */
+.shadow-paywall-wrap { position: relative; }
+.paywall-fade-overlay { position: relative; max-height: 70px; overflow: hidden; }
+.paywall-fade {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 50px;
+  background: linear-gradient(transparent, var(--bg-primary, #0d0b1e));
+}
+.shadow-paywall-cta { text-align: center; padding: 24px 0 8px; }
+.paywall-hook {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+  margin: 0 0 16px;
+  line-height: 1.6;
+}
+.paywall-urgency {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 10px;
+  letter-spacing: 0.06em;
+}
+
+/* ── 섹션 3 기둥 accordion 카드 ── */
+.pillar-accordion-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.pillar-accordion-card.helps-me {
+  border-color: rgba(93,232,160,0.3);
+  background: rgba(93,232,160,0.04);
+}
+.pillar-accordion-card.challenges-me {
+  border-color: rgba(255,126,179,0.3);
+  background: rgba(255,126,179,0.04);
+}
+.pillar-acc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.pillar-acc-left { display: flex; align-items: center; gap: 10px; }
+.pillar-label-tag {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  min-width: 28px;
+}
+.pillar-acc-chars {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+.pillar-acc-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.pillar-acc-right { display: flex; align-items: center; gap: 8px; }
+.pillar-relation-badge {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.pillar-relation-badge.helps { color: #5de8a0; background: rgba(93,232,160,0.12); }
+.pillar-relation-badge.challenges { color: #ff7eb3; background: rgba(255,126,179,0.12); }
+.pillar-relation-badge.same-energy { color: #c9a96e; background: rgba(201,169,110,0.12); }
+.pillar-acc-body { padding: 0 20px 20px; }
+.pillar-hanja-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.pillar-hanja-big {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  color: var(--gold-soft, #c9a96e);
+}
+.pillar-elem-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.pillar-desc {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  text-align: center;
+}
+#section-surrounding .section-tag {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim, #c9a96e99);
+  margin-bottom: 8px;
+}
+#section-surrounding .section-intro-text {
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
 /* ── Accordion Domain Section ── */
 .accordion-section-intro, .accordion-domains { display: none; }
 #section-results.visible ~ .accordion-section-intro { display: block; }
@@ -1762,30 +1953,58 @@
         <p class="chapter-tagline" id="ch1-tagline">You were this person from the beginning.</p>
       </div>
 
-      <!-- Day Master Hero -->
+      <!-- [1-A] 희소성 훅 문장 -->
+      <p class="rarity-hook reveal" id="rarity-hook"></p>
+
+      <!-- [1-B] 오행 감정 훅 -->
+      <p class="element-hook-text reveal" id="element-hook-text"></p>
+
+      <!-- [1-C] 키워드 pill 3개 + [1-D] 신강/신약 뱃지 -->
+      <div class="fortune-keywords reveal" id="trait-pills" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:0 0 8px;align-items:center"></div>
+      <div class="reveal" id="strength-badge-wrap" style="text-align:center;margin-bottom:24px"></div>
+
+      <!-- Day Master Hero (섹션 2 역할) -->
       <div class="dm-hero reveal" id="dm-hero">
+        <div class="celebrity-badge" id="celebrity-badge" style="display:none">
+          <span class="celebrity-icon">✦</span>
+          <span id="celebrity-name"></span>
+        </div>
         <div class="dm-hook" id="dm-hook">Loading...</div>
         <span class="dm-char" id="dm-char">甲</span>
         <div class="dm-label" id="dm-label">Yang Wood · The Ancient Tree</div>
       </div>
-      <!-- identity tags (moved below dm-hero) -->
 
       <!-- Identity Tags -->
       <div class="identity-tags reveal" id="identity-tags"></div>
 
-      <!-- Social Proof Inline (P0-3) -->
+      <!-- Social Proof Inline -->
       <div class="social-proof-inline reveal" id="social-proof-inline">
         Explored by <span id="dynamic-reader-count">12,000</span>+ readers &nbsp; <span class="sp-stars-inline">★★★★★</span> 4.9/5
       </div>
 
-      <!-- Story Body -->
+      <!-- Story Body with Shadow Paywall -->
       <div class="card reveal" id="dm-story-card">
-        <p class="story-section-label" id="sl-origin">Origin</p>
+        <span class="story-section-label" id="sl-origin">Origin</span>
         <p class="story-text" id="dm-body1"></p>
-        <p class="story-section-label" id="sl-shadow">Shadow</p>
-        <p class="story-text" id="dm-body2"></p>
-        <p class="story-section-label" id="sl-invitation">Invitation</p>
-        <p class="story-text" id="dm-body3"></p>
+
+        <span class="story-section-label" id="sl-shadow">Shadow</span>
+        <div class="shadow-paywall-wrap" id="shadow-paywall-wrap">
+          <p class="story-text" id="dm-body2-preview"></p>
+          <div class="paywall-fade-overlay">
+            <p class="story-text" id="dm-body2-blurred" style="filter:blur(6px);opacity:0.5;pointer-events:none"></p>
+            <div class="paywall-fade"></div>
+          </div>
+          <div class="shadow-paywall-cta">
+            <p class="paywall-hook" id="paywall-hook-text">당신의 그림자 — 그리고 그것을 넘어서는 법이 여기 있습니다.</p>
+            <button class="conviction-cta" onclick="openPayModal()">전체 읽기 →</button>
+            <p class="paywall-urgency">Shadow · Invitation · 기둥 상세 · 대운 분석 포함</p>
+          </div>
+        </div>
+
+        <div id="invitation-locked" style="display:none">
+          <span class="story-section-label" id="sl-invitation">Invitation</span>
+          <p class="story-text" id="dm-body3"></p>
+        </div>
       </div>
 
       <!-- Pillars Grid (accordion) -->
@@ -1808,30 +2027,20 @@
           <span class="accordion-arrow">↓</span>
         </div>
         <div class="accordion-body" id="elements-body">
-          <div class="elements-grid" id="elements-grid"></div>
+          <div style="display:grid;grid-template-columns:200px 1fr;gap:24px;align-items:center;max-width:480px;margin:0 auto;">
+            <canvas id="element-donut-chart" width="200" height="200" style="max-width:200px;"></canvas>
+            <div class="elements-grid" id="elements-grid"></div>
+          </div>
           <p class="story-text" id="elements-narrative" style="margin-top:16px;font-size:15px;"></p>
         </div>
       </div>
     </div>
 
-    <!-- SHARE BUTTONS (after Ch1) -->
-    <div class="reveal" id="share-bar" style="display:flex;gap:10px;justify-content:center;padding:8px 0 24px;flex-wrap:wrap">
-      <button onclick="shareIljuCard()" style="height:40px;padding:0 18px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.35);border-radius:8px;color:var(--gold);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">📤 Share My Reading</button>
-      <button onclick="copyShareLink()" style="height:40px;padding:0 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:var(--text-secondary);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">🔗 Copy Link</button>
-    </div>
 
-    <!-- Element Donut Chart (#16) -->
-    <div class="reveal" id="element-chart-wrap" style="text-align:center;margin:24px 0;padding:24px;border:1px solid var(--card-border);border-radius:12px;background:var(--card-bg);">
-      <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px">Five Elements Composition</p>
-      <canvas id="element-donut-chart" width="200" height="200" style="max-width:200px;display:inline-block;"></canvas>
-      <p id="dominant-element-text" style="font-size:15px;color:var(--text-secondary);margin-top:12px;font-family:var(--font-serif)"></p>
-    </div>
 
-    <!-- Month Pillar Hint -->
-    <p class="month-pillar-hint reveal" style="font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;text-align:center;margin:24px 0;padding:16px 20px;border:1px solid rgba(201,169,110,0.12);border-radius:10px;background:rgba(201,169,110,0.03);">
-      Your Month Pillar holds something about how you were shaped before you had words for it.
-      <span class="hint-lock" style="color:var(--gold);cursor:pointer;" onclick="openPayModal()"> It's in the full reading. →</span>
-    </p>
+
+
+
 
     <!-- BRIDGE 1→2 -->
     <div class="chapter-bridge reveal">
@@ -1915,6 +2124,82 @@
       </div>
 
     </div>
+
+    <!-- ══════════════════════════════════════════ -->
+    <!-- SECTION 3: Surrounding Energy              -->
+    <!-- ══════════════════════════════════════════ -->
+    <section id="section-surrounding" class="reveal" style="padding:40px 0 24px">
+      <div class="container">
+        <span class="section-tag">SURROUNDING ENERGY</span>
+        <p class="section-intro-text" id="surrounding-intro">당신 혼자가 아닙니다. 세 개의 기둥이 당신을 만들었습니다.</p>
+
+        <!-- 년주 카드 -->
+        <div class="pillar-accordion-card" id="year-pillar-card">
+          <div class="pillar-acc-header" onclick="togglePillarCard(this)">
+            <div class="pillar-acc-left">
+              <span class="pillar-label-tag">年柱</span>
+              <span class="pillar-acc-chars" id="year-chars"></span>
+              <span class="pillar-acc-subtitle" id="year-subtitle">뿌리와 배경</span>
+            </div>
+            <div class="pillar-acc-right">
+              <span class="pillar-relation-badge" id="year-relation"></span>
+              <span class="accordion-arrow">↓</span>
+            </div>
+          </div>
+          <div class="pillar-acc-body" style="display:none">
+            <div class="pillar-hanja-row">
+              <span class="pillar-hanja-big" id="year-gan"></span>
+              <span class="pillar-hanja-big" id="year-ji"></span>
+            </div>
+            <p class="pillar-desc" id="year-desc"></p>
+          </div>
+        </div>
+
+        <!-- 월주 카드 -->
+        <div class="pillar-accordion-card" id="month-pillar-card">
+          <div class="pillar-acc-header" onclick="togglePillarCard(this)">
+            <div class="pillar-acc-left">
+              <span class="pillar-label-tag">月柱</span>
+              <span class="pillar-acc-chars" id="month-chars"></span>
+              <span class="pillar-acc-subtitle" id="month-subtitle">사회적 자아</span>
+            </div>
+            <div class="pillar-acc-right">
+              <span class="pillar-relation-badge" id="month-relation"></span>
+              <span class="accordion-arrow">↓</span>
+            </div>
+          </div>
+          <div class="pillar-acc-body" style="display:none">
+            <div class="pillar-hanja-row">
+              <span class="pillar-hanja-big" id="month-gan"></span>
+              <span class="pillar-hanja-big" id="month-ji"></span>
+            </div>
+            <p class="pillar-desc" id="month-desc"></p>
+          </div>
+        </div>
+
+        <!-- 시주 카드 -->
+        <div class="pillar-accordion-card" id="hour-pillar-card">
+          <div class="pillar-acc-header" onclick="togglePillarCard(this)">
+            <div class="pillar-acc-left">
+              <span class="pillar-label-tag">時柱</span>
+              <span class="pillar-acc-chars" id="hour-chars"></span>
+              <span class="pillar-acc-subtitle" id="hour-subtitle">내면과 미래</span>
+            </div>
+            <div class="pillar-acc-right">
+              <span class="pillar-relation-badge" id="hour-relation"></span>
+              <span class="accordion-arrow">↓</span>
+            </div>
+          </div>
+          <div class="pillar-acc-body" style="display:none">
+            <div class="pillar-hanja-row">
+              <span class="pillar-hanja-big" id="hour-gan"></span>
+              <span class="pillar-hanja-big" id="hour-ji"></span>
+            </div>
+            <p class="pillar-desc" id="hour-desc"></p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- CONVICTION SECTION (Bridge 3→4 직전 독립 섹션) -->
     <div class="conviction-section-new reveal" id="conviction-section">
@@ -2023,6 +2308,12 @@
           </div>
         </div>
       </div><!-- end paywall-cta -->
+    </div>
+
+    <!-- SHARE BUTTONS (결과 화면 최하단) -->
+    <div class="reveal" id="share-bar" style="display:flex;gap:10px;justify-content:center;padding:24px 0 8px;flex-wrap:wrap">
+      <button onclick="shareIljuCard()" style="height:40px;padding:0 18px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.35);border-radius:8px;color:var(--gold);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">📤 Share My Reading</button>
+      <button onclick="copyShareLink()" style="height:40px;padding:0 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:var(--text-secondary);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">🔗 Copy Link</button>
     </div>
 
   </div>
@@ -3180,12 +3471,23 @@ function renderReport(data) {
     const dmCharEl = document.getElementById('dm-char');
     if (dmCharEl) { dmCharEl.style.color = elemColor; dmCharEl.style.textShadow = `0 0 60px ${elemColor}80`; }
   }
+  // ── NEW: 섹션 1 상단 훅 렌더링 ──
+  const dayPillarStr = dp.stem + dp.branch;
+  renderRarityHook(dayPillarStr);
+  renderElementHook(dp.element);
+  renderTraitPills(dp.element);
+  pillars.elements._dayElement = dp.element;
+  renderStrengthBadge(pillars.elements);
+
   // Use 60-pillar narrative if available, else fallback to DM stem narrative
-  const pillKey = dp.stem + dp.branch;
+  const pillKey = dayPillarStr;
   const pillar = PILLAR_NARRATIVES[pillKey] || null;
   document.getElementById('dm-hook').textContent  = pillar
     ? (lang === 'en' ? pillar.hook : pillar.hookKo)
     : (lang === 'en' ? dm.hookEn  : dm.hookKo);
+
+  // ── NEW: 유명인 배지 ──
+  renderCelebrityBadge(dayPillarStr);
 
   // identity tags
   const elemName = lang === 'en' ? dp.element : ELEM_KR[dp.element];
@@ -3197,17 +3499,28 @@ function renderReport(data) {
   document.getElementById('identity-tags').innerHTML = tags.map(t => `<div class="identity-tag">${t}</div>`).join('');
 
   // story body — use PILLAR_NARRATIVES if available, else fallback to DM
-  const pillKey2 = dp.stem + dp.branch;
+  const pillKey2 = dayPillarStr;
   const pillar2 = PILLAR_NARRATIVES[pillKey2] || null;
   document.getElementById('dm-body1').textContent = pillar2
     ? (lang === 'en' ? pillar2.origin     : pillar2.originKo)
     : (lang === 'en' ? dm.originEn     : dm.originKo);
-  document.getElementById('dm-body2').textContent = pillar2
-    ? (lang === 'en' ? pillar2.shadow     : pillar2.shadowKo)
-    : (lang === 'en' ? dm.shadowEn     : dm.shadowKo);
+
+  // ── NEW: Shadow 페이월 처리 ──
+  const shadowText = pillar2
+    ? (lang === 'en' ? pillar2.shadow : pillar2.shadowKo)
+    : (lang === 'en' ? dm.shadowEn : dm.shadowKo);
+  applyShadowPaywall(shadowText);
+
+  // Invitation (잠금 상태)
   document.getElementById('dm-body3').textContent = pillar2
     ? (lang === 'en' ? pillar2.invitation : pillar2.invitationKo)
     : (lang === 'en' ? dm.invitationEn : dm.invitationKo);
+
+  // 페이월 훅 텍스트 업데이트
+  const hookEl = document.getElementById('paywall-hook-text');
+  if (hookEl) hookEl.textContent = lang === 'ko'
+    ? '당신의 그림자 — 그리고 그것을 넘어서는 법이 여기 있습니다.'
+    : 'Your shadow — and how to move beyond it — is here.';
 
   // SVG 원국 차트
   const svgContainer = document.getElementById('wonGuk-svg');
@@ -3312,6 +3625,9 @@ function renderReport(data) {
   // T2-A: Conviction section — update Day Pillar
   const convPillar = document.getElementById('conviction-pillar');
   if (convPillar) convPillar.textContent = dp.stem + dp.branch;
+
+  // ── NEW: 섹션 3 기둥 카드 렌더링 ──
+  renderSurroundingSection(pillars);
 
   // strengths grid
   const kw = lang === 'en' ? dm.keywordsEn : dm.keywordsKo;
@@ -4183,6 +4499,183 @@ function mobileNavTo(n) {
 // ═══════════════════════════════════════════════
 // ACCORDION
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// NEW: 브리프 기반 추가 함수/데이터
+// ═══════════════════════════════════════════════
+
+const CELEBRITY_DATA = {
+  '甲子':'버락 오바마','甲寅':'넬슨 만델라','甲辰':'아인슈타인','甲午':'스티브 잡스','甲申':'코코 샤넬','甲戌':'앤젤리나 졸리',
+  '乙丑':'오드리 헵번','乙卯':'레오나르도 다빈치','乙巳':'마릴린 먼로','乙未':'아이유','乙酉':'유재석','乙亥':'레이디 가가',
+  '丙子':'모차르트','丙寅':'마틴 루터 킹','丙辰':'빌 클린턴','丙午':'RM (BTS)','丙申':'테일러 스위프트','丙戌':'키아누 리브스',
+  '丁丑':'마하트마 간디','丁卯':'비욘세','丁巳':'이병헌','丁未':'오프라 윈프리','丁酉':'엘론 머스크','丁亥':'황정민',
+  '戊子':'엠마 왓슨','戊寅':'손흥민','戊辰':'달라이 라마','戊午':'나폴레옹','戊申':'알렉산더 대왕','戊戌':'박찬호',
+  '己丑':'김연아','己卯':'안도 타다오','己巳':'스티븐 스필버그','己未':'박지성','己酉':'워렌 버핏','己亥':'아리아나 그란데',
+  '庚子':'이순신','庚寅':'류현진','庚辰':'조세호','庚午':'마이클 잭슨','庚申':'조지 클루니','庚戌':'세종대왕',
+  '辛丑':'찰리 채플린','辛卯':'알버트 카뮈','辛巳':'마돈나','辛未':'BTS 지민','辛酉':'냇 킹 콜','辛亥':'헤밍웨이',
+  '壬子':'빌 게이츠','壬寅':'찰스 다윈','壬辰':'레오나르도 디카프리오','壬午':'프리다 칼로','壬申':'마크 저커버그','壬戌':'스티브 워즈니악',
+  '癸丑':'버지니아 울프','癸卯':'앤 프랭크','癸巳':'에디슨','癸未':'봉준호','癸酉':'조수미','癸亥':'존 레논'
+};
+
+const ELEMENT_HOOK = {
+  Fire: { ko: "당신의 사주에는 불꽃이 가득합니다.\n타오르는 사람. 방에 들어서면 온도가 올라갑니다.\n당신은 에너지를 숨기지 못합니다.", en: "Your chart burns bright.\nYou're the one who raises the temperature in any room.\nYou cannot hide your energy." },
+  Water: { ko: "당신은 물처럼 흐릅니다.\n막으면 돌아가고, 낮은 곳을 찾아 깊어집니다.\n겉으로는 고요해 보여도, 속에는 끝없는 생각이 흐릅니다.", en: "You move like water.\nYou find a way around every obstacle.\nStill on the surface — endlessly flowing beneath." },
+  Wood: { ko: "당신은 성장을 멈출 수 없는 사람입니다.\n뿌리를 내리는 동시에 위로 뻗어나갑니다.\n가만히 있는 것이 가장 힘든 유형.", en: "You cannot stop growing.\nRooting down while reaching up — it's in your nature.\nStaying still is the hardest thing you do." },
+  Metal: { ko: "당신은 단단함으로 태어났습니다.\n흔들리지 않습니다. 원칙이 있습니다.\n한번 결심하면 끝까지 갑니다.", en: "You were born with steel in you.\nYou don't bend. You have principles.\nWhen you decide, it's decided." },
+  Earth: { ko: "당신은 중심입니다.\n흔들리는 사람들이 당신 곁으로 옵니다.\n당신이 있으면 왠지 안정됩니다.", en: "You are the center.\nPeople come to you when they're lost.\nSomething about you makes the room feel steady." }
+};
+
+const TRAIT_KEYWORDS = {
+  Wood: { ko: ['성장','유연함','생명력'], en: ['Growth','Flexibility','Vitality'] },
+  Fire: { ko: ['열정','직관','카리스마'], en: ['Passion','Intuition','Charisma'] },
+  Earth: { ko: ['안정','신뢰','포용'], en: ['Stability','Trust','Embrace'] },
+  Metal: { ko: ['결단','정밀','원칙'], en: ['Resolve','Precision','Principle'] },
+  Water: { ko: ['전략','깊이','통찰'], en: ['Strategy','Depth','Insight'] }
+};
+
+function renderRarityHook(dayPillar) {
+  const el = document.getElementById('rarity-hook');
+  if (!el) return;
+  el.innerHTML = currentLang === 'ko'
+    ? `518,400가지 조합 중, 당신은 <span class="pillar-highlight">${dayPillar}</span>입니다.`
+    : `Out of 518,400 combinations, you are <span class="pillar-highlight">${dayPillar}</span>.`;
+}
+
+function renderElementHook(dayGanElement) {
+  const el = document.getElementById('element-hook-text');
+  if (!el) return;
+  const hook = ELEMENT_HOOK[dayGanElement];
+  if (hook) el.textContent = currentLang === 'ko' ? hook.ko : hook.en;
+}
+
+function renderTraitPills(dayGanElement) {
+  const wrap = document.getElementById('trait-pills');
+  if (!wrap) return;
+  const kws = TRAIT_KEYWORDS[dayGanElement];
+  if (!kws) return;
+  const list = currentLang === 'ko' ? kws.ko : kws.en;
+  wrap.innerHTML = list.map(k => `<span class="trait-pill">${k}</span>`).join('');
+}
+
+function renderStrengthBadge(elements) {
+  const wrap = document.getElementById('strength-badge-wrap');
+  if (!wrap) return;
+  // 신강: 일간 오행 점수 >= 3, 신약: <= 1
+  const dayElem = elements._dayElement;
+  const score = dayElem ? (elements[dayElem] || 0) : 0;
+  if (score >= 3) {
+    wrap.innerHTML = `<span class="strength-badge strong">${currentLang === 'ko' ? '신강 身強' : 'Strong Chart'}</span>`;
+  } else if (score <= 1) {
+    wrap.innerHTML = `<span class="strength-badge weak">${currentLang === 'ko' ? '신약 身弱' : 'Sensitive Chart'}</span>`;
+  } else {
+    wrap.innerHTML = '';
+  }
+}
+
+function renderCelebrityBadge(dayPillar) {
+  const el = document.getElementById('celebrity-name');
+  const badge = document.getElementById('celebrity-badge');
+  if (!el || !badge) return;
+  const name = CELEBRITY_DATA[dayPillar];
+  if (name) {
+    el.textContent = currentLang === 'ko' ? `${name}와 같은 일주` : `Same pillar as ${name}`;
+    badge.style.display = 'inline-flex';
+  }
+}
+
+function splitFirstSentence(text) {
+  const match = text.match(/^(.+?[。.!?！？])\s*([\s\S]*)$/);
+  if (match) return { first: match[1], rest: match[2] };
+  return { first: text.slice(0, 60), rest: text.slice(60) };
+}
+
+function applyShadowPaywall(shadowText) {
+  const previewEl = document.getElementById('dm-body2-preview');
+  const blurredEl = document.getElementById('dm-body2-blurred');
+  if (!previewEl || !blurredEl) return;
+  const { first, rest } = splitFirstSentence(shadowText);
+  previewEl.textContent = first;
+  blurredEl.textContent = rest;
+}
+
+function getPillarRelation(pillarGanElement, dayGanElement) {
+  const generates = { Wood:'Fire', Fire:'Earth', Earth:'Metal', Metal:'Water', Water:'Wood' };
+  const controls  = { Wood:'Earth', Fire:'Metal', Earth:'Water', Metal:'Wood', Water:'Fire' };
+  if (generates[pillarGanElement] === dayGanElement) return 'helps-me';
+  if (controls[pillarGanElement]  === dayGanElement) return 'challenges-me';
+  if (pillarGanElement === dayGanElement) return 'same';
+  return 'neutral';
+}
+
+function togglePillarCard(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.accordion-arrow');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+const PILLAR_TYPE_LABELS = {
+  year: { ko: '뿌리와 배경', en: 'Roots & Background' },
+  month: { ko: '사회적 자아', en: 'Social Self' },
+  hour: { ko: '내면과 미래', en: 'Inner Self & Future' }
+};
+
+const PILLAR_DESC_TEMPLATES = {
+  helps: { ko: (type, gan, ji) => `${gan}${ji}의 에너지가 당신의 일간을 도와줍니다. ${type === 'year' ? '조상과 어린 시절의 지원이 깊습니다.' : type === 'month' ? '사회에서 자연스럽게 힘을 받습니다.' : '내면의 자원이 풍부합니다.'}`, en: (type, gan, ji) => `The energy of ${gan}${ji} supports your Day Master. ${type === 'year' ? 'Deep support from ancestry and childhood.' : type === 'month' ? 'Natural strength in social settings.' : 'Rich inner resources.'}` },
+  challenges: { ko: (type, gan, ji) => `${gan}${ji}는 당신의 일간에 긴장을 줍니다. ${type === 'year' ? '어린 시절의 마찰이 당신을 단련시켰습니다.' : type === 'month' ? '사회적 관계에서 마찰이 성장의 원동력입니다.' : '내면의 갈등이 깊이를 만듭니다.'}`, en: (type, gan, ji) => `${gan}${ji} creates tension with your Day Master. ${type === 'year' ? 'Early friction forged your resilience.' : type === 'month' ? 'Social friction drives growth.' : 'Inner conflict creates depth.'}` },
+  same: { ko: (type, gan, ji) => `${gan}${ji}는 당신과 같은 기운입니다. ${type === 'year' ? '뿌리부터 일관된 에너지입니다.' : type === 'month' ? '사회적 자아가 본질과 일치합니다.' : '내면이 겉과 다르지 않습니다.'}`, en: (type, gan, ji) => `${gan}${ji} mirrors your own energy. ${type === 'year' ? 'Consistent energy from your roots.' : type === 'month' ? 'Your social self matches your core.' : 'Your inner world matches your outer.'}` },
+  neutral: { ko: (type, gan, ji) => `${gan}${ji}는 독립적인 에너지를 가져옵니다.`, en: (type, gan, ji) => `${gan}${ji} brings independent energy to your chart.` }
+};
+
+function renderSurroundingSection(pillars) {
+  const dayElem = pillars.dayPillar.element;
+  const types = [
+    { key: 'year', pillar: pillars.yearPillar },
+    { key: 'month', pillar: pillars.monthPillar },
+    { key: 'hour', pillar: pillars.hourPillar }
+  ];
+
+  // Update intro text
+  const introEl = document.getElementById('surrounding-intro');
+  if (introEl) introEl.textContent = currentLang === 'ko' ? '당신 혼자가 아닙니다. 세 개의 기둥이 당신을 만들었습니다.' : "You're not alone in your chart. Three pillars shaped who you are.";
+
+  types.forEach(({ key, pillar }) => {
+    if (!pillar) {
+      document.getElementById(`${key}-pillar-card`).style.display = 'none';
+      return;
+    }
+    const card = document.getElementById(`${key}-pillar-card`);
+    const relation = getPillarRelation(pillar.element, dayElem);
+
+    card.classList.remove('helps-me','challenges-me');
+    if (relation === 'helps-me' || relation === 'challenges-me') card.classList.add(relation);
+
+    document.getElementById(`${key}-chars`).textContent = pillar.stem + pillar.branch;
+    document.getElementById(`${key}-gan`).textContent = pillar.stem;
+    document.getElementById(`${key}-ji`).textContent = pillar.branch;
+    document.getElementById(`${key}-subtitle`).textContent = currentLang === 'ko' ? PILLAR_TYPE_LABELS[key].ko : PILLAR_TYPE_LABELS[key].en;
+
+    const relBadge = document.getElementById(`${key}-relation`);
+    if (relation === 'helps-me') {
+      relBadge.textContent = currentLang === 'ko' ? '힘이 되는 기둥' : 'Supportive';
+      relBadge.className = 'pillar-relation-badge helps';
+    } else if (relation === 'challenges-me') {
+      relBadge.textContent = currentLang === 'ko' ? '마찰이 있는 기둥' : 'Challenging';
+      relBadge.className = 'pillar-relation-badge challenges';
+    } else if (relation === 'same') {
+      relBadge.textContent = currentLang === 'ko' ? '동질의 기운' : 'Same Energy';
+      relBadge.className = 'pillar-relation-badge same-energy';
+    } else {
+      relBadge.textContent = '';
+    }
+
+    const relKey = relation === 'helps-me' ? 'helps' : relation === 'challenges-me' ? 'challenges' : relation === 'same' ? 'same' : 'neutral';
+    const tmpl = PILLAR_DESC_TEMPLATES[relKey];
+    const descFn = currentLang === 'ko' ? tmpl.ko : tmpl.en;
+    document.getElementById(`${key}-desc`).textContent = descFn(key, pillar.stem, pillar.branch);
+  });
+}
+
 function toggleAccordion(header) {
   header.classList.toggle('open');
   const body = header.nextElementSibling;
