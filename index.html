@@ -6,11 +6,15 @@
 <title>Momentor — Your Four Pillars Reading</title>
 <meta property="og:title" content="Momentor — Your Four Pillars Reading">
 <meta property="og:description" content="More precise than astrology. Older than the zodiac. Your birth chart, to the exact hour.">
+<meta name="description" content="Discover your Four Pillars (Saju) birth chart. More precise than astrology — 518,400 unique combinations calculated from your exact birth moment. Western astrology maps the sky. Saju maps the person.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://blirad.github.io/momentor-v5/">
+<meta property="og:url" content="https://momentor.app/">
+<meta property="og:image" content="https://momentor.app/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Momentor — Your Four Pillars Reading">
-<meta name="twitter:description" content="More precise than astrology. Older than the zodiac.">
+<meta name="twitter:description" content="More precise than astrology. Older than the zodiac. 518,400 unique combinations.">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0d0b1e">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -1189,6 +1193,13 @@
 
   /* global tap highlight reset */
   button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  /* keyboard accessibility */
+  :focus-visible {
+    outline: 2px solid rgba(201,169,110,0.7);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  :focus:not(:focus-visible) { outline: none; }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 480px) {
@@ -1251,6 +1262,7 @@
     <div class="form-intro">
       <h1 id="form-title">You were already this person<br>the moment you arrived.</h1>
       <p id="form-subtitle">Before you had a name for it.<br>Your Four Pillars have been holding the answer.</p>
+      <p class="form-tagline2" id="form-tagline2" style="margin-top:12px;font-size:13px;color:var(--text-muted);font-style:italic">Western astrology maps the sky. Saju maps the person.</p>
     </div>
 
     <div class="step-indicator">
@@ -1371,7 +1383,8 @@
           <span class="accordion-arrow">↓</span>
         </div>
         <div class="accordion-body" id="pillars-body">
-          <div class="pillar-grid" id="pillar-grid"></div>
+          <div id="wonGuk-svg" style="width:100%;overflow-x:auto;margin-bottom:8px"></div>
+          <div class="pillar-grid" id="pillar-grid" style="display:none"></div>
           <p style="font-size:12px;color:var(--text-muted);margin-top:8px" id="pillar-note">★ Day Pillar (日柱) is your core identity.</p>
         </div>
       </div>
@@ -1387,6 +1400,12 @@
           <p class="story-text" id="elements-narrative" style="margin-top:16px;font-size:15px;"></p>
         </div>
       </div>
+    </div>
+
+    <!-- SHARE BUTTONS (after Ch1) -->
+    <div class="reveal" id="share-bar" style="display:flex;gap:10px;justify-content:center;padding:8px 0 24px;flex-wrap:wrap">
+      <button onclick="shareIljuCard()" style="height:40px;padding:0 18px;background:rgba(201,169,110,0.12);border:1px solid rgba(201,169,110,0.35);border-radius:8px;color:var(--gold);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">📤 Share My Reading</button>
+      <button onclick="copyShareLink()" style="height:40px;padding:0 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:var(--text-secondary);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">🔗 Copy Link</button>
     </div>
 
     <!-- BRIDGE 1→2 -->
@@ -1611,6 +1630,7 @@ const T = {
   'bridge12b':          { en:"The chart remembers every decade that made you.", ko:'사주는 당신을 만든 모든 십년을 기억합니다.' },
   'bridge-23a':         { en:'None of those years were accidents.', ko:'그 어떤 해도 우연이 아니었습니다.' },
   'bridge-23b':         { en:'Now look where you are.', ko:'지금 당신이 서 있는 곳을 보세요.' },
+  'bridge-23b2':        { en:"The chart knew which ones would break you open —<br>and which ones would quietly rebuild.", ko:'사주는 어떤 것이 당신을 열어젖힐지, 어떤 것이 조용히 다시 쌓을지 알고 있었습니다.' },
   'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
   'bridge-34b':         { en:'What comes next?', ko:'그렇다면, 다음은 무엇일까요?' },
   'conviction-closer':  { en:"The chart knew. It always knew.", ko:'사주는 알고 있었습니다. 처음부터.' },
@@ -2355,7 +2375,11 @@ function renderReport(data) {
     ? (lang === 'en' ? pillar2.invitation : pillar2.invitationKo)
     : (lang === 'en' ? dm.invitationEn : dm.invitationKo);
 
-  // pillars grid
+  // SVG 원국 차트
+  const svgContainer = document.getElementById('wonGuk-svg');
+  if (svgContainer) svgContainer.innerHTML = renderWonGukSVG(pillars, lang);
+
+  // pillars grid (hidden, fallback only)
   const pLabels = lang === 'en' ? ['Year','Month','Day','Hour'] : ['년주','월주','일주','시주'];
   const cols    = [pillars.yearPillar, pillars.monthPillar, pillars.dayPillar, pillars.hourPillar];
   document.getElementById('pillar-grid').innerHTML = cols.map((p, i) => {
@@ -2569,6 +2593,11 @@ document.addEventListener('DOMContentLoaded', () => {
   populateTimeSelects();
   populateDateSelects();
   setLang('en');
+  checkShareParams();
+  // PWA service worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
 });
 
 function openPayModal() {
@@ -2623,6 +2652,164 @@ function showLoadingScene(onComplete) {
       }, 700);
     }
   }, 750);
+}
+
+// ═══════════════════════════════════════════════
+// SVG 원국 차트
+// ═══════════════════════════════════════════════
+const ELEM_COLORS = { Wood:'#4ade80', Fire:'#f87171', Earth:'#d97706', Metal:'#94a3b8', Water:'#60a5fa' };
+
+function renderWonGukSVG(pillars, lang) {
+  const pLabels = lang === 'en' ? ['Year','Month','Day','Hour'] : ['년주','월주','일주','시주'];
+  const cols = [pillars.yearPillar, pillars.monthPillar, pillars.dayPillar, pillars.hourPillar];
+  const W = 340, H = 180, colW = 72, gap = 12, startX = (W - (4*colW + 3*gap))/2;
+  let svgCols = cols.map((p, i) => {
+    if (!p) return `<g transform="translate(${startX + i*(colW+gap)},0)">
+      <rect width="${colW}" height="${H-20}" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      <text x="${colW/2}" y="${H-30}" text-anchor="middle" fill="rgba(255,255,255,0.3)" font-size="10" font-family="sans-serif">${pLabels[i]}</text>
+      <text x="${colW/2}" y="${H-14}" text-anchor="middle" fill="rgba(255,255,255,0.25)" font-size="24" font-family="serif">—</text>
+    </g>`;
+    const sc = ELEM_COLORS[p.element] || '#fff';
+    const bc = ELEM_COLORS[p.branchElement] || '#ccc';
+    const isDay = i === 2;
+    const strokeColor = isDay ? 'rgba(201,169,110,0.5)' : 'rgba(255,255,255,0.08)';
+    const bgFill = isDay ? 'rgba(201,169,110,0.06)' : 'rgba(255,255,255,0.03)';
+    return `<g transform="translate(${startX + i*(colW+gap)},0)">
+      <rect width="${colW}" height="${H-20}" rx="10" fill="${bgFill}" stroke="${strokeColor}" stroke-width="1"/>
+      <text x="${colW/2}" y="20" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9" font-family="sans-serif" letter-spacing="0.05em">${pLabels[i]}${isDay?' ★':''}</text>
+      <text x="${colW/2}" y="72" text-anchor="middle" fill="${sc}" font-size="36" font-family="serif" filter="url(#glow${i})">${p.stem}</text>
+      <line x1="10" y1="88" x2="${colW-10}" y2="88" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+      <text x="${colW/2}" y="130" text-anchor="middle" fill="${bc}" font-size="28" font-family="serif">${p.branch}</text>
+      <circle cx="${colW/2}" cy="${H-25}" r="4" fill="${sc}" opacity="0.7"/>
+    </g>`;
+  });
+  const defs = cols.map((p,i) => p ? `<filter id="glow${i}" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="3" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>` : '').join('');
+  return `<svg width="100%" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:${W}px;display:block;margin:0 auto">
+    <defs>${defs}</defs>
+    ${svgCols.join('')}
+  </svg>`;
+}
+
+// ═══════════════════════════════════════════════
+// CANVAS 공유 카드 (Co-Star 방식)
+// ═══════════════════════════════════════════════
+function shareIljuCard() {
+  if (!reportData) return;
+  const dp = reportData.pillars.dayPillar;
+  const iljuChar = dp.stem + dp.branch;
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080; canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+
+  // 배경 그라디언트
+  const grad = ctx.createLinearGradient(0, 0, 0, 1080);
+  grad.addColorStop(0, '#0a0a1a');
+  grad.addColorStop(1, '#1a0a2e');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  // 별밭 효과 (점들)
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  const starPositions = [[87,130],[238,54],[378,454],[540,194],[702,87],[843,595],[950,324],[162,810],[486,950],[790,888],[972,703]];
+  starPositions.forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI*2); ctx.fill(); });
+
+  // MOMENTOR 브랜딩 (상단)
+  ctx.font = '600 36px sans-serif';
+  ctx.fillStyle = 'rgba(201,169,110,0.9)';
+  ctx.textAlign = 'center';
+  ctx.letterSpacing = '0.15em';
+  ctx.fillText('✦  MOMENTOR', 540, 100);
+
+  // 일주 한자 (중앙 대형)
+  ctx.font = 'bold 220px serif';
+  ctx.fillStyle = '#d4af37';
+  ctx.shadowColor = 'rgba(212,175,55,0.5)';
+  ctx.shadowBlur = 60;
+  ctx.textAlign = 'center';
+  ctx.fillText(iljuChar, 540, 560);
+  ctx.shadowBlur = 0;
+
+  // 원소 라벨
+  ctx.font = '300 48px serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.fillText(dp.element + ' · ' + dp.branchElement, 540, 650);
+
+  // 구분선
+  ctx.strokeStyle = 'rgba(201,169,110,0.3)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(200, 700); ctx.lineTo(880, 700); ctx.stroke();
+
+  // 하단 URL
+  ctx.font = '28px monospace';
+  ctx.fillStyle = 'rgba(255,255,255,0.35)';
+  ctx.fillText('momentor.app', 540, 1020);
+
+  // 공유
+  canvas.toBlob(async (blob) => {
+    if (!blob) { showToast('Failed to generate card.'); return; }
+    const file = new File([blob], 'my-saju.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: 'My Saju Reading', text: `My Day Pillar: ${iljuChar} · Discover yours at momentor.app` });
+        return;
+      } catch(e) { /* fallback */ }
+    }
+    // 클립보드 폴백
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      showToast('📋 Card copied to clipboard!');
+      return;
+    } catch(e) { /* download fallback */ }
+    // 다운로드 폴백
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'my-saju.png'; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('📥 Card downloaded!');
+  }, 'image/png');
+}
+
+// ═══════════════════════════════════════════════
+// URL 파라미터 공유 링크
+// ═══════════════════════════════════════════════
+function copyShareLink() {
+  if (!reportData) return;
+  const { year, month, day, hour, noTime } = reportData;
+  const params = new URLSearchParams({ y: year, m: month, d: day });
+  if (!noTime) params.set('h', hour);
+  const url = `${location.origin}${location.pathname}?${params.toString()}`;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showToast('🔗 Link copied!');
+  }
+}
+
+function checkShareParams() {
+  const p = new URLSearchParams(location.search);
+  if (p.has('y') && p.has('m') && p.has('d')) {
+    const y = parseInt(p.get('y')), m = parseInt(p.get('m')), d = parseInt(p.get('d'));
+    const h = parseInt(p.get('h')) || 12;
+    if (!y || !m || !d) return;
+    // pre-fill form and auto-generate
+    const maxYear = new Date().getFullYear() - 5;
+    if (y < 1900 || y > maxYear) return;
+    selectedGender = 'O';
+    reportData = { name: '', year: y, month: m, day: d, hour: h, noTime: !p.has('h'), gender: 'O',
+      pillars: calcFourPillars(y, m, d, h, 'O', !p.has('h')) };
+    document.getElementById('section-form').style.display = 'none';
+    showLoadingScene(() => {
+      document.getElementById('section-results').classList.add('visible');
+      document.getElementById('chapterNav').classList.add('visible');
+      renderReport(reportData);
+      initReveal(); initChapterNav(); initExitIntent();
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════
