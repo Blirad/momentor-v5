@@ -1708,12 +1708,16 @@
         <label id="label-time">Time of birth</label>
         <div class="form-row" style="align-items:center;">
           <div style="text-align:center;">
-            <input type="number" id="inp-hour" min="0" max="23" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
+            <select id="inp-hour" class="time-select" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
+              <option value="">--</option>
+            </select>
             <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-hour" data-i18n="time-hour">시</span>
           </div>
           <span style="font-size:24px;color:var(--text-muted);text-align:center;">:</span>
           <div style="text-align:center;">
-            <input type="number" id="inp-minute" min="0" max="59" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
+            <select id="inp-minute" class="time-select" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
+              <option value="">--</option>
+            </select>
             <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-min" data-i18n="time-min">분</span>
           </div>
         </div>
@@ -2964,21 +2968,22 @@ function getCurrentNarrativeKo(daeun, dayElement) {
 // FORM LOGIC
 // ═══════════════════════════════════════════════
 function populateTimeSelects() {
-  const hourInput = document.getElementById('inp-hour');
-  const minInput  = document.getElementById('inp-minute');
-  // Clamp values on blur for number inputs
-  hourInput.addEventListener('blur', function() {
-    let v = parseInt(this.value);
-    if (isNaN(v)) return;
-    if (v < 0) this.value = 0;
-    if (v > 23) this.value = 23;
-  });
-  minInput.addEventListener('blur', function() {
-    let v = parseInt(this.value);
-    if (isNaN(v)) return;
-    if (v < 0) this.value = 0;
-    if (v > 59) this.value = 59;
-  });
+  const hourSel = document.getElementById('inp-hour');
+  const minSel  = document.getElementById('inp-minute');
+  // Populate hour options 0~23
+  for (let h = 0; h <= 23; h++) {
+    const opt = document.createElement('option');
+    opt.value = h;
+    opt.textContent = String(h).padStart(2, '0');
+    hourSel.appendChild(opt);
+  }
+  // Populate minute options 0~55 in 5-min increments
+  for (let m = 0; m <= 55; m += 5) {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = String(m).padStart(2, '0');
+    minSel.appendChild(opt);
+  }
 }
 
 function populateDateSelects() {
@@ -4206,7 +4211,7 @@ function initCitySearch() {
     clearTimeout(_cityDebounce);
     const q = input.value.trim();
     if (q.length < 2) { dropdown.style.display = 'none'; return; }
-    _cityDebounce = setTimeout(() => searchCities(q), 300);
+    _cityDebounce = setTimeout(() => searchCities(q), 200);
   });
 
   input.addEventListener('focus', () => {
@@ -4258,19 +4263,22 @@ function showRecentCities() {
 async function searchCities(query) {
   const dropdown = document.getElementById('city-autocomplete');
   try {
-    const url = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=8&username=bilradk&featureClass=P&orderby=population`;
-    const res = await fetch(url);
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=7&accept-language=en`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'Momentor/1.0 (bilradk@gmail.com)' } });
     const data = await res.json();
-    if (!data.geonames || !data.geonames.length) {
-      dropdown.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:13px;">No results found</div>';
+    if (!data || !data.length) {
+      dropdown.innerHTML = '<div style="padding:12px;color:var(--text-muted);font-size:13px;">No results found. Try a different spelling.</div>';
       dropdown.style.display = 'block';
       return;
     }
-    dropdown.innerHTML = data.geonames.map(g => {
-      const city = { name: g.name, country: g.countryName, cc: g.countryCode, lat: g.lat, lng: g.lng, tz: g.timezone?.timeZoneId || '' };
-      return `<div class="city-option" role="option" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);" 
+    dropdown.innerHTML = data.map(g => {
+      const cityName = g.address?.city || g.address?.town || g.address?.village || g.address?.municipality || g.name || g.display_name.split(',')[0];
+      const country = g.address?.country || '';
+      const cc = g.address?.country_code?.toUpperCase() || '';
+      const city = { name: cityName, country: country, cc: cc, lat: g.lat, lng: g.lon, tz: '' };
+      return `<div class="city-option" role="option" style="padding:12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);min-height:48px;display:flex;align-items:center;" 
         onmouseenter="this.style.background='rgba(201,169,110,0.1)'" onmouseleave="this.style.background=''" 
-        onclick='selectCity(${JSON.stringify(city)})'>${COUNTRY_FLAG(g.countryCode)} ${g.name}, ${g.countryName}</div>`;
+        onclick='selectCity(${JSON.stringify(city).replace(/'/g,"&#39;")})'><strong>${escapeHtml(cityName)}</strong>&nbsp;<small style="color:var(--text-muted)">${escapeHtml(country)}</small></div>`;
     }).join('');
     dropdown.style.display = 'block';
   } catch(e) {
@@ -4295,26 +4303,34 @@ function selectCity(city) {
 
 async function detectCurrentLocation() {
   if (!navigator.geolocation) { showToast('Geolocation is not supported.'); return; }
-  showToast('📍 Detecting location...');
+  const btn = document.querySelector('[onclick="detectCurrentLocation()"]');
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
   navigator.geolocation.getCurrentPosition(async (pos) => {
     try {
       const { latitude, longitude } = pos.coords;
-      const url = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${latitude}&lng=${longitude}&username=bilradk`;
-      const res = await fetch(url);
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=en`, {
+        headers: { 'User-Agent': 'Momentor/1.0 (bilradk@gmail.com)' }
+      });
       const data = await res.json();
-      if (data.geonames && data.geonames.length) {
-        const g = data.geonames[0];
-        selectCity({ name: g.name, country: g.countryName, cc: g.countryCode, lat: g.lat, lng: g.lng, tz: '' });
-        showToast(`📍 ${g.name}, ${g.countryName}`);
+      const city = data.address?.city || data.address?.town || data.address?.village || data.address?.municipality;
+      const country = data.address?.country;
+      if (city) {
+        document.getElementById('inp-city-search').value = `${city}, ${country}`;
+        document.getElementById('inp-city').value = longitude;
+        document.getElementById('inp-city-lat').value = latitude;
+        showToast(`📍 ${city}, ${country}`);
       } else {
-        // Fallback: use raw coordinates
         document.getElementById('inp-city').value = longitude;
         document.getElementById('inp-city-lat').value = latitude;
         document.getElementById('inp-city-search').value = `${latitude.toFixed(2)}°N, ${longitude.toFixed(2)}°E`;
-        showToast('📍 Location set from coordinates');
+        showToast('Could not detect city. Please search manually.');
       }
     } catch(e) { showToast('Location lookup failed.'); }
-  }, () => { showToast('Location access denied.'); }, { timeout: 10000 });
+    if (btn) { btn.textContent = '📍'; btn.disabled = false; }
+  }, () => {
+    showToast('Location access denied. Please search your city manually.');
+    if (btn) { btn.textContent = '📍'; btn.disabled = false; }
+  }, { timeout: 10000 });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -4322,17 +4338,7 @@ document.addEventListener('DOMContentLoaded', () => {
   populateDateSelects();
   initCitySearch();
 
-  // Time input blur validation
-  const hourInput = document.getElementById('inp-hour');
-  const minInput = document.getElementById('inp-minute');
-  if (hourInput) hourInput.addEventListener('blur', () => {
-    const v = parseInt(hourInput.value, 10);
-    if (hourInput.value !== '' && (isNaN(v) || v < 0 || v > 23)) hourInput.value = Math.max(0, Math.min(23, v || 0));
-  });
-  if (minInput) minInput.addEventListener('blur', () => {
-    const v = parseInt(minInput.value, 10);
-    if (minInput.value !== '' && (isNaN(v) || v < 0 || v > 59)) minInput.value = Math.max(0, Math.min(59, v || 0));
-  });
+  // Select dropdowns don't need blur validation
   // P2-3: Language auto-detection
   const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   const isKorean = navLang.startsWith('ko');
@@ -4729,15 +4735,12 @@ function submitEmailBanner() {
 
 </script>
 <script>
-// 이메일 배너 키보드 대응
-if (window.visualViewport) {
-  window.visualViewport.addEventListener('resize', () => {
-    const banner = document.getElementById('email-capture-banner');
-    if (!banner) return;
-    const offsetFromBottom = window.innerHeight - window.visualViewport.height;
-    banner.style.bottom = offsetFromBottom > 0 ? offsetFromBottom + 'px' : '0px';
-  });
-}
+// 이메일 배너 키보드 대응 — 키보드 올라오면 배너 숨김
+window.visualViewport?.addEventListener('resize', () => {
+  const keyboardOpen = window.visualViewport.height < window.innerHeight * 0.75;
+  const banner = document.getElementById('email-capture-banner');
+  if (banner) banner.style.display = keyboardOpen ? 'none' : '';
+});
 </script>
 </body>
 </html>
