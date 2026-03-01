@@ -1417,6 +1417,21 @@
   @media (max-width: 390px) {
     .container { padding: 0 20px; }
   }
+/* ── Accordion Domain Section ── */
+.accordion-section-intro { padding: 48px 0 32px; text-align: center; }
+.accordion-divider { width: 60px; height: 1px; background: var(--gold-dim, #c9a96e66); margin: 0 auto 24px; }
+.accordion-intro-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--text-secondary, #a89b8c); font-style: italic; letter-spacing: 0.03em; }
+.accordion-domains { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
+.acc-item { border-bottom: 1px solid rgba(201,169,110,0.15); }
+.acc-trigger { width: 100%; background: none; border: none; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; text-align: left; }
+.acc-trigger-left { display: flex; flex-direction: column; gap: 4px; }
+.acc-category-label { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold, #c9a96e); font-weight: 600; letter-spacing: 0.02em; }
+.acc-subtitle { font-size: 13px; color: var(--text-secondary, #a89b8c); font-style: italic; }
+.acc-arrow { color: var(--gold-dim, #c9a96e88); font-size: 18px; transition: transform 0.3s; margin-top: 2px; }
+.acc-item.open .acc-arrow { transform: rotate(180deg); }
+.acc-content { display: none; padding: 0 0 24px; }
+.acc-content.open { display: block; }
+.acc-text { font-family: 'Cormorant Garamond', serif; font-size: 16px; line-height: 1.8; color: var(--text-primary, #e8e0d5); }
 </style>
 </head>
 <body>
@@ -1879,6 +1894,146 @@
   </div>
 </section>
 
+<!-- ═══ ACCORDION DOMAIN SECTION ═══ -->
+<div class="accordion-section-intro">
+  <div class="accordion-divider"></div>
+  <p class="accordion-intro-text" id="accordion-intro">
+    Your story flows through time — but your chart also speaks to specific domains of life.
+  </p>
+</div>
+
+<div class="accordion-domains" id="accordion-domains">
+  <div class="acc-item" id="acc-overall">
+    <button class="acc-trigger" onclick="toggleAcc('acc-overall')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-overall-label">총운</span>
+        <span class="acc-subtitle" data-i18n="acc-overall-sub">The Shape of Your Entire Sky</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-overall-content">
+      <p class="acc-text" id="acc-overall-text"><!-- JS로 채움 --></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-wealth">
+    <button class="acc-trigger" onclick="toggleAcc('acc-wealth')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-wealth-label">재물운</span>
+        <span class="acc-subtitle" data-i18n="acc-wealth-sub">How Money Finds You</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-wealth-content">
+      <p class="acc-text" id="acc-wealth-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-career">
+    <button class="acc-trigger" onclick="toggleAcc('acc-career')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-career-label">성공/커리어운</span>
+        <span class="acc-subtitle" data-i18n="acc-career-sub">The Mountain You're Meant to Climb</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-career-content">
+      <p class="acc-text" id="acc-career-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-vocation">
+    <button class="acc-trigger" onclick="toggleAcc('acc-vocation')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-vocation-label">직업/적성운</span>
+        <span class="acc-subtitle" data-i18n="acc-vocation-sub">What Your Hands Were Made For</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-vocation-content">
+      <p class="acc-text" id="acc-vocation-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-love">
+    <button class="acc-trigger" onclick="toggleAcc('acc-love')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-love-label">연애운</span>
+        <span class="acc-subtitle" data-i18n="acc-love-sub">The One You'll Recognize</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-love-content">
+      <p class="acc-text" id="acc-love-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-health">
+    <button class="acc-trigger" onclick="toggleAcc('acc-health')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-health-label">건강운</span>
+        <span class="acc-subtitle" data-i18n="acc-health-sub">Where Your Body Whispers</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-health-content">
+      <p class="acc-text" id="acc-health-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-family">
+    <button class="acc-trigger" onclick="toggleAcc('acc-family')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-family-label">가족운</span>
+        <span class="acc-subtitle" data-i18n="acc-family-sub">The Roots Beneath You</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-family-content">
+      <p class="acc-text" id="acc-family-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-mentor">
+    <button class="acc-trigger" onclick="toggleAcc('acc-mentor')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-mentor-label">귀인운</span>
+        <span class="acc-subtitle" data-i18n="acc-mentor-sub">Who Will Open the Door</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-mentor-content">
+      <p class="acc-text" id="acc-mentor-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-movement">
+    <button class="acc-trigger" onclick="toggleAcc('acc-movement')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-movement-label">이동/변화운</span>
+        <span class="acc-subtitle" data-i18n="acc-movement-sub">When the Ground Shifts</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-movement-content">
+      <p class="acc-text" id="acc-movement-text"></p>
+    </div>
+  </div>
+
+  <div class="acc-item" id="acc-growth">
+    <button class="acc-trigger" onclick="toggleAcc('acc-growth')">
+      <div class="acc-trigger-left">
+        <span class="acc-category-label" data-i18n="acc-growth-label">학업/성장운</span>
+        <span class="acc-subtitle" data-i18n="acc-growth-sub">The Mind That Won't Stop Growing</span>
+      </div>
+      <span class="acc-arrow">▾</span>
+    </button>
+    <div class="acc-content" id="acc-growth-content">
+      <p class="acc-text" id="acc-growth-text"></p>
+    </div>
+  </div>
+</div>
+
 <!-- EMAIL CAPTURE BANNER -->
 <div class="email-capture-banner" id="email-capture-banner">
   <button class="email-banner-dismiss" onclick="dismissEmailBanner()" aria-label="Close">✕</button>
@@ -1971,6 +2126,27 @@ const T = {
   'paywall-sub':        { en:'The pattern in your relationships.<br>The ceiling you keep hitting.<br>The feeling that you were made for something specific — but haven\'t found it yet.<br><br>It\'s in here.', ko:'인간관계의 패턴.<br>반복해서 부딪히는 한계.<br>무언가를 위해 태어난 것 같은데 — 아직 찾지 못한 느낌.<br><br>그게 여기 있습니다.' },
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
   'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
+  'accordion-intro':    { en:'Your story flows through time — but your chart also speaks to specific domains of life.', ko:'당신의 이야기는 시간 속에 흐르지만 — 사주는 삶의 구체적인 영역에도 말을 겁니다.' },
+  'acc-overall-label':  { en:'총운', ko:'총운' },
+  'acc-overall-sub':    { en:'The Shape of Your Entire Sky', ko:'당신의 하늘 전체 지도' },
+  'acc-wealth-label':   { en:'재물운', ko:'재물운' },
+  'acc-wealth-sub':     { en:'How Money Finds You', ko:'돈이 당신을 찾는 방식' },
+  'acc-career-label':   { en:'성공/커리어운', ko:'성공/커리어운' },
+  'acc-career-sub':     { en:"The Mountain You're Meant to Climb", ko:'당신이 오를 산' },
+  'acc-vocation-label': { en:'직업/적성운', ko:'직업/적성운' },
+  'acc-vocation-sub':   { en:'What Your Hands Were Made For', ko:'당신의 손이 만들어진 이유' },
+  'acc-love-label':     { en:'연애운', ko:'연애운' },
+  'acc-love-sub':       { en:"The One You'll Recognize", ko:'알아볼 수밖에 없는 사람' },
+  'acc-health-label':   { en:'건강운', ko:'건강운' },
+  'acc-health-sub':     { en:'Where Your Body Whispers', ko:'몸이 속삭이는 곳' },
+  'acc-family-label':   { en:'가족운', ko:'가족운' },
+  'acc-family-sub':     { en:'The Roots Beneath You', ko:'당신 아래의 뿌리' },
+  'acc-mentor-label':   { en:'귀인운', ko:'귀인운' },
+  'acc-mentor-sub':     { en:'Who Will Open the Door', ko:'문을 열어줄 사람' },
+  'acc-movement-label': { en:'이동/변화운', ko:'이동/변화운' },
+  'acc-movement-sub':   { en:'When the Ground Shifts', ko:'땅이 움직이는 순간' },
+  'acc-growth-label':   { en:'학업/성장운', ko:'학업/성장운' },
+  'acc-growth-sub':     { en:"The Mind That Won't Stop Growing", ko:'멈추지 않는 성장' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
@@ -3056,6 +3232,64 @@ function renderReport(data) {
   Object.keys(T).forEach(id => {
     const el = document.getElementById(id);
     if (el && T[id][lang]) el.innerHTML = T[id][lang];
+  });
+
+  // ── Accordion domains ──
+  const accStemKey = dp.stem + dp.branch;
+  fillAccordionContent(accStemKey);
+  initAccordion();
+
+  // i18n for accordion data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (T[key] && T[key][lang]) el.textContent = T[key][lang];
+  });
+}
+
+// ═══════════════════════════════════════════════
+// ACCORDION DOMAIN SECTION
+// ═══════════════════════════════════════════════
+function toggleAcc(id) {
+  const item = document.getElementById(id);
+  const content = document.getElementById(id + '-content');
+  const isOpen = item.classList.contains('open');
+  item.classList.toggle('open', !isOpen);
+  content.classList.toggle('open', !isOpen);
+}
+
+function initAccordion() {
+  const first = document.getElementById('acc-overall');
+  const firstContent = document.getElementById('acc-overall-content');
+  if (first && firstContent) {
+    first.classList.add('open');
+    firstContent.classList.add('open');
+  }
+}
+
+const ACC_COPY = {
+  // 미라가 작성 후 여기에 삽입 예정
+  // 구조: { stemKey: { overall: "...", wealth: "...", ... } }
+};
+
+function fillAccordionContent(stemKey) {
+  const copy = ACC_COPY[stemKey] || {};
+  const mapping = {
+    'acc-overall': copy.overall,
+    'acc-wealth': copy.wealth,
+    'acc-career': copy.career,
+    'acc-vocation': copy.vocation,
+    'acc-love': copy.love,
+    'acc-health': copy.health,
+    'acc-family': copy.family,
+    'acc-mentor': copy.mentor,
+    'acc-movement': copy.movement,
+    'acc-growth': copy.growth,
+  };
+  const lang = currentLang || 'en';
+  const placeholder = lang === 'en' ? 'Your reading for this domain is being prepared…' : '이 영역의 리딩이 준비 중입니다…';
+  Object.entries(mapping).forEach(([id, text]) => {
+    const el = document.getElementById(id + '-text');
+    if (el) el.textContent = text || placeholder;
   });
 }
 
