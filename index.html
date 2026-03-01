@@ -4193,7 +4193,7 @@ function toggleAccordion(header) {
 // INIT
 // ═══════════════════════════════════════════════
 // ═══════════════════════════════════════════════
-// GLOBAL CITY SEARCH (GeoNames)
+// GLOBAL CITY SEARCH (Nominatim)
 // ═══════════════════════════════════════════════
 const COUNTRY_FLAG = (cc) => {
   if (!cc || cc.length !== 2) return '🌍';
@@ -4206,6 +4206,10 @@ function initCitySearch() {
   const input = document.getElementById('inp-city-search');
   const dropdown = document.getElementById('city-autocomplete');
   if (!input || !dropdown) return;
+
+  input.addEventListener('focus', function() {
+    setTimeout(() => this.scrollIntoView({block:'start', behavior:'smooth'}), 300);
+  });
 
   input.addEventListener('input', () => {
     clearTimeout(_cityDebounce);
@@ -4304,7 +4308,7 @@ function selectCity(city) {
 async function detectCurrentLocation() {
   if (!navigator.geolocation) { showToast('Geolocation is not supported.'); return; }
   const btn = document.querySelector('[onclick="detectCurrentLocation()"]');
-  if (btn) { btn.textContent = '...'; btn.disabled = true; }
+  if (btn) { btn.textContent = '📡'; btn.disabled = true; }
   navigator.geolocation.getCurrentPosition(async (pos) => {
     try {
       const { latitude, longitude } = pos.coords;
@@ -4382,7 +4386,7 @@ function saveEmail() {
 // ═══════════════════════════════════════════════
 // LOADING SCENE (P0-20)
 // ═══════════════════════════════════════════════
-const loadingMessages = lang === 'ko' ? [
+const loadingMessages = currentLang === 'ko' ? [
   "당신이 세상에 온 그 순간을 읽고 있어요…",
   "인생의 기둥을 그려보는 중…",
   "당신만의 사주가 보여주는 패턴을 추적하고 있어요…",
