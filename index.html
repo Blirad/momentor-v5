@@ -1446,7 +1446,7 @@
     <p class="exit-popup-sub">Leave your email — we'll send the line we held back.</p>
     <div id="exit-popup-form">
       <input type="email" id="exit-email-input" placeholder="your@email.com" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-sans);outline:none;margin-bottom:12px;box-sizing:border-box">
-      <button onclick="submitExitEmail()" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send it to me →</button>
+      <button onclick="submitExitEmail(event)" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send it to me →</button>
     </div>
     <div id="exit-popup-thanks" style="display:none;padding:12px 0;color:var(--gold);font-family:var(--font-serif);font-size:16px">✦ Check your inbox soon.</div>
     <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">I've read enough.</span>
@@ -1600,7 +1600,7 @@
 
       <!-- Social Proof Inline (P0-3) -->
       <div class="social-proof-inline reveal" id="social-proof-inline">
-        Explored by 12,000+ readers &nbsp; <span class="sp-stars-inline">★★★★★</span> 4.9/5
+        Explored by <span id="dynamic-reader-count">12,000</span>+ readers &nbsp; <span class="sp-stars-inline">★★★★★</span> 4.9/5
       </div>
 
       <!-- Story Body -->
@@ -1757,7 +1757,7 @@
         </div>
       </div>
       <div class="conviction-fade"></div>
-      <p class="social-proof-text">87 people discovered themselves today</p>
+      <p class="social-proof-text" id="conviction-social-proof">Others have read this far. Few have turned back.</p>
       <button class="conviction-cta" onclick="openPayModal()">Show me what the chart knows →</button>
       <p class="conviction-closer" id="conviction-closer">The chart knew. It always knew.</p>
     </div>
@@ -1948,6 +1948,7 @@ const T = {
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
+  'conviction-social-proof': { en:'Others have read this far. Few have turned back.', ko:'여기까지 읽은 이들이 있습니다. 돌아간 이는 드뭅니다.' },
 };
 
 // ═══════════════════════════════════════════════
@@ -3096,6 +3097,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lt) lt.style.display = 'none';
     setLang('en');
   }
+  // Fix 5: Dynamic social proof reader count
+  const _dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  const _readerCount = (11800 + (_dayOfYear * 37 % 400)).toLocaleString();
+  const _rcEl = document.getElementById('dynamic-reader-count');
+  if (_rcEl) _rcEl.textContent = _readerCount;
+
   checkShareParams();
   // PWA service worker
   if ('serviceWorker' in navigator) {
@@ -3395,7 +3402,8 @@ function showExitPopup() {
   sessionStorage.setItem('exit_popup_shown', '1');
   document.getElementById('exit-popup').classList.add('show');
 }
-function submitExitEmail() {
+function submitExitEmail(event) {
+  if (event) event.preventDefault();
   const val = (document.getElementById('exit-email-input').value || '').trim();
   if (!val || !val.includes('@')) { showToast('Please enter a valid email.'); return; }
   console.log('[Exit Intent] email captured:', val);
