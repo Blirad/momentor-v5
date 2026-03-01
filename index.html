@@ -1706,14 +1706,14 @@
       <div class="form-group">
         <label id="label-time">Time of birth</label>
         <div class="form-row" style="align-items:center;">
-          <div style="position:relative;">
+          <div style="text-align:center;">
             <input type="number" id="inp-hour" min="0" max="23" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
-            <span style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-muted);pointer-events:none;">시</span>
+            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-hour">시</span>
           </div>
           <span style="font-size:24px;color:var(--text-muted);text-align:center;">:</span>
-          <div style="position:relative;">
+          <div style="text-align:center;">
             <input type="number" id="inp-minute" min="0" max="59" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
-            <span style="position:absolute;bottom:4px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--text-muted);pointer-events:none;">분</span>
+            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-min">분</span>
           </div>
         </div>
         <p style="font-size:12px;color:var(--gold-soft);margin-top:6px;font-style:italic;">정확한 시간일수록 더 정밀한 해석이 가능해요</p>
@@ -1723,13 +1723,13 @@
       <div class="form-group" style="position:relative;">
         <label for="inp-city-search">Birth City <span style="color:var(--text-muted);font-weight:normal;font-size:13px">(for precise hour pillar)</span></label>
         <div style="display:flex;gap:8px;">
-          <input type="text" id="inp-city-search" placeholder="Seoul (서울)" autocomplete="off" style="flex:1;">
+          <input type="text" id="inp-city-search" placeholder="Search city..." autocomplete="off" style="flex:1;">
           <button type="button" onclick="detectCurrentLocation()" style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:var(--radius);color:var(--text-secondary);font-size:18px;padding:8px 14px;cursor:pointer;min-width:44px;min-height:44px;" title="현재 위치 감지">📍</button>
         </div>
         <input type="hidden" id="inp-city" value="127.0">
         <input type="hidden" id="inp-city-lat" value="37.5665">
         <input type="hidden" id="inp-city-timezone" value="">
-        <div id="city-autocomplete" style="position:absolute;left:0;right:0;top:100%;z-index:1000;background:#1a1730;border:1px solid var(--card-border);border-radius:8px;max-height:280px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.5);"></div>
+        <div id="city-autocomplete" role="listbox" aria-label="City search results" style="position:absolute;left:0;right:0;top:100%;z-index:1000;background:#1a1730;border:1px solid var(--card-border);border-radius:8px;max-height:280px;overflow-y:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,0.5);"></div>
         <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Birth city affects the Hour Pillar calculation. Search any city worldwide.</p>
       </div>
       <button class="btn-primary" onclick="generateReport()" id="btn-generate">See My Reading →</button>
@@ -2218,10 +2218,10 @@
 <!-- EMAIL CAPTURE BANNER (bottom sheet) -->
 <div class="email-capture-banner" id="email-capture-banner">
   <button class="email-banner-dismiss" onclick="dismissEmailBanner()" aria-label="Close">✕</button>
-  <p class="email-banner-hook">✦ 매일 운세를 받아볼까요?</p>
+  <p class="email-banner-hook" id="email-banner-hook">✦ 매일 운세를 받아볼까요?</p>
   <div class="email-banner-row">
     <input class="email-banner-input" type="email" id="email-banner-input" placeholder="your@email.com">
-    <button class="email-banner-btn" onclick="submitEmailBanner()">받아보기</button>
+    <button class="email-banner-btn" id="email-banner-btn" onclick="submitEmailBanner()">받아보기</button>
   </div>
 </div>
 
@@ -2332,6 +2332,9 @@ const T = {
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
   'conviction-social-proof': { en:'Others have read this far. Few have turned back.', ko:'여기까지 읽은 이들이 있습니다. 돌아간 이는 드뭅니다.' },
+  'inp-city-search':   { en:'Search city...', ko:'도시 검색...' },
+  'email-banner-hook': { en:'✦ Want your daily energy reading?', ko:'✦ 매일 운세를 받아볼까요?' },
+  'email-banner-btn':  { en:'Subscribe', ko:'받아보기' },
 };
 
 // ═══════════════════════════════════════════════
@@ -3085,8 +3088,12 @@ function generateReport() {
   const noTime  = _noTimeActive;
   const hourVal = document.getElementById('inp-hour').value;
   const minVal = document.getElementById('inp-minute').value;
-  const rawHour = noTime ? 12 : (hourVal !== '' ? parseInt(hourVal) : 12);
-  const rawMinute = noTime ? 0 : (minVal !== '' ? parseInt(minVal) : 0);
+  let rawHour = noTime ? 12 : (hourVal !== '' ? parseInt(hourVal) : 12);
+  let rawMinute = noTime ? 0 : (minVal !== '' ? parseInt(minVal) : 0);
+  if (!noTime) {
+    if (rawHour < 0 || rawHour > 23 || isNaN(rawHour)) rawHour = 12;
+    if (rawMinute < 0 || rawMinute > 59 || isNaN(rawMinute)) rawMinute = 0;
+  }
   const longitude = parseFloat(document.getElementById('inp-city').value) || 127.0;
   const timezoneId = document.getElementById('inp-city-timezone')?.value || '';
   const corrected = noTime ? { hour: 12, minute: 0 } : applyTrueSolarTime(rawHour, rawMinute, longitude, timezoneId);
@@ -4206,6 +4213,29 @@ function initCitySearch() {
       dropdown.style.display = 'none';
     }
   });
+
+  // Keyboard navigation for city autocomplete
+  let _cityNavIdx = -1;
+  input.addEventListener('keydown', (e) => {
+    const items = dropdown.querySelectorAll('.city-option');
+    if (!items.length || dropdown.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _cityNavIdx = Math.min(_cityNavIdx + 1, items.length - 1);
+      items.forEach((it, i) => it.style.background = i === _cityNavIdx ? 'rgba(201,169,110,0.15)' : '');
+      items[_cityNavIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _cityNavIdx = Math.max(_cityNavIdx - 1, 0);
+      items.forEach((it, i) => it.style.background = i === _cityNavIdx ? 'rgba(201,169,110,0.15)' : '');
+      items[_cityNavIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && _cityNavIdx >= 0) {
+      e.preventDefault();
+      items[_cityNavIdx].click();
+      _cityNavIdx = -1;
+    }
+  });
+  input.addEventListener('input', () => { _cityNavIdx = -1; });
 }
 
 function showRecentCities() {
@@ -4213,7 +4243,7 @@ function showRecentCities() {
   const recent = JSON.parse(localStorage.getItem('momentor_recent_cities') || '[]');
   if (!recent.length) return;
   dropdown.innerHTML = '<div style="padding:8px 12px;font-size:11px;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;">최근 선택</div>' +
-    recent.map(c => `<div class="city-option" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);" 
+    recent.map(c => `<div class="city-option" role="option" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);" 
       onmouseenter="this.style.background='rgba(201,169,110,0.1)'" onmouseleave="this.style.background=''" 
       onclick="selectCity(${JSON.stringify(c).replace(/"/g,'&quot;')})">${COUNTRY_FLAG(c.cc)} ${c.name}, ${c.country}</div>`).join('');
   dropdown.style.display = 'block';
@@ -4222,7 +4252,7 @@ function showRecentCities() {
 async function searchCities(query) {
   const dropdown = document.getElementById('city-autocomplete');
   try {
-    const url = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=8&username=demo&featureClass=P&orderby=population`;
+    const url = `https://secure.geonames.org/searchJSON?q=${encodeURIComponent(query)}&maxRows=8&username=bilradk&featureClass=P&orderby=population`;
     const res = await fetch(url);
     const data = await res.json();
     if (!data.geonames || !data.geonames.length) {
@@ -4232,7 +4262,7 @@ async function searchCities(query) {
     }
     dropdown.innerHTML = data.geonames.map(g => {
       const city = { name: g.name, country: g.countryName, cc: g.countryCode, lat: g.lat, lng: g.lng, tz: g.timezone?.timeZoneId || '' };
-      return `<div class="city-option" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);" 
+      return `<div class="city-option" role="option" style="padding:10px 12px;cursor:pointer;font-size:14px;color:var(--text-primary);border-top:1px solid rgba(255,255,255,0.05);" 
         onmouseenter="this.style.background='rgba(201,169,110,0.1)'" onmouseleave="this.style.background=''" 
         onclick='selectCity(${JSON.stringify(city)})'>${COUNTRY_FLAG(g.countryCode)} ${g.name}, ${g.countryName}</div>`;
     }).join('');
@@ -4263,7 +4293,7 @@ async function detectCurrentLocation() {
   navigator.geolocation.getCurrentPosition(async (pos) => {
     try {
       const { latitude, longitude } = pos.coords;
-      const url = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${latitude}&lng=${longitude}&username=demo`;
+      const url = `https://secure.geonames.org/findNearbyPlaceNameJSON?lat=${latitude}&lng=${longitude}&username=bilradk`;
       const res = await fetch(url);
       const data = await res.json();
       if (data.geonames && data.geonames.length) {
@@ -4285,6 +4315,18 @@ document.addEventListener('DOMContentLoaded', () => {
   populateTimeSelects();
   populateDateSelects();
   initCitySearch();
+
+  // Time input blur validation
+  const hourInput = document.getElementById('inp-hour');
+  const minInput = document.getElementById('inp-minute');
+  if (hourInput) hourInput.addEventListener('blur', () => {
+    const v = parseInt(hourInput.value, 10);
+    if (hourInput.value !== '' && (isNaN(v) || v < 0 || v > 23)) hourInput.value = Math.max(0, Math.min(23, v || 0));
+  });
+  if (minInput) minInput.addEventListener('blur', () => {
+    const v = parseInt(minInput.value, 10);
+    if (minInput.value !== '' && (isNaN(v) || v < 0 || v > 59)) minInput.value = Math.max(0, Math.min(59, v || 0));
+  });
   // P2-3: Language auto-detection
   const navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
   const isKorean = navLang.startsWith('ko');
