@@ -300,6 +300,7 @@
   .gender-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .gender-btn {
     padding: 14px;
+    min-height: 44px;
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: var(--radius);
@@ -1476,7 +1477,7 @@
   }
   .exit-popup-hook { font-family: var(--font-serif); font-size: 24px; font-weight: 500; color: var(--text-primary); margin-bottom: 12px; line-height: 1.3; }
   .exit-popup-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
-  .exit-popup-close { font-size: 13px; color: var(--text-muted); cursor: pointer; margin-top: 16px; display: block; -webkit-tap-highlight-color: transparent; }
+  .exit-popup-close { font-size: 13px; color: var(--text-muted); cursor: pointer; margin-top: 16px; display: inline-block; padding: 12px; min-height: 44px; -webkit-tap-highlight-color: transparent; }
   .exit-popup-close:hover { color: var(--text-secondary); }
 
   /* ─── "DON'T KNOW BIRTH TIME" link ─── */
@@ -1562,7 +1563,7 @@
 .accordion-intro-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--text-secondary, #a89b8c); font-style: italic; letter-spacing: 0.03em; }
 .accordion-domains { max-width: 680px; margin: 0 auto; padding: 0 20px 80px; }
 .acc-item { border-bottom: 1px solid rgba(201,169,110,0.15); }
-.acc-trigger { width: 100%; background: none; border: none; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; text-align: left; }
+.acc-trigger { width: 100%; background: none; border: none; padding: 20px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-height: 48px; text-align: left; }
 .acc-trigger-left { display: flex; flex-direction: column; gap: 4px; }
 .acc-category-label { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold, #c9a96e); font-weight: 600; letter-spacing: 0.02em; }
 .acc-subtitle { font-size: 13px; color: var(--text-secondary, #a89b8c); font-style: italic; }
@@ -1599,7 +1600,7 @@
     <div class="exit-popup-hook">Your chart left something unsaid.</div>
     <p class="exit-popup-sub">Leave your email — we'll send the line we held back.</p>
     <div id="exit-popup-form">
-      <input type="email" id="exit-email-input" placeholder="your@email.com" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-sans);outline:none;margin-bottom:12px;box-sizing:border-box">
+      <input type="email" id="exit-email-input" placeholder="your@email.com" style="width:100%;padding:12px 16px;min-height:44px;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-sans);outline:none;margin-bottom:12px;box-sizing:border-box">
       <button onclick="submitExitEmail(event)" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send it to me →</button>
     </div>
     <div id="exit-popup-thanks" style="display:none;padding:12px 0;color:var(--gold);font-family:var(--font-serif);font-size:16px">✦ Check your inbox soon.</div>
@@ -1708,15 +1709,15 @@
         <div class="form-row" style="align-items:center;">
           <div style="text-align:center;">
             <input type="number" id="inp-hour" min="0" max="23" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
-            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-hour">시</span>
+            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-hour" data-i18n="time-hour">시</span>
           </div>
           <span style="font-size:24px;color:var(--text-muted);text-align:center;">:</span>
           <div style="text-align:center;">
             <input type="number" id="inp-minute" min="0" max="59" step="1" placeholder="--" inputmode="numeric" style="width:100%;text-align:center;font-size:18px;padding:14px 8px;">
-            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-min">분</span>
+            <span style="display:block;margin-top:4px;font-size:11px;color:var(--text-muted);pointer-events:none;" id="opt-min" data-i18n="time-min">분</span>
           </div>
         </div>
-        <p style="font-size:12px;color:var(--gold-soft);margin-top:6px;font-style:italic;">정확한 시간일수록 더 정밀한 해석이 가능해요</p>
+        <p style="font-size:12px;color:var(--gold-soft);margin-top:6px;font-style:italic;" data-i18n="time-precision-hint">정확한 시간일수록 더 정밀한 해석이 가능해요</p>
         <span class="no-time-link" id="notime-label" onclick="toggleNoTime()" tabindex="0" role="button">Don't know your birth time?</span>
         <input type="hidden" id="chk-notime" value="0">
       </div>
@@ -2308,26 +2309,29 @@ const T = {
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
   'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
   'accordion-intro':    { en:'Your story flows through time — but your chart also speaks to where your 2026 is heading.', ko:'당신의 이야기는 시간 속에 흐르지만 — 2026년이 어디로 향하는지도 말합니다.' },
-  'acc-overall-label':  { en:'Overall Vibe', ko:'Overall Vibe' },
-  'acc-overall-sub':    { en:'The big picture of your 2026', ko:'The big picture of your 2026' },
-  'acc-wealth-label':  { en:'Wealth Flow', ko:'Wealth Flow' },
-  'acc-wealth-sub':    { en:'How money finds its way to you', ko:'How money finds its way to you' },
-  'acc-career-label':  { en:'Success Path', ko:'Success Path' },
-  'acc-career-sub':    { en:'Where your career energy flows', ko:'Where your career energy flows' },
-  'acc-vocation-label':  { en:'Career Fit', ko:'Career Fit' },
-  'acc-vocation-sub':    { en:'What kind of work lights you up', ko:'What kind of work lights you up' },
-  'acc-love-label':  { en:'Love Season', ko:'Love Season' },
-  'acc-love-sub':    { en:"What your heart's up to this year", ko:"What your heart's up to this year" },
-  'acc-health-label':  { en:'Body Check', ko:'Body Check' },
-  'acc-health-sub':    { en:'Your health and energy map', ko:'Your health and energy map' },
-  'acc-family-label':  { en:'Family Ties', ko:'Family Ties' },
-  'acc-family-sub':    { en:'Home and family dynamics', ko:'Home and family dynamics' },
-  'acc-mentor-label':  { en:'Key People', ko:'Key People' },
-  'acc-mentor-sub':    { en:'Who shows up for you this year', ko:'Who shows up for you this year' },
-  'acc-movement-label':  { en:'Shift & Move', ko:'Shift & Move' },
-  'acc-movement-sub':    { en:'Changes, relocations, and transitions', ko:'Changes, relocations, and transitions' },
-  'acc-growth-label':  { en:'Level Up', ko:'Level Up' },
-  'acc-growth-sub':    { en:'Learning, growth, and personal development', ko:'Learning, growth, and personal development' },
+  'acc-overall-label':  { en:'Overall Vibe', ko:'총운' },
+  'acc-overall-sub':    { en:'The big picture of your 2026', ko:'올해의 전체적인 흐름' },
+  'acc-wealth-label':  { en:'Wealth Flow', ko:'재물운' },
+  'acc-wealth-sub':    { en:'How money finds its way to you', ko:'돈의 흐름' },
+  'acc-career-label':  { en:'Success Path', ko:'성공·커리어운' },
+  'acc-career-sub':    { en:'Where your career energy flows', ko:'커리어의 방향' },
+  'acc-vocation-label':  { en:'Career Fit', ko:'직업·적성운' },
+  'acc-vocation-sub':    { en:'What kind of work lights you up', ko:'타고난 적성' },
+  'acc-love-label':  { en:'Love Season', ko:'연애운' },
+  'acc-love-sub':    { en:"What your heart's up to this year", ko:'올해 사랑의 흐름' },
+  'acc-health-label':  { en:'Body Check', ko:'건강운' },
+  'acc-health-sub':    { en:'Your health and energy map', ko:'몸과 마음 점검' },
+  'acc-family-label':  { en:'Family Ties', ko:'가족운' },
+  'acc-family-sub':    { en:'Home and family dynamics', ko:'가족 관계의 흐름' },
+  'acc-mentor-label':  { en:'Key People', ko:'귀인운' },
+  'acc-mentor-sub':    { en:'Who shows up for you this year', ko:'올해 나를 도와줄 사람' },
+  'acc-movement-label':  { en:'Shift & Move', ko:'이동·변화운' },
+  'acc-movement-sub':    { en:'Changes, relocations, and transitions', ko:'변화의 흐름과 이유' },
+  'acc-growth-label':  { en:'Level Up', ko:'학업·성장운' },
+  'acc-growth-sub':    { en:'Learning, growth, and personal development', ko:'배움과 성장의 방향' },
+  'time-hour':          { en:'H', ko:'시' },
+  'time-min':           { en:'M', ko:'분' },
+  'time-precision-hint':{ en:'The more precise the time, the more accurate the reading', ko:'정확한 시간일수록 더 정밀한 해석이 가능해요' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
@@ -3051,9 +3055,10 @@ function nextStep() {
   document.getElementById('step2').classList.add('active');
   document.getElementById('dot1').classList.remove('active');
   document.getElementById('dot2').classList.add('active');
-  const st1 = document.getElementById('step-text-1'), st3 = document.getElementById('step-text-3');
+  const st1 = document.getElementById('step-text-1'), st2 = document.getElementById('step-text-2'), st3 = document.getElementById('step-text-3');
   if (st1) { st1.style.color = 'var(--text-muted)'; st1.style.fontWeight = ''; }
-  if (st3) { st3.style.color = 'var(--gold)'; st3.style.fontWeight = '600'; }
+  if (st2) { st2.style.color = 'var(--gold)'; st2.style.fontWeight = '600'; }
+  if (st3) { st3.style.color = 'var(--text-muted)'; st3.style.fontWeight = ''; }
 }
 
 function prevStep() {
@@ -3061,8 +3066,9 @@ function prevStep() {
   document.getElementById('step1').classList.add('active');
   document.getElementById('dot2').classList.remove('active');
   document.getElementById('dot1').classList.add('active');
-  const st1b = document.getElementById('step-text-1'), st3b = document.getElementById('step-text-3');
+  const st1b = document.getElementById('step-text-1'), st2b = document.getElementById('step-text-2'), st3b = document.getElementById('step-text-3');
   if (st1b) { st1b.style.color = 'var(--gold)'; st1b.style.fontWeight = '600'; }
+  if (st2b) { st2b.style.color = 'var(--text-muted)'; st2b.style.fontWeight = ''; }
   if (st3b) { st3b.style.color = 'var(--text-muted)'; st3b.style.fontWeight = ''; }
 }
 
@@ -4370,7 +4376,13 @@ function saveEmail() {
 // ═══════════════════════════════════════════════
 // LOADING SCENE (P0-20)
 // ═══════════════════════════════════════════════
-const loadingMessages = [
+const loadingMessages = lang === 'ko' ? [
+  "당신이 세상에 온 그 순간을 읽고 있어요…",
+  "인생의 기둥을 그려보는 중…",
+  "당신만의 사주가 보여주는 패턴을 추적하고 있어요…",
+  "태어난 순간 별이 기록한 것을 살펴보는 중…",
+  "거의 다 됐어요 — 어떤 사주는 펼쳐지는 데 시간이 좀 걸려요…"
+] : [
   "Reading the moment you entered the world…",
   "Mapping the pillars of your life path…",
   "Tracing the patterns only your chart reveals…",
