@@ -19,6 +19,95 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+
+  /* ─── HANJA WATERMARK (#6) ─── */
+  .dm-hero { position: relative; overflow: hidden; }
+  .dm-hero .hanja-watermark {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(120px, 30vw, 200px);
+    font-family: var(--font-serif);
+    color: var(--gold);
+    opacity: 0.12;
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+    line-height: 1;
+  }
+  .dm-hero > *:not(.hanja-watermark) { position: relative; z-index: 1; }
+
+  /* ─── ELEMENT ICON INLINE ─── */
+  .elem-icon-inline { width: 18px; height: 18px; vertical-align: middle; margin-right: 4px; }
+
+  /* ─── 3 KEYWORDS ─── */
+  .fortune-keywords {
+    display: flex; justify-content: center; gap: 16px;
+    margin: 20px 0; flex-wrap: wrap;
+  }
+  .fortune-keyword {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 20px; padding: 8px 16px;
+    font-size: 14px; font-weight: 500; color: var(--gold-soft);
+    letter-spacing: 0.06em;
+  }
+  .fortune-keyword svg { width: 16px; height: 16px; }
+
+  /* ─── MONTHLY HIGHLIGHTS ─── */
+  .monthly-highlights {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px; margin: 24px 0;
+  }
+  .month-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 12px; font-size: 13px;
+  }
+  .month-card .month-name {
+    font-weight: 600; color: var(--gold-soft); font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .month-card .month-text { color: var(--text-secondary); line-height: 1.5; }
+
+  /* ─── CLOSING ADVICE ─── */
+  .closing-advice {
+    text-align: center; padding: 32px 20px; margin: 24px 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.06) 0%, rgba(100,80,200,0.04) 100%);
+    border-radius: var(--radius-lg); border: 1px solid rgba(201,169,110,0.15);
+  }
+  .closing-advice blockquote {
+    font-family: var(--font-serif); font-size: clamp(16px, 3.5vw, 20px);
+    font-style: italic; color: var(--text-primary); line-height: 1.6;
+    margin: 0 0 16px;
+  }
+  .closing-advice .share-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 20px; padding: 8px 20px; color: var(--gold);
+    font-size: 13px; cursor: pointer; font-family: var(--font-sans);
+    transition: background 0.2s;
+  }
+  .closing-advice .share-btn:hover { background: rgba(201,169,110,0.2); }
+
+  /* ─── FORTUNE ACCORDION CONTENT ─── */
+  .acc-fortune-body { font-family: var(--font-serif); font-size: 16px; line-height: 1.8; color: rgba(255,255,255,0.85); }
+  .acc-fortune-body p { margin-bottom: 1em; }
+  .acc-fortune-body .growth-note {
+    background: rgba(201,169,110,0.06); border-left: 3px solid var(--gold-dim);
+    padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0;
+    font-size: 14px; color: var(--text-secondary); font-style: italic;
+  }
+
+  /* ─── HANJA TOOLTIP ─── */
+  .hanja-tooltip {
+    display: none; position: absolute; background: rgba(13,11,30,0.95);
+    border: 1px solid var(--gold-dim); border-radius: 8px; padding: 8px 12px;
+    font-size: 12px; color: var(--text-secondary); z-index: 10; max-width: 200px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .has-hanja-tooltip { position: relative; cursor: pointer; }
+  .has-hanja-tooltip:hover .hanja-tooltip,
+  .has-hanja-tooltip:focus .hanja-tooltip { display: block; }
+
   /* ─── RESET & BASE ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -1934,6 +2023,31 @@
   </div>
 </section>
 
+<!-- ═══ ELEMENT SVG ICONS (Hanja Policy #6) ═══ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="icon-wood" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M12 22V8" stroke="currentColor"/>
+    <path d="M8 12c-2-3 0-7 4-8 4 1 6 5 4 8" stroke="currentColor"/>
+    <path d="M9 18c-1.5-1.5 0-4 3-5 3 1 4.5 3.5 3 5" stroke="currentColor"/>
+  </symbol>
+  <symbol id="icon-fire" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M12 22c-4 0-7-3-7-7 0-4 4-8 5-10 1 3 3 4 4 4 0-3 1-6 3-7 0 4 2 6 2 8 1-1 2-3 2-4 2 3 3 5 3 9 0 4-3 7-7 7z" stroke="currentColor"/>
+    <path d="M12 22c-1.5 0-3-1.5-3-3.5S10.5 15 12 14c1.5 1 3 2.5 3 4.5S13.5 22 12 22z" stroke="currentColor"/>
+  </symbol>
+  <symbol id="icon-earth" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M3 17l4-6 3 3 4-7 4 5 3-2" stroke="currentColor"/>
+    <line x1="3" y1="20" x2="21" y2="20" stroke="currentColor"/>
+  </symbol>
+  <symbol id="icon-metal" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z" stroke="currentColor"/>
+  </symbol>
+  <symbol id="icon-water" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+    <path d="M3 15c2.5-2 5-2 7.5 0s5 2 7.5 0" stroke="currentColor"/>
+    <path d="M3 19c2.5-2 5-2 7.5 0s5 2 7.5 0" stroke="currentColor"/>
+    <path d="M3 11c2.5-2 5-2 7.5 0s5 2 7.5 0" stroke="currentColor"/>
+  </symbol>
+</svg>
+
 <!-- ═══ ACCORDION DOMAIN SECTION ═══ -->
 <div class="accordion-section-intro" id="accordion-section-intro">
   <div class="accordion-divider"></div>
@@ -2083,6 +2197,24 @@
   </div>
 </div>
 
+
+<!-- ═══ 2026 FORTUNE SECTIONS (#7) ═══ -->
+<div class="container" id="fortune-sections" style="display:none">
+  <div class="fortune-keywords" id="fortune-keywords" style="display:none"></div>
+</div>
+
+<div class="container" id="monthly-section" style="display:none">
+  <div style="text-align:center;margin-bottom:16px">
+    <span style="font-size:13px;letter-spacing:0.15em;color:var(--gold-dim);text-transform:uppercase;font-weight:600">Monthly Flow · 2026</span>
+  </div>
+  <div class="monthly-highlights" id="monthly-highlights" style="display:none"></div>
+</div>
+
+<div class="container">
+  <div class="closing-advice" id="closing-advice" style="display:none"></div>
+</div>
+
+
 <!-- EMAIL CAPTURE BANNER (bottom sheet) -->
 <div class="email-capture-banner" id="email-capture-banner">
   <button class="email-banner-dismiss" onclick="dismissEmailBanner()" aria-label="Close">✕</button>
@@ -2175,27 +2307,27 @@ const T = {
   'paywall-sub':        { en:'The pattern in your relationships.<br>The ceiling you keep hitting.<br>The feeling that you were made for something specific — but haven\'t found it yet.<br><br>It\'s in here.', ko:'인간관계의 패턴.<br>반복해서 부딪히는 한계.<br>무언가를 위해 태어난 것 같은데 — 아직 찾지 못한 느낌.<br><br>그게 여기 있습니다.' },
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
   'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
-  'accordion-intro':    { en:'Your story flows through time — but your chart also speaks to specific domains of life.', ko:'당신의 이야기는 시간 속에 흐르지만 — 사주는 삶의 구체적인 영역에도 말을 겁니다.' },
-  'acc-overall-label':  { en:'총운', ko:'총운' },
-  'acc-overall-sub':    { en:'The Shape of Your Entire Sky', ko:'당신의 하늘 전체 지도' },
-  'acc-wealth-label':   { en:'재물운', ko:'재물운' },
-  'acc-wealth-sub':     { en:'How Money Finds You', ko:'돈이 당신을 찾아오는 방식' },
-  'acc-career-label':   { en:'성공/커리어운', ko:'성공/커리어운' },
-  'acc-career-sub':     { en:"The Mountain You're Meant to Climb", ko:'당신이 오르도록 태어난 산' },
-  'acc-vocation-label': { en:'직업/적성운', ko:'직업/적성운' },
-  'acc-vocation-sub':   { en:'What Your Hands Were Made For', ko:'당신의 손이 만들어진 이유' },
-  'acc-love-label':     { en:'연애운', ko:'연애운' },
-  'acc-love-sub':       { en:"The One You'll Recognize", ko:'당신이 알아볼 그 사람' },
-  'acc-health-label':   { en:'건강운', ko:'건강운' },
-  'acc-health-sub':     { en:'Where Your Body Whispers', ko:'몸이 먼저 말하는 곳' },
-  'acc-family-label':   { en:'가족운', ko:'가족운' },
-  'acc-family-sub':     { en:'The Roots Beneath You', ko:'당신 아래의 뿌리들' },
-  'acc-mentor-label':   { en:'귀인운', ko:'귀인운' },
-  'acc-mentor-sub':     { en:'Who Will Open the Door', ko:'문을 열어줄 사람' },
-  'acc-movement-label': { en:'이동/변화운', ko:'이동/변화운' },
-  'acc-movement-sub':   { en:'When the Ground Shifts', ko:'땅이 움직이는 순간' },
-  'acc-growth-label':   { en:'학업/성장운', ko:'학업/성장운' },
-  'acc-growth-sub':     { en:"The Mind That Won't Stop Growing", ko:'멈추지 않는 정신' },
+  'accordion-intro':    { en:'Your story flows through time — but your chart also speaks to where your 2026 is heading.', ko:'당신의 이야기는 시간 속에 흐르지만 — 2026년이 어디로 향하는지도 말합니다.' },
+  'acc-overall-label':  { en:'Overall Vibe', ko:'Overall Vibe' },
+  'acc-overall-sub':    { en:'The big picture of your 2026', ko:'The big picture of your 2026' },
+  'acc-wealth-label':  { en:'Wealth Flow', ko:'Wealth Flow' },
+  'acc-wealth-sub':    { en:'How money finds its way to you', ko:'How money finds its way to you' },
+  'acc-career-label':  { en:'Success Path', ko:'Success Path' },
+  'acc-career-sub':    { en:'Where your career energy flows', ko:'Where your career energy flows' },
+  'acc-vocation-label':  { en:'Career Fit', ko:'Career Fit' },
+  'acc-vocation-sub':    { en:'What kind of work lights you up', ko:'What kind of work lights you up' },
+  'acc-love-label':  { en:'Love Season', ko:'Love Season' },
+  'acc-love-sub':    { en:'What your heart's up to this year', ko:'What your heart's up to this year' },
+  'acc-health-label':  { en:'Body Check', ko:'Body Check' },
+  'acc-health-sub':    { en:'Your health and energy map', ko:'Your health and energy map' },
+  'acc-family-label':  { en:'Family Ties', ko:'Family Ties' },
+  'acc-family-sub':    { en:'Home and family dynamics', ko:'Home and family dynamics' },
+  'acc-mentor-label':  { en:'Key People', ko:'Key People' },
+  'acc-mentor-sub':    { en:'Who shows up for you this year', ko:'Who shows up for you this year' },
+  'acc-movement-label':  { en:'Shift & Move', ko:'Shift & Move' },
+  'acc-movement-sub':    { en:'Changes, relocations, and transitions', ko:'Changes, relocations, and transitions' },
+  'acc-growth-label':  { en:'Level Up', ko:'Level Up' },
+  'acc-growth-sub':    { en:'Learning, growth, and personal development', ko:'Learning, growth, and personal development' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
@@ -3302,6 +3434,12 @@ function renderReport(data) {
   });
 
   // ── Accordion domains ──
+  // Show fortune sections
+  const fortuneSections = document.getElementById('fortune-sections');
+  if (fortuneSections) fortuneSections.style.display = 'block';
+  const monthlySection = document.getElementById('monthly-section');
+  if (monthlySection) monthlySection.style.display = 'block';
+
   // accordion visibility controlled by CSS sibling selector
   const accStemKey = dp.stem;
   fillAccordionContent(accStemKey);
@@ -3336,6 +3474,434 @@ function initAccordion() {
     first.classList.add('open');
     firstContent.classList.add('open');
   }
+}
+
+
+// ═══════════════════════════════════════════════
+// 2026 ANNUAL FORTUNE CONTENT (#7)
+// ═══════════════════════════════════════════════
+const FORTUNE_2026 = {
+  '甲': {
+    hook: "2026 is the year you finally stop planning and start building — and the foundation holds.",
+    keywords: ["Grounding", "Delayed Payoff", "Unexpected Allies"],
+    keywordIcons: ["icon-earth", "icon-metal", "icon-wood"],
+    overall: `This is a year where all that planning, journaling, and "I'll get to it eventually" energy actually converts into something real. You've probably spent the last year or two gathering ideas, skills, maybe even contacts — and 2026 is when the dots start connecting. Not in a dramatic, movie-montage way. More like you'll look back in December and think, "Oh wait, I actually did that?"\n\nThe energy around you this year favors slow, steady growth over quick wins. Think of yourself as a tree putting down deeper roots — it doesn't look flashy above ground, but underground? Massive. The people around you will start noticing your consistency, and that's what opens doors.`,
+    overallGrowth: "Guard against impatience. You might feel like things aren't moving fast enough, especially in the first half. That restlessness is the thing to watch — if you stay the course instead of jumping ship, the second half rewards you generously.",
+    wealth: `Financially, 2026 is less about windfalls and more about building a system. You might finally set up that savings plan, side income, or investment you've been thinking about. The key insight: money comes to you this year through effort, not luck. And honestly? That's better — because what you build sticks.\n\nAround mid-year (May–July), watch for an opportunity that looks small but has compounding potential. Could be a freelance gig, a skill you monetize, or even a discount/deal that saves you more than you'd expect. The universe isn't handing you a lottery ticket — it's handing you a seed.\n\nSpending-wise, you might feel the urge to upgrade your lifestyle early in the year. New apartment, new gadgets, that kind of thing. Not necessarily bad, but timing matters. If you can delay big purchases until after August, your bank account will thank you.`,
+    wealthGrowth: `Guard against "I deserve this" spending in spring. You do deserve nice things — but the version of you in October deserves them more, and they'll have the budget for it.`,
+    career: `Career-wise, 2026 is your "prove it" year. You've probably been underestimated or overlooked recently — maybe you've felt like you're doing good work but nobody's noticing. That changes this year, but not because someone suddenly gives you credit. It changes because you start claiming it.\n\nExpect a moment around Q2 where you get to showcase what you can do. Could be a presentation, a project lead, or just a conversation where you speak up instead of holding back. That moment matters more than you think — it sets the tone for the rest of the year.\n\nBy fall, you might get an offer or opportunity that requires you to step up in a way that's slightly uncomfortable. Good. That discomfort is growth. Take the thing that scares you a little.`,
+    careerGrowth: "Guard against playing small because it's safe. You've outgrown the role you're in — acting like you haven't doesn't protect you, it limits you.",
+    vocation: `This year highlights your natural talent for creating structure out of chaos. If you've been in a role that feels random or disorganized, you might realize you're the one who's been holding it together — and that realization leads somewhere.\n\nFields that favor you in 2026: project management, content creation, education, anything where you're building systems or teaching others. If you've been thinking about a career pivot, this is a strong year to start laying groundwork — not necessarily to leap, but to learn.\n\nYou might also discover a skill you didn't know you had. Something you've been doing casually (organizing events, mentoring friends, writing, designing) that could actually be a career move.`,
+    vocationGrowth: `Guard against dismissing your own strengths as "just something I do." If people keep coming to you for it, that's data. Pay attention.`,
+    love: `Romance in 2026 has a "slow burn" quality. If you're single, don't expect love-at-first-sight fireworks — expect someone who grows on you. The person who catches your attention might not be your "type" at all, and that's exactly why they're worth your time.\n\nIf you're in a relationship, this is a year for deepening. You and your partner might have a conversation that feels like a breakthrough — something you've both been avoiding or dancing around. Having it makes everything easier. The relationship levels up when you stop performing and start being real.\n\nSummer is your most magnetic season. Something about June–August brings connection energy — whether that's a new relationship, rekindling something old, or just feeling more confident in how you show up.`,
+    loveGrowth: "Guard against choosing comfort over connection. It's easy to stick with what's familiar, but this year rewards vulnerability. Say the thing.",
+    health: `Your energy runs in waves this year. January through March might feel sluggish — like you're running through mud. That's normal. Your body is recalibrating. Don't force intense routines in Q1; ease in.\n\nSpring is when your energy picks up, and by summer you'll feel genuinely good. This is a great year to start a consistent (not extreme) exercise habit. Walking, swimming, yoga — anything sustainable beats anything intense-but-temporary.\n\nWatch your sleep in October–November. Stress or overthinking might mess with your rest, which creates a domino effect on everything else. Protect your sleep like it's your most important meeting.`,
+    healthGrowth: `Guard against the "I'll rest when I'm done" mindset. You're never done. Rest is part of the work.`,
+    family: `Family relationships feel more stable this year, but "stable" doesn't mean "static." There might be a conversation with a parent or sibling that shifts the dynamic — in a good way. Someone in your family finally sees you as an adult, not just the kid they remember.\n\nIf there's been tension at home, the second half of the year brings softening. Not because the issue disappears, but because someone (maybe you) decides to stop keeping score. That choice changes more than you'd expect.\n\nYou might also take on more of a "provider" or "anchor" role in your family this year. It's not a burden — it's a sign of growth. You're becoming the person others lean on.`,
+    familyGrowth: "Guard against absorbing everyone else's problems. Being supportive and being a sponge are different things. You can care without carrying.",
+    mentor: `2026 brings at least one person into your life who changes your trajectory. This isn't necessarily a romantic connection — it could be a mentor, a collaborator, or someone who casually introduces you to an opportunity. Pay attention to people you meet in professional settings between March and June.\n\nYou might also reconnect with someone from your past — an old friend, colleague, or classmate. That reconnection isn't random. They have something you need (information, a connection, perspective), even if neither of you realizes it right away.\n\nThe flip side: someone in your current circle might drift away. That's okay. Not every relationship is meant to go the distance. Let it happen naturally.`,
+    mentorGrowth: "Guard against being too independent to accept help. Someone wants to open a door for you this year. Let them.",
+    movement: `This is a moderate year for change. You're not uprooting your whole life, but you might make one significant shift — a move, a new commute, a change in daily routine. If you've been thinking about relocating, the window between April and September is your best bet.\n\nTravel is highlighted in the summer months. Even if it's not a major trip, getting out of your usual environment gives you clarity you can't get from your couch. A change of scenery = a change of perspective.\n\nIf you're feeling stuck in any area, the physical act of moving helps. Rearrange your room, change your route to work, try a new coffee shop. Small shifts create big energy changes.`,
+    movementGrowth: "Guard against staying put just because it's comfortable. Sometimes the growth is in the move itself, not the destination.",
+    growth: `2026 is a strong learning year, but not necessarily in a formal "go back to school" way. You're more likely to grow through experience, mentorship, and self-directed study. A book, podcast, or course you encounter in Q1 could genuinely change how you think about your career or life direction.\n\nIf you've been procrastinating on a certification, skill, or creative project — this is the year the procrastination costs you. Not in a scary way, more like you'll feel the gap between where you are and where you could be. Use that feeling as fuel, not shame.\n\nBy year's end, you'll know significantly more than you do now. The version of you reading this in December will be impressed by how much ground you covered.`,
+    growthGrowth: "Guard against learning without applying. Knowledge without action is just trivia. Build something with what you learn.",
+    monthly: [
+      "Slow start — use it to plan, not to panic. The runway matters.",
+      "A conversation changes how you see a situation. Listen more than you talk.",
+      "Someone brings an opportunity to your door. Don't overthink it — say yes.",
+      "Financial clarity arrives. You finally see where the leaks are.",
+      "Energy picks up. Start the project you've been putting off.",
+      "Social season — the connections you make now pay off later.",
+      "A quiet win. Something you planted months ago starts sprouting.",
+      "Decision time. Choose the harder path — it leads somewhere better.",
+      "Rest and recharge. You've earned a breather.",
+      "Unexpected news — mostly good. Stay flexible.",
+      "Deep focus month. Heads down, distractions off.",
+      "Look back and be proud. You did more than you think."
+    ],
+    closing: "This year, your biggest competition isn't someone else — it's the version of you that's afraid to start."
+  },
+  '乙': {
+    hook: "2026 is your quiet glow-up — by December, people will wonder what changed. (Spoiler: everything.)",
+    keywords: ["Bloom", "Reinvention", "Intuition"],
+    keywordIcons: ["icon-wood", "icon-fire", "icon-water"],
+    overall: `You know that feeling when a plant you forgot about suddenly starts blooming? That's your 2026. Things you set in motion ages ago — maybe even things you gave up on — start showing signs of life. This year isn't about forcing growth. It's about letting growth happen, which, for someone as adaptable as you, is actually the harder skill.\n\nYour natural flexibility is your superpower this year. Where others get stuck, you'll find a way around, through, or over. But here's the thing — you don't always have to adapt to other people's plans. This is the year you start bending things toward your goals instead of just fitting into everyone else's.\n\nExpect the second half of the year to feel noticeably different from the first. Q1-Q2 is setup; Q3-Q4 is payoff. The key is not giving up during the setup phase because it feels slow.`,
+    overallGrowth: "Guard against confusing flexibility with people-pleasing. Adapting is smart; disappearing into someone else's vision is not. Know the difference this year.",
+    wealth: `Money in 2026 comes through creativity and relationships, not brute-force hustle. You might earn from a talent you've been undervaluing, or someone in your network points you toward income you didn't know existed. Stay open to unconventional sources — a hobby that pays, a referral bonus, a creative side project.\n\nSpring brings a spending temptation. Something shiny catches your eye and it feels like a "treat yourself" moment. Check in with future-you before swiping. Ask: "Will I be glad I bought this in three months?" If the answer isn't a clear yes, wait.\n\nThe strongest financial months are August through November. That's when side income solidifies, deals close, or you finally see returns on something you invested in (time, money, or energy). Patience literally pays.`,
+    wealthGrowth: "Guard against undercharging for your work. If you've been giving discounts, doing favors, or pricing yourself low — stop. Your value went up. Your prices should too.",
+    career: `Professionally, 2026 is about positioning. You might not make the biggest leap this year, but you'll put yourself exactly where you need to be for 2027's big move. Think of this as the year you become undeniable — so that when the opportunity comes, there's no question you're ready.\n\nA key moment comes around April–May when you get a chance to lead something or take ownership of a project. It might feel premature. Do it anyway. The discomfort fades faster than you think, and the confidence you gain doesn't.\n\nYou might also realize that what you want from your career has shifted. The thing you were chasing two years ago might not excite you anymore. That's not failure — that's evolution. Trust the new direction.`,
+    careerGrowth: "Guard against staying invisible because it feels safer. You've been the quiet contributor long enough. Let people see what you bring.",
+    vocation: `Your strengths in 2026 lean heavily toward connection-based work. Counseling, design, writing, community building, anything where empathy and creativity intersect. If you're in a purely analytical or mechanical role, you might feel the pull toward something more human.\n\nThis is also a strong year for creative entrepreneurship. If you've been thinking about starting something — a shop, a brand, a service — the energy supports it. Start small. Test it. You don't need a business plan; you need a first customer.\n\nPay attention to what you do during your free time. The thing you reach for when nobody's watching? That's the signal.`,
+    vocationGrowth: `Guard against waiting for permission. Nobody is going to tap you on the shoulder and say "now it's your turn." You decide when it's your turn.`,
+    love: `2026 is magnetically attractive for you. Something about your energy this year draws people in — and not just romantically. You'll notice people want to be around you, confide in you, connect with you. Lean into it.\n\nIf you're single, the most interesting romantic energy shows up in unexpected places. Not on dating apps — in a bookstore, at a friend's gathering, through a work connection. The person worth your attention is probably someone you'd overlook in a lineup but can't stop talking to in person.\n\nIf you're partnered, this year deepens intimacy through shared experiences. Plan something together — a trip, a project, even redecorating a room. The bonding happens in the doing, not just the talking.`,
+    loveGrowth: "Guard against idealizing new connections while taking existing ones for granted. The grass is greener where you water it — even in love.",
+    health: `Your body is asking for gentleness this year. If you've been pushing through exhaustion, 2026 is when the bill comes due. Not dramatically — more like persistent fatigue, minor aches, or your immune system tapping you on the shoulder. Listen before it starts shouting.\n\nThe best health move you can make: prioritize consistency over intensity. A 20-minute daily walk beats a weekend warrior gym session. Your body responds to rhythm this year. Eat at regular times. Sleep at regular times. The routine is the medicine.\n\nSkin, hair, and digestive health are highlighted. Small adjustments — more water, less processed food, a probiotic — make a bigger difference than you'd expect.`,
+    healthGrowth: "Guard against treating your body like it's inconvenient. It's your oldest companion. Take care of it like you'd take care of a friend.",
+    family: `Family is a source of warmth this year, even if it's complicated warmth. You might have a moment where a family member surprises you — with understanding, support, or just showing up when you didn't expect them to. Let yourself be surprised. You don't always have to be the one giving.\n\nIf there's a long-standing family issue, 2026 brings an opportunity to address it — not fix it entirely, but take a real step. The conversation you've been avoiding? It goes better than you think. Especially between June and August.\n\nHome itself becomes more important this year. You might feel drawn to nesting — making your space feel more like yours. That instinct is worth following. Your environment shapes your energy more than you realize.`,
+    familyGrowth: "Guard against martyrdom in family dynamics. Helping is beautiful; losing yourself in it is not. You're allowed to have boundaries with people you love.",
+    mentor: `A creative collaborator enters your world this year. This is someone who gets you — your taste, your vision, your weird ideas. Working together feels effortless. Watch for this person in creative or social spaces between February and May.\n\nAn older figure (not necessarily in age, but in experience) offers wisdom that saves you months of trial and error. This might be a casual coffee chat that turns into life-changing advice. Say yes to conversations with people who've been where you're going.\n\nOne relationship that's been draining you might naturally fade. Let it. You've been holding on out of loyalty, but loyalty shouldn't cost you your peace.`,
+    mentorGrowth: "Guard against surrounding yourself only with people who agree with you. The person who challenges you respectfully is worth ten who just nod along.",
+    movement: `Change sneaks up on you in 2026 — less of a dramatic pivot and more of a gradual shift in direction. By June, your daily life might look subtly different from January, and by December, the gap is even wider. These aren't earthquakes; they're tectonic plates moving.\n\nIf you're considering a move — physical or metaphorical — spring is the window. The energy supports fresh starts between March and June. Even if it's just changing your commute, your neighborhood hangout, or your daily routine, novelty feeds your creativity this year.\n\nTravel is highlighted in late summer. If you can manage a trip (even a short one) in August or September, take it. You come back with more than just photos.`,
+    movementGrowth: "Guard against resisting change because it's unfamiliar. You're a vine — you grow by reaching toward new light, not by staying in one spot.",
+    growth: `This is a phenomenal year for creative skill-building. Writing, design, music, photography — anything that combines expression with craft. You don't need to be "good" at it; you need to start. The skill develops faster than you'd expect because the energy supports creative growth.\n\nA book or mentor you encounter in Q1 plants a seed that bears fruit all year. Pay attention to what catches your attention in January–March. Follow that thread.\n\nPersonal growth this year is less about adding new habits and more about shedding old beliefs. The story you've been telling yourself about who you are and what you're capable of? It's outdated. Rewrite it.`,
+    growthGrowth: `Guard against perfectionism disguised as "not ready yet." You'll never feel 100% ready. Start at 70% and learn the rest on the way.`,
+    monthly: [
+      "Introspective energy. Journal, reflect, set intentions — but quietly.",
+      "A creative spark. Follow it, even if it seems impractical.",
+      "New people enter your orbit. Be open to unlikely connections.",
+      "Career momentum builds. Say yes to the stretch opportunity.",
+      "Financial decision time. Trust your gut, but check the numbers too.",
+      "Family matters soften. A conversation heals more than you expect.",
+      "Energy peak. You feel like yourself again — use it.",
+      "Travel or change of scenery brings unexpected insight.",
+      "A relationship deepens or clarifies. Either way, you'll know where you stand.",
+      "Creative project reaches a milestone. Celebrate it.",
+      "Quiet confidence. You don't need validation — you know what you've built.",
+      "Gratitude month. Look back and let yourself feel proud."
+    ],
+    closing: "You don't need to bloom loudly to bloom beautifully. This year, your quiet growth speaks for itself."
+  },
+  '丙': {
+    hook: "2026 is your spotlight year — not because you chased it, but because you finally stopped dimming yourself.",
+    keywords: ["Radiance", "Visibility", "Passion"],
+    keywordIcons: ["icon-fire", "icon-fire", "icon-fire"],
+    overall: `You're a natural sun — you light up rooms, conversations, and sometimes entire projects. In 2026, that light gets turned up. People notice you more, opportunities come knocking louder, and the stage (whatever your stage is) feels more available than it has in years.\n\nBut here's the honest truth: being seen means being judged, too. And that's where 2026 challenges you. The exposure you gain this year isn't just pleasant attention — it's also accountability. You'll need to back up the charisma with substance. The good news? You absolutely can. You've been building substance quietly; now it shows.\n\nThe first half of the year is about attraction — drawing in people, ideas, and opportunities. The second half is about selection — choosing wisely which of those you actually commit to. Not everything that shines deserves your energy.`,
+    overallGrowth: "Guard against saying yes to everything because it all feels exciting. Overcommitting is your kryptonite this year. Three priorities, max. Let the rest orbit.",
+    wealth: `Money follows your visibility this year. The more you put yourself out there — your work, your ideas, your face — the more financial opportunities materialize. This isn't about being salesy; it's about being present. Show up, and the money finds you.\n\nThere's a noticeable financial uptick around March–May, possibly tied to a project that launches or a deal that closes. Ride that wave but don't assume it's permanent. Smart move: take 20-30% of any windfall and put it somewhere you can't easily touch. Future-you sends thanks.\n\nFall brings spending temptations — possibly a big purchase that feels justified but is really emotional. Ask yourself: "Am I buying this because I need it, or because I want to feel a certain way?" That question saves you hundreds (maybe thousands).`,
+    wealthGrowth: "Guard against generosity that bleeds you dry. You naturally want to treat people, pick up tabs, be the provider. Beautiful instinct — but make sure you're not the last person on your own priority list.",
+    career: `This is a breakthrough year professionally. You might land the role, the client, or the project that puts you on the map. The key ingredient isn't talent (you've had that) — it's timing. 2026's energy lines up with your natural leadership style. People want to follow someone with conviction, and that's you right now.\n\nWatch for a pivotal professional moment in Q2. It could be a pitch, a launch, a presentation, or even a viral moment. Whatever it is, prepare for it like it matters — because it does. The effort you put into preparation shows.\n\nBy Q4, you might be managing or leading in a capacity that's new to you. It feels different from individual work. You'll need to delegate, trust others, and resist the urge to do everything yourself. Your growth this year is learning that influence scales better than effort.`,
+    careerGrowth: "Guard against burnout disguised as passion. You love what you do — but running on enthusiasm without rest isn't sustainable. Schedule recovery like you schedule meetings.",
+    vocation: `Your 2026 energy is tailor-made for roles where you lead, inspire, or perform. Think: public speaking, content creation, entrepreneurship, coaching, entertainment, or any role where personality is an asset. If you're in a job where you feel invisible, this year's friction is telling you something important.\n\nThis is also a strong year for personal branding. Whether or not you care about "building a brand," the way you present yourself professionally matters more than usual. Update the LinkedIn, refresh the portfolio, tell people what you do — unapologetically.\n\nIf you've been hiding behind someone else's brand or vision, 2026 nudges you toward your own. It doesn't have to be a full launch — even a side project under your own name shifts the energy.`,
+    vocationGrowth: "Guard against comparing your chapter one to someone else's chapter twenty. Your path has a different timeline — and that's what makes it yours.",
+    love: `Your romantic energy is hot in 2026 — and you know it. You attract attention effortlessly, especially in the first half of the year. The question isn't whether opportunities come; it's whether you choose wisely. Not every flame is worth your fire.\n\nIf you're single, the most meaningful connection likely shows up through your work or passion projects — someone who admires what you do before they admire how you look. That order matters. Depth over sparkle.\n\nIf you're partnered, this year tests whether your relationship can handle you at full brightness. A good partner celebrates your wins without feeling threatened. If that's not happening, 2026 forces a conversation about it.`,
+    loveGrowth: "Guard against equating attention with love. Being desired and being loved are different experiences. Chase the one that lasts.",
+    health: `Your energy runs high this year, which is both a gift and a risk. You'll feel unstoppable in spring and summer — and you might push too hard. The fire element that powers you can also burn you if you don't regulate.\n\nHeart, blood pressure, and inflammation are areas to watch. Nothing alarming — just worth monitoring. Especially if you're the type to skip checkups. Book one. Just do it.\n\nHydration and cooling activities (swimming, cold showers, yin yoga) are your secret weapons this year. You run hot; balance it with cool. Your body will tell you when you're overheating — flushed skin, irritability, insomnia. Those are signals, not inconveniences.`,
+    healthGrowth: "Guard against treating rest as laziness. Your engine is powerful — but even supercars need pit stops.",
+    family: `Family relationships benefit from your warmth this year, but they also need your presence. You might be so focused on career and social life that family falls to the background. Schedule time for the people who knew you before the spotlight. They ground you in ways you don't always appreciate in the moment.\n\nA parent or older family member might need more of your attention this year — not a crisis, but a reminder that your roles are shifting. You're becoming someone they lean on, and that's both a responsibility and an honor.\n\nSibling relationships are highlighted. If there's been distance, 2026 is a good year to close it. A simple call or visit goes further than you'd think.`,
+    familyGrowth: "Guard against performing for your family. They don't need your highlight reel — they need you. Show up real.",
+    mentor: `2026 brings a connector — someone who introduces you to the right people at the right time. This person might not seem important when you first meet them. They might be quiet, unassuming, or in a completely different field. But the connection they facilitate changes your trajectory.\n\nA competitor or rival also plays a role this year. Not as an enemy — as a mirror. They show you what you're capable of by pushing you. Don't resent them; learn from them.\n\nWatch for a mentor figure in Q3. Someone who's already walked your path and can tell you which mistakes to skip.`,
+    mentorGrowth: "Guard against surrounding yourself only with fans. You need people who tell you the truth, not just what you want to hear.",
+    movement: `2026 has significant movement energy for you. Whether it's a job change, a relocation, or a complete lifestyle shift — something about your external circumstances evolves. The best windows for major moves are April–June and September–October.\n\nTravel is not just recreation for you this year — it's fuel. Every trip you take brings back an idea, a contact, or a perspective that feeds your work. Prioritize travel that expands your worldview, not just your Instagram.\n\nIf you've been feeling geographically stuck, the restlessness is real and valid. You don't have to move countries — but changing your daily environment (new neighborhood, new workspace, new routine) scratches the itch.`,
+    movementGrowth: "Guard against running from something and calling it \"chasing something.\" Make sure your moves are toward, not away from.",
+    growth: `Your growth this year is about leadership skills. Communication, emotional intelligence, delegation, public speaking — these are the muscles 2026 wants you to build. You already have the raw charisma; now you're adding the craft.\n\nConsider taking a course or workshop in Q1–Q2 that pushes you into unfamiliar territory. Not more of what you already know — something adjacent. A musician takes an acting class. A developer learns storytelling. Cross-pollination is where your best ideas come from.\n\nThe personal growth lesson of 2026: humility makes you stronger, not weaker. The willingness to say "I don't know" or "teach me" opens doors that confidence alone can't.`,
+    growthGrowth: "Guard against thinking you've already figured it out. The moment you stop learning is the moment you start becoming irrelevant. Stay curious.",
+    monthly: [
+      "Set bold intentions. This isn't a year for playing it safe.",
+      "Someone from your past reaches out. Hear them out.",
+      "Financial boost. A project or effort starts paying off.",
+      "Movement energy — travel, relocate, or shake up your routine.",
+      "Career peak moment. Prepare and show up fully.",
+      "Social connections deepen. Quality over quantity.",
+      "Creative explosion. Follow the inspiration wherever it leads.",
+      "Rest is non-negotiable. Recharge before fall pushes begin.",
+      "Big decision incoming. Trust your preparation, not just your gut.",
+      "Unexpected opportunity — the kind that doesn't come twice.",
+      "Relationship clarity. You'll know who's real and who's not.",
+      "Reflect on how far you've come. It's further than you think."
+    ],
+    closing: "This year, don't just shine — aim. A focused light is a laser. Yours can cut through anything."
+  },
+  '丁': {
+    hook: "2026 is the year your inner fire finds its match — and together, you light up something bigger.",
+    keywords: ["Clarity", "Connection", "Creation"],
+    keywordIcons: ["icon-fire", "icon-water", "icon-wood"],
+    overall: `Where Yang Fire is the sun, you're the candle — and that's not a downgrade. A candle illuminates exactly what needs to be seen. In 2026, your ability to focus, to go deep instead of wide, becomes your greatest asset. While everyone else is scattered, you're precise.\n\nThis year rewards depth over breadth. One project done beautifully beats five done okay. One deep relationship beats twenty shallow ones. One skill mastered beats a dozen sampled. You intuitively know this, but 2026 makes it strategic — the people and opportunities that align with your focused energy are the ones worth keeping.\n\nEmotionally, this year has layers. You'll feel things deeply — inspiration, frustration, tenderness, ambition. All of it is useful if you channel it. Your emotions aren't obstacles; they're GPS.`,
+    overallGrowth: "Guard against overthinking so much that you never act. Analysis is your strength, but paralysis is its shadow. At some point, you have to light the match.",
+    wealth: `Financial growth this year is steady and intentional — think compound interest, not jackpot. You're building wealth through smart decisions rather than lucky breaks. The best financial move you make in 2026 might be boring (automating savings, cutting a subscription, negotiating a rate) but the impact compounds.\n\nWatch for a financial insight in March — maybe you discover a tool, a strategy, or a piece of advice that reshapes how you think about money. That "aha" moment is worth more than any single paycheck.\n\nSecondary income is favored between July and October. If you've been thinking about freelancing, consulting, or monetizing a skill — that window is ideal. Start small, test the market, then scale.`,
+    wealthGrowth: "Guard against being so cautious that you miss opportunities. Not every investment is a gamble. Some are calculated bets — and you're good at calculating. Trust that.",
+    career: `Professionally, 2026 is about becoming essential. Not in a "I'll do everything" way — in a "nobody else can do this particular thing as well as I can" way. Your niche sharpens this year. The thing that makes you irreplaceable becomes clearer to you and to others.\n\nA project between April and July defines your year. This is the one you'll reference in future interviews, bios, and portfolios. Give it your best work. Details matter — and details are your forte.\n\nYou might also mentor or teach someone this year, and that experience reveals things about your own expertise you didn't fully appreciate. Teaching is learning twice.`,
+    careerGrowth: "Guard against perfectionism that delays shipping. A released project that's 90% perfect beats an unreleased one that's 100% in your head.",
+    vocation: `You thrive in roles that require precision, insight, and emotional intelligence. Think: research, therapy, writing, data analysis, strategic planning, design, or any field where depth matters more than speed. If your current role is all about volume and velocity, you might feel friction — that friction is information.\n\n2026 highlights a possible career evolution: from doing the work to advising on the work. You might find yourself naturally sliding into a consultant, strategist, or coach role. Don't resist it — it's where your value multiplies.\n\nCreative pursuits are especially favored. If art, music, writing, or design has been a hobby, this year it has professional potential. Not guaranteed income — but genuine potential worth exploring.`,
+    vocationGrowth: "Guard against staying in a role you've outgrown just because it's comfortable. Comfort and growth rarely share the same address.",
+    love: `Romance in 2026 is deep. Not the giddy, butterflies-in-stomach kind (though there's a little of that in spring) — the "I see you and you see me" kind. Emotional intimacy is your love language this year, and you won't settle for surface-level connection.\n\nIf single, the most meaningful person you meet this year probably isn't flashy. They're observant, thoughtful, and they remember what you said three conversations ago. That's your signal. Watch for them between May and August.\n\nIf partnered, 2026 asks you both to be more honest. Not brutally — tenderly. Share the fears, not just the highlights. Vulnerability is the bridge to the next level of your relationship.`,
+    loveGrowth: "Guard against testing people by withholding. If you want to know if someone cares, try telling them what you need instead of waiting to see if they guess.",
+    health: `Your health this year is closely tied to your emotional state. Stress shows up in your body faster than most — tension headaches, stomach issues, insomnia. The prescription isn't more supplements; it's more processing. Journal, talk to someone, move your body. Get the emotions out before they become physical.\n\nSpring and fall are your best energy seasons. Summer might bring a dip — possibly heat-related fatigue or simply the need for quiet. Don't fight it; adjust your schedule around it.\n\nEyesight and circulation deserve attention. If it's been a while since an eye exam, book one. And anything that gets your blood moving — walking, dancing, stretching — is medicinal for you this year.`,
+    healthGrowth: `Guard against neglecting mental health because you're "fine." You don't have to be in crisis to benefit from care. Maintenance beats repair.`,
+    family: `Family connections feel warmer in 2026, especially with maternal figures or female relatives. Someone in your family offers support that genuinely surprises you — maybe emotional, maybe practical. Let it in.\n\nIf you've been carrying a family secret or burden, this year brings relief. Not through dramatic revelation, but through gradual release. You might finally let go of something you've been holding for someone else.\n\nYour home environment matters more than usual. Invest in making your space feel calm and beautiful. You don't need a renovation — a few intentional touches (lighting, plants, a reading corner) shift your daily energy.`,
+    familyGrowth: "Guard against absorbing family stress like a sponge. Empathy is a gift, but it needs boundaries. You can love someone and still protect your peace.",
+    mentor: `Your key person in 2026 is a truth-teller — someone who sees through your defenses and tells you what you need to hear, not what you want to hear. This person probably arrives in Q1 and becomes more important as the year goes on. They might irritate you at first. That's how you know they're real.\n\nA creative partner or collaborator is also highlighted. This isn't someone who does the same thing as you — it's someone whose strengths complement yours. Together, you make something neither could alone.\n\nAn old friendship might need closure this year. It's been fading for a while, and 2026 gives you permission to acknowledge that. Endings can be gentle.`,
+    mentorGrowth: "Guard against keeping people at arm's length because it feels safer. Your best relationships this year require you to be seen — really seen.",
+    movement: `2026 is a refinement year for change — not dramatic upheaval, but meaningful adjustments. You might redecorate, restructure your schedule, or shift your social circle. These feel small but they reshape your daily experience significantly.\n\nTravel in Q2 (especially April–May) is strongly favored. A trip during this window — even a weekend getaway — gives you perspective that's hard to get at home. You might return with a completely different take on a problem that's been bugging you.\n\nIf you're considering a bigger change (new city, new job, new relationship structure), the groundwork happens this year even if the leap happens in 2027. Research, explore, plan — trust the process.`,
+    movementGrowth: "Guard against perfecting the plan so long that you never execute it. At some point, preparation becomes procrastination. You'll know when.",
+    growth: `2026 is a year of inner development as much as outer. Yes, you'll learn new skills and gain new knowledge — but the real growth is in self-awareness. You understand yourself better by December than you ever have. That understanding is worth more than any certificate.\n\nA practice like journaling, meditation, or therapy (if you haven't tried it) gives you outsized returns this year. Even 10 minutes of reflection daily compounds into genuine wisdom by year's end.\n\nAcademically, this is a strong year for deep study. If you've been wanting to master something — a language, a framework, a discipline — 2026's focused energy supports immersive learning. Go deep, not wide.`,
+    growthGrowth: "Guard against spiritual bypassing — using personal development as an excuse to avoid practical action. Growth that doesn't translate into behavior is just entertainment.",
+    monthly: [
+      "Set one clear intention for the year. Just one. Make it matter.",
+      "A quiet realization about a relationship. Trust what you feel.",
+      "Financial insight lands. Act on it — don't just note it.",
+      "Travel or explore. New environments spark new ideas.",
+      "Creative energy peaks. Make something with your hands.",
+      "Emotional clearing. Let go of something heavy.",
+      "Career opportunity requires courage. You have it. Use it.",
+      "Relationships test your boundaries. Hold them with grace.",
+      "Financial harvest begins. Patience was the strategy all along.",
+      "A mentor or guide appears. Accept their wisdom.",
+      "Deep focus month. Finish what you started.",
+      "Peaceful close. You're not the same person who started this year."
+    ],
+    closing: "Your light doesn't need to fill the whole room — just illuminate the right corner. That's enough to change everything."
+  },
+  '戊': {
+    hook: "2026 is your mountain year — everything built on you holds, and everyone starts noticing the view from your summit.",
+    keywords: ["Foundation", "Trust", "Structure"],
+    keywordIcons: ["icon-earth", "icon-earth", "icon-metal"],
+    overall: `You're the mountain — stable, reliable, and honestly a little underestimated until people need solid ground to stand on. In 2026, people need solid ground. Economic uncertainty, social chaos, personal dramas — and there you are, steady as always. This year, that steadiness isn't just a personality trait; it's your competitive advantage.\n\nThe theme is consolidation. Whatever you've been building — career, relationships, savings, skills — 2026 is when you cement it. Think of it as pouring the foundation. Not glamorous, but try building a skyscraper without one. You're playing a long game, and this is the year your patience starts paying visible dividends.\n\nThe challenge? You might feel bored. When things stabilize, you might mistake stability for stagnation. It's not. You're not stuck — you're rooted. Big difference.`,
+    overallGrowth: "Guard against rigidity disguised as reliability. Being stable doesn't mean being inflexible. The best mountains have pathways up — let people (and opportunities) find their way to you.",
+    wealth: `Financially, 2026 is solid. Not spectacular — solid. And for someone building long-term wealth, solid is exactly what you want. Your income likely stays consistent or grows modestly, but the real gains come from what you don't spend. Smart budgeting, debt reduction, and strategic saving are your money moves this year.\n\nProperty, real estate, or physical assets are highlighted. If you've been thinking about buying, investing in property, or even just improving your living situation — 2026 supports it. The best windows are March–May and August–September.\n\nAn unexpected expense might pop up around October. Nothing catastrophic, but annoying enough to remind you why emergency funds exist. If you don't have one, build one. Three months of expenses, minimum.`,
+    wealthGrowth: "Guard against being so frugal that you miss investments in yourself. Courses, tools, health — these aren't expenses, they're infrastructure. Spend there.",
+    career: `Career growth this year is about trust. People promote, hire, and partner with people they trust — and you've been quietly building trust for a while. In 2026, that trust converts into tangible opportunities. A leadership role, a bigger project, a client who refers you to three others.\n\nThe key moment comes mid-year when someone puts you in charge of something important. Not because you asked — because you're the obvious choice. That moment validates everything you've been building. Don't downplay it.\n\nYour management style matures this year. If you lead a team, you learn to inspire rather than just instruct. If you work solo, you learn to collaborate without losing your identity. Both are upgrades.`,
+    careerGrowth: `Guard against doing other people's work because "it's faster if I just do it myself." Delegation isn't laziness — it's leadership. Let go of control and watch things grow.`,
+    vocation: `Your energy favors building roles — operations, management, engineering, real estate, anything where you create structure or systems. If your current work feels chaotic with no framework, you'll either build one (natural instinct) or leave to find one.\n\nAdministrative, financial, or strategic planning roles are highlighted. If you're considering a shift toward ops, project management, or organizational design — 2026 supports it.\n\nYou might also discover satisfaction in mentoring this year. Helping others build what you've already built gives you purpose and clarifies your own expertise.`,
+    vocationGrowth: "Guard against undervaluing soft skills. Your technical or practical abilities are obvious — but your emotional intelligence is catching up. That combination is rare and valuable.",
+    love: `Romance in 2026 is about stability with depth. Not boring stability — the kind where you feel safe enough to be vulnerable. If that sounds unexciting, you haven't experienced it yet. It's actually the most exciting thing.\n\nIf single, your most meaningful connection this year is with someone who matches your reliability. They show up consistently, text back on time, follow through on plans. Sexy? Maybe not traditionally. But you know how rare that is? Very.\n\nIf partnered, this year strengthens the practical side of your relationship — finances, living arrangements, future planning. Having "the talk" about money or goals isn't unromantic. It's the most romantic thing you can do, because it says "I'm planning a future with you."`,
+    loveGrowth: "Guard against showing love only through actions and forgetting words. Your partner doesn't just need you to fix things — they need you to say how you feel. Use your words.",
+    health: `Your body is an ally this year — sturdy and dependable, as long as you maintain it. Think of yourself as a reliable car: you run great, but you need regular oil changes. Skipping maintenance catches up faster than you'd like.\n\nDigestive health and weight management are highlighted. This isn't about restriction — it's about consistency. Regular meals, reasonable portions, less snacking out of boredom. Your body responds well to routine this year. Give it one.\n\nJoint health and flexibility deserve attention. If you only do strength training, add stretching. If you only walk, add some resistance. Balance is the keyword for your physical health in 2026.`,
+    healthGrowth: "Guard against ignoring small signals. That persistent ache, that recurring fatigue — it's your body communicating. Listen before it raises its voice.",
+    family: `You're the anchor in your family, and 2026 makes that role more visible. Someone leans on you — maybe more than one person. You handle it well because it's natural to you, but make sure you're getting support too. Even mountains need tectonic plates holding them up.\n\nA family project or decision (buying a home together, planning a trip, addressing an inheritance issue) comes up between May and August. Your practical approach keeps things on track.\n\nParental relationships evolve. If you're the parent, you grow into the role more fully. If you have parents, the dynamic shifts toward more equality — less child, more peer. It's a subtle but meaningful shift.`,
+    familyGrowth: "Guard against being so strong that nobody thinks to ask how you're doing. Strength isn't the absence of need — it's the ability to ask for help while standing tall.",
+    mentor: `A practical ally enters your world — someone who thinks in systems, numbers, and execution just like you do. This is a professional or business connection, most likely forming in Q1-Q2. Working with this person feels efficient and satisfying.\n\nAn emotional catalyst also appears — someone who cracks your shell a little. Not in a threatening way; in a "wow, I didn't know I felt that" way. This person might be a friend, a partner, or even a therapist. They help you access parts of yourself you usually keep locked up.\n\nA competitor earns your respect. Instead of friction, there's mutual recognition. This could lead to collaboration — or at least a healthy rivalry that pushes you both forward.`,
+    mentorGrowth: `Guard against only valuing people who are "useful." The person who makes you laugh, who brings lightness — they're just as important as the strategic ally.`,
+    movement: `Movement for you in 2026 is deliberate and planned — no spontaneous upheaval. If you're considering a move, you'll research it thoroughly (because of course you will) and execute it cleanly. Best window: spring or early fall.\n\nPhysical changes to your living space are favored. Renovation, furniture upgrade, reorganizing — your environment matters more to your productivity than you realize. A well-organized space = a well-organized mind.\n\nTravel for business or education is highlighted over leisure travel. If a trip has a purpose (conference, site visit, training), it yields disproportionate returns.`,
+    movementGrowth: "Guard against planning so thoroughly that you never leave. Sometimes you learn more from a spontaneous detour than from a perfectly mapped route.",
+    growth: `2026 is excellent for structural learning — certifications, formal training, mastering frameworks. Your brain loves organized knowledge, and this year's energy supports deep, systematic study. If there's a certification or credential you've been eyeing, go for it.\n\nEmotional intelligence is your growth edge. You're strong on logic and execution; the level-up comes from reading people, managing emotions (yours and others'), and communicating with empathy. A book on EQ or a leadership course yields disproportionate returns.\n\nBy December, you'll have added at least one significant skill or credential to your repertoire. And unlike some people, you'll actually use it.`,
+    growthGrowth: `Guard against dismissing "soft" learning as less valuable. The technical skills got you here. The human skills get you to the next level.`,
+    monthly: [
+      "Foundation month. Organize your finances, schedule, and priorities.",
+      "Relationship deepens through honest conversation.",
+      "Professional recognition — someone notices your consistency.",
+      "Financial opportunity — real estate, investment, or side income.",
+      "Family dynamics shift. Step into the anchor role willingly.",
+      "Energy dip. Rest without guilt — you've earned it.",
+      "Creative impulse surprises you. Follow it.",
+      "Strategic decision pays off. Your planning was worth it.",
+      "New connection becomes significant. Pay attention.",
+      "Unexpected expense — handle it calmly. You're prepared.",
+      "Leadership moment. Others look to you — lead with warmth.",
+      "Satisfaction month. The foundation you built is unshakable."
+    ],
+    closing: "You are the mountain. Not because nothing moves you — but because everything you build on you lasts."
+  },
+  '己': {
+    hook: "2026 is your garden year — what you nurture now feeds you for seasons to come.",
+    keywords: ["Nurture", "Patience", "Warmth"],
+    keywordIcons: ["icon-earth", "icon-water", "icon-fire"],
+    overall: `If Yang Earth is the mountain, you're the fertile soil — and 2026 is a planting year. The thing about soil is that it doesn't look like much from the outside, but everything depends on it. This year, your ability to nurture, support, and sustain becomes your most powerful currency.\n\nThe overall vibe is gentle but productive. You won't make headlines, but you'll make progress. Real, tangible, look-back-in-December-and-gasp progress. The secret is that you're doing it quietly, consistently, without needing applause. That's not weakness — that's power.\n\nEmotionally, 2026 asks you to trust the process. You'll have moments of doubt, usually around Q2 when things feel slow. Don't abandon the seeds you planted just because they haven't sprouted yet. They will. The timeline is longer than your impatience, but shorter than you fear.`,
+    overallGrowth: "Guard against self-sacrifice disguised as generosity. Fertile soil still needs nutrients. If you give and give without replenishing, even the richest earth goes barren.",
+    wealth: `Money in 2026 flows through service. The more genuinely helpful you are — to clients, colleagues, friends — the more financial opportunities emerge. This isn't about being a pushover; it's about being valuable. There's a difference. Know it. Charge for it.\n\nSavings and careful financial planning are your strongest moves. You might not make dramatic income leaps, but your ability to stretch, save, and strategically spend puts you ahead of most. By Q3, your financial position is noticeably stronger than Q1 — because of discipline, not luck.\n\nA secondary income stream might develop through caregiving, teaching, consulting, or any role where you help others improve. Your empathetic approach is literally worth money. Don't give it away free.`,
+    wealthGrowth: `Guard against financial anxiety that prevents all spending. Being careful is smart; being fearful is limiting. There's a difference between "I can't afford it" and "I choose not to spend on this right now."`,
+    career: `Professionally, 2026 is about becoming indispensable. Not through showmanship or self-promotion — through reliability and quality. You're the person who remembers the details, follows up, and delivers consistently. This year, that consistency is rewarded.\n\nA promotion, raise, or new responsibility arrives between May and August. It might not be the title you fantasized about, but it's the one that matters — more influence, more trust, more impact. Take it and run.\n\nYou might also discover that your strengths lie in supporting roles — operations, coordination, quality assurance, HR, anything that keeps the machine running. Don't undervalue these. Organizations fall apart without people like you.`,
+    careerGrowth: "Guard against waiting to be recognized. If your contributions aren't being seen, make them visible. Document your impact. Share your wins. Advocating for yourself isn't bragging — it's honesty.",
+    vocation: `Your 2026 energy suits roles involving care, organization, and nurture. Healthcare, education, agriculture (literal or metaphorical), HR, customer experience, social work — anywhere your empathy has practical application. If your current role feels cold or transactional, the friction is real.\n\nThis is also a good year to explore healing-related fields. Not just medicine — therapy, coaching, nutrition, holistic wellness. Your natural instinct to help people heal (emotionally, physically, financially) is a career, not just a personality trait.\n\nCreative expression through practical mediums — cooking, gardening, interior design, pottery — is also highlighted. Your creativity is grounded and functional. Lean into that.`,
+    vocationGrowth: "Guard against thinking your ideal career has to be dramatic or prestigious. Meaningful work doesn't always look impressive on Instagram. It looks like impact.",
+    love: `Love in 2026 is comfortable — and before you roll your eyes at "comfortable," hear me out. Comfortable means safe enough to be messy. Safe enough to argue without fearing abandonment. Safe enough to show the unglamorous parts. That's the good stuff.\n\nIf single, you attract someone who values your warmth and consistency. They might not sweep you off your feet initially — but by the third date, you realize they feel like home. Look for them in everyday settings: a coffee shop, a work event, a friend's dinner party. Spring and fall are your hottest seasons.\n\nIf partnered, 2026 is a "deepen or drift" year. You can't coast anymore. Active investment — date nights, real conversations, shared goals — keeps the connection alive. It's not about grand gestures; it's about daily deposits.`,
+    loveGrowth: "Guard against mothering/fathering your partner. You nurture naturally, but your partner needs an equal, not a caretaker. Let them struggle a little — it's how they grow.",
+    health: `Your body in 2026 responds powerfully to routine care. Regular sleep, consistent meals, daily movement — these basics produce outsized results for you. Nothing extreme needed. Just show up for your body the way you show up for everyone else.\n\nDigestive health is the area to watch. Gut health directly affects your mood, energy, and skin. A probiotic, more fiber, fewer processed foods — small adjustments, big results. Consider a food journal for a month to spot patterns.\n\nStress tends to settle in your shoulders, neck, and stomach. Regular massage, stretching, or even just shoulder rolls throughout the day help more than you'd think. Your body stores emotions; give it ways to release them.`,
+    healthGrowth: "Guard against putting everyone else's health before your own. You can't pour from an empty cup — and you know this, but knowing and doing are different. Actually put yourself first sometimes.",
+    family: `Family is your superpower and your vulnerability. In 2026, both are amplified. You're the glue — the one who remembers birthdays, mediates conflicts, and keeps the group together. That role matters, and this year, people notice and appreciate it more visibly.\n\nA family member (possibly younger — a child, sibling, or mentee) needs your guidance this year. Your patience and warmth make you the best person for this. It's a gift to both of you.\n\nHome improvement projects are favored. Not necessarily big renovations — even decluttering, redecorating, or creating a garden (even a windowsill herb garden) aligns with your energy perfectly.`,
+    familyGrowth: "Guard against defining yourself entirely through family roles. \"Good parent/sibling/child\" is part of your identity, not all of it. Nurture your individual self too.",
+    mentor: `A practical mentor enters your life — someone who's been where you're going and can save you years of guessing. This person might be older, more established, or in a completely different field. The lesson they offer isn't always direct; sometimes it's their example that teaches you.\n\nA peer who truly sees you also becomes important. In a world where you're often the supporter, having someone support you feels revolutionary. Let them. You don't always have to be the strong one.\n\nAn energy-draining connection might need to be managed. Not necessarily ended — but boundaried. You know who it is. 2026 gives you the courage to address it.`,
+    mentorGrowth: "Guard against being so available that people take your presence for granted. Sometimes the most powerful thing you can do is be a little less accessible.",
+    movement: `Change for you in 2026 is organic and gradual. Like a garden shifting through seasons, your life evolves naturally. The biggest shifts happen in your home environment and daily routines — not dramatic upheaval, but meaningful rearrangement.\n\nIf you're considering a move, it's likely driven by family or quality-of-life factors. The best timing is late spring or early fall. You'll know when it feels right — your gut is especially reliable on location decisions.\n\nShort, meaningful trips trump long vacations this year. A weekend retreat, a visit to a friend in another city, a solo day trip — these recharge you more efficiently than a two-week beach vacation.`,
+    movementGrowth: "Guard against staying in an environment that's outgrown you just because it's familiar. Growth sometimes means new soil.",
+    growth: `2026 is about developing your voice. Not literally (though singing might help) — your ability to express opinions, set boundaries, and claim space in conversations. You've spent years listening and supporting. This year, you practice speaking and leading.\n\nCourses or books on communication, leadership, or assertiveness give you disproportionate returns. Your empathy is already maxed out — now you're building the complementary skills that make empathy powerful instead of just draining.\n\nCreative learning is also highlighted. Cooking classes, gardening workshops, pottery — anything that lets you create with your hands satisfies a deep need and develops skills you can use (or monetize).`,
+    growthGrowth: "Guard against learning as a substitute for doing. You don't need one more book before you start — you need to start, and read along the way.",
+    monthly: [
+      "Plant seeds — literally and metaphorically. Start something small.",
+      "A relationship clarifies. You know where you stand.",
+      "Financial discipline pays off. Stay the course.",
+      "Home improvements bring surprising joy. Nest a little.",
+      "Career opportunity — someone sees your value. Accept it.",
+      "Family connection deepens. A conversation heals.",
+      "Energy peak. Your consistency compounds into visible results.",
+      "A mentor appears. Be humble enough to learn.",
+      "Boundary-setting moment. Hold your ground with kindness.",
+      "Creative surge. Make something. Anything.",
+      "Rest month. Replenish what you've given all year.",
+      "Harvest time. Look at what grew from what you planted. Smile."
+    ],
+    closing: "The most powerful thing in nature isn't the storm — it's the soil that turns everything into growth. That's you."
+  },
+  '庚': {
+    hook: "2026 is the year you stop negotiating with mediocrity — and start cutting through to what actually matters.",
+    keywords: ["Decisiveness", "Execution", "Respect"],
+    keywordIcons: ["icon-metal", "icon-metal", "icon-fire"],
+    overall: `You're the axe. The sword. The tool that cuts through noise and gets to the point. In 2026, that energy is needed. The world is messy, complicated, full of half-measures and maybes. You're the person who says "here's the plan, let's go." And people follow.\n\nThis year amplifies your natural decisiveness, but it also tests it. Making quick decisions is your superpower — making right quick decisions is the upgrade. 2026 asks you to slow down just enough to aim before you swing. Not hesitate — aim. There's a difference.\n\nThe overall arc: Q1 is assessment (figuring out what needs cutting), Q2-Q3 is action (cutting it), Q4 is results (looking at what's left and being satisfied with it). By December, your life is leaner, stronger, and more aligned with what you actually want.`,
+    overallGrowth: "Guard against being so decisive that you dismiss input from others. Swords are powerful — but a sword that listens before it strikes is legendary.",
+    wealth: `Financially, 2026 rewards action. Not speculation, not waiting — action. You see an opportunity? Move on it. Your instinct for ROI is sharp this year, and the deals you make in Q1-Q2 compound through the rest of the year.\n\nIncome growth is likely, especially if you're in a performance-based or entrepreneurial role. Your output is directly proportional to your reward. No politics, no favoritism — pure results. That's your playground.\n\nBig-ticket decisions (investments, purchases, contracts) are best made between February and June. Your judgment is sharpest during this window. Fall brings some financial complexity — possibly taxes, contracts, or negotiations that require patience. Not your favorite, but manageable.`,
+    wealthGrowth: "Guard against spending like you're invincible. Your earning power is real, but so is lifestyle inflation. Build wealth, not just income.",
+    career: `Career-wise, 2026 is your power year. You either ascend in your current organization or realize you've outgrown it and need a bigger arena. Either outcome is valid — the key is not staying in a role that's too small for you out of comfort or loyalty.\n\nA confrontation or competitive moment in Q2 defines your trajectory. Someone challenges you — professionally, directly. How you respond matters. Not with aggression, but with competence. Show, don't tell. Results speak louder than arguments.\n\nBy Q3-Q4, you're operating at a higher level. More responsibility, more visibility, more pressure. You handle it well because pressure is your native environment. Just make sure you build a team around you — even the best blade needs a handle.`,
+    careerGrowth: "Guard against burning bridges on the way up. Today's competitor could be tomorrow's ally. Win with grace — it costs nothing and earns everything.",
+    vocation: `You thrive in roles requiring decisiveness, execution, and measurable outcomes. Sales, law, engineering, fitness, finance — anywhere results are tangible and performance is king. If your current role is heavy on meetings and light on action, you're probably frustrated. That frustration is direction.\n\nEntrepreneurship is especially favored in 2026. If you've been thinking about starting something, the energy supports bold moves. You're not the type to half-start things anyway.\n\nLeadership in crisis or high-pressure environments is your calling. When others freeze, you act. That's not just a skill — it's a rare gift. Own it.`,
+    vocationGrowth: "Guard against dismissing collaborative work as slow or inefficient. Not everything worth doing can be done solo. Your biggest wins this year involve other people.",
+    love: `Romance is... interesting for you in 2026. Your energy is magnetic but intense, and not everyone can handle it. The right person isn't intimidated by your directness — they're attracted to it. If someone can't handle you at full power, they're not your person.\n\nIf single, you might meet someone through competitive or physical activities — sports, fitness, a professional challenge. Someone who matches your energy, not someone who dims it. Summer is your most promising season.\n\nIf partnered, 2026 asks you to soften without weakening. There's a difference between being tough and being closed. Your partner doesn't need you to be less strong — they need you to be more open. Let them see what's behind the armor.`,
+    loveGrowth: `Guard against equating vulnerability with weakness. It takes more courage to say "I'm struggling" than to power through silently. The strongest thing you can do is let someone help.`,
+    health: `Physically, you're built to perform — and 2026 demands performance. Your energy is high, your drive is strong, and your body keeps up... as long as you maintain it. The risk is pushing through pain, ignoring injuries, and treating rest as optional. It's not.\n\nLungs, respiratory system, and skin are your areas to watch. Especially if you live in a polluted city or have seasonal allergies. Breathwork, air quality, and skincare matter more than usual.\n\nYour ideal exercise is something with structure and challenge — martial arts, CrossFit, competitive sports, heavy lifting. You need to beat something, even if it's your own record. Boring routines end your motivation. Keep it intense but varied.`,
+    healthGrowth: "Guard against treating your body like a machine that doesn't need downtime. Recovery isn't a weakness — it's what makes the next performance possible.",
+    family: `Family dynamics are a growth edge for you in 2026. You're learning that being strong for your family doesn't mean being rigid. They need your protection and your warmth. Showing emotion isn't a breach of duty — it's a deepening of it.\n\nA father figure or male authority dynamic is highlighted. Whether it's your relationship with your own father, your role as one, or a mentor who fills that role — something shifts this year. More understanding, less conflict.\n\nIf there's a family decision that requires leadership (finances, housing, care), you step up naturally. Just make sure you're including everyone in the decision, not just announcing it.`,
+    familyGrowth: "Guard against controlling family situations out of love. Protection is admirable; control is suffocating. Trust your family to be strong too.",
+    mentor: `A worthy rival appears — someone who pushes you to be better without tearing you down. This is iron sharpening iron. Respect them, compete with them, and learn from them. They make you sharper.\n\nA softening influence also enters (or deepens in) your life. This is someone who helps you access emotions, creativity, or playfulness you usually suppress. They're not changing you — they're completing you.\n\nAn old loyalty pays off. Someone you helped years ago returns the favor in a meaningful way. Karma is real, and yours is good.`,
+    mentorGrowth: "Guard against only respecting people who are strong. Gentleness has its own power, and the person who teaches you that is as valuable as any warrior.",
+    movement: `2026 is a year of purposeful movement. If you relocate, it's strategic — better job, better environment, better opportunities. No random moves. Every transition serves a clear goal.\n\nTravel for professional development is strongly favored. Conferences, training camps, site visits — go where the learning is. Your best ideas come from exposure to new environments and systems.\n\nIf you've been in the same place for years, even small changes to your environment create fresh energy. A new gym, a different commute route, rearranging your workspace — motion creates momentum.`,
+    movementGrowth: "Guard against constant movement as avoidance. Sometimes the bravest thing is to stay, settle, and face what's in front of you.",
+    growth: `2026's growth area is emotional intelligence and communication. Your execution skills are already elite — but the ability to inspire, persuade, and connect amplifies everything you do. A leadership book, a communication course, even an improv class (yes, really) gives you tools you didn't know you needed.\n\nDiscipline in learning is your strength. If you commit to studying something, you'll master it. The question is choosing what. This year, choose something that scares you a little. Something outside your comfort zone. That's where the biggest growth lives.\n\nPhysical skill development is also favored — martial arts advancement, a new sport, athletic competition. Your body learns as fast as your mind.`,
+    growthGrowth: "Guard against only learning things that reinforce what you already believe. Seek out perspectives that challenge you. Discomfort in learning is a sign of growth, not a sign to stop.",
+    monthly: [
+      "Sharpening month. Assess, plan, and cut the fat.",
+      "Financial opportunity. Strike while the iron is hot.",
+      "A competition or challenge brings out your best.",
+      "Relationship requires softness. Lean into it.",
+      "Career acceleration. Your results speak loudly.",
+      "A decision changes your trajectory. Make it boldly.",
+      "Physical peak. Train, compete, perform.",
+      "Unexpected ally appears. Accept the partnership.",
+      "Family moment requires your leadership — and your heart.",
+      "Financial review. Tighten what needs tightening.",
+      "Recognition arrives. You earned it.",
+      "Survey the battlefield. You won more than you lost. Well done."
+    ],
+    closing: "Strength isn't about never bending — it's about choosing what's worth fighting for. This year, choose wisely and swing hard."
+  },
+  '辛': {
+    hook: "2026 is your refinement year — the rough edges become your edge, and the world starts to see the gem you've always been.",
+    keywords: ["Polish", "Precision", "Recognition"],
+    keywordIcons: ["icon-metal", "icon-metal", "icon-fire"],
+    overall: `You're the jewel — not the axe. Where Yang Metal cuts through, you captivate. Your power isn't force; it's refinement. In 2026, that refinement reaches a new level. The skills you've been honing, the taste you've been developing, the standards you've been quietly upholding — they all crystallize into something undeniable.\n\nThis year has a "reveal" quality. Like a gem being pulled from the rough, things about you that were hidden or underappreciated become visible. Not because you suddenly changed — because the right light finally found you. Whether that's a professional showcase, a personal breakthrough, or just a moment where someone finally gets you — it's coming.\n\nThe emotional landscape is rich. You feel things with precision — specific joys, specific frustrations, specific longings. That precision is a gift, even when it hurts. Use it to make sharper decisions about what (and who) deserves your time.`,
+    overallGrowth: "Guard against perfectionism that isolates you. Flawlessness is lonely. Let people see the process, not just the polish. That's where connection lives.",
+    wealth: `Money follows quality this year. If your work is excellent, the financial rewards come — maybe not immediately, but inevitably. 2026 favors premium over volume. Do less, charge more, deliver exceptional. That's your financial strategy in a sentence.\n\nAn aesthetic or creative venture might generate income. Whether it's design, fashion, art, writing, or curation — your taste has commercial value. If you've been giving it away for free (Instagram mood boards, friend's wedding planning, free design advice), consider monetizing.\n\nThe strongest financial months are April–June and September–November. Mid-year is about earning; fall is about consolidating. An investment or purchase made in Q2 appreciates by year's end.`,
+    wealthGrowth: "Guard against equating your worth with your net worth. You are more than your bank balance — but also, you deserve to be paid well for what you bring. Both things are true.",
+    career: `Professionally, 2026 is your showcase year. Something you create or contribute to gets noticed by the right people. This isn't accidental — it's the result of years of quiet excellence. The spotlight finally swings your way.\n\nA pivotal project or presentation between March and June puts you on the map. Prepare meticulously (you will anyway) and deliver with confidence. This is the piece people will remember when your name comes up.\n\nYou might also face a choice: continue perfecting your craft in the background, or step forward and own your expertise publicly. 2026 rewards the second option. You don't have to become a loud self-promoter — but you do have to stop hiding.`,
+    careerGrowth: `Guard against rejecting opportunities because they're "not perfect enough." Perfect conditions don't exist. The best time to step up is when you're almost ready — because you're never fully ready, and almost is close enough.`,
+    vocation: `Your energy aligns with work requiring taste, detail, and discernment. Fashion, jewelry, gastronomy, law, editing, quality assurance, luxury brands, fine arts — anywhere standards matter and mediocrity is unacceptable. If your current role doesn't value quality, you're in the wrong place.\n\nAdvisory or curatorial roles are highlighted. You have a natural ability to look at a mess and identify what's valuable and what's not. That skill applies everywhere — from business strategy to interior design to editorial work.\n\n2026 might also push you toward personal branding — not in a cringe "guru" way, but in a "my name means quality" way. Building a reputation as the best at something specific is deeply aligned with your energy.`,
+    vocationGrowth: "Guard against being so critical that you can't appreciate imperfect beauty. The crack in the vase is what makes it interesting. Same goes for people.",
+    love: `Romance in 2026 is discerning and deep. You won't settle for good enough, and you shouldn't. But "not settling" doesn't mean "rejecting everyone." The right person for you has depth, intelligence, and their own kind of refinement — but they're also imperfect. Let them be.\n\nIf single, the most interesting romantic prospect appears in a setting where quality matters — a gallery opening, a great restaurant, a professional event, or through a friend with excellent taste. Spring is particularly magnetic.\n\nIf partnered, 2026 deepens your appreciation for each other's complexities. You learn something new about your partner that changes how you see them — in a good way. The relationship feels more adult, more real, more sustainable.`,
+    loveGrowth: "Guard against holding your partner to standards you don't hold yourself to. Fairness in love isn't about keeping score — it's about grace.",
+    health: `Your body responds to quality care, just like everything else in your life. Generic gym routines bore you; something with elegance or precision (Pilates, fencing, ballet, swimming) keeps you engaged. Find the form of movement that feels beautiful, not just functional.\n\nSkin, respiratory health, and the immune system are highlighted. You're sensitive to your environment — air quality, allergens, processed foods affect you more than average. Clean living isn't a trend for you; it's a health strategy.\n\nMental health deserves the same quality attention. If you've been managing anxiety or self-criticism on your own, 2026 is the year to get professional support. Not because you're broken — because you deserve precision-grade care.`,
+    healthGrowth: "Guard against being so particular about conditions that you avoid starting. You don't need the perfect gym, the perfect diet plan, or the perfect morning routine. You need to begin.",
+    family: `Family relationships in 2026 involve a recalibration of expectations — both yours of them and theirs of you. You might realize you've been holding your family to impossibly high standards (or they've been doing the same to you). Softening those expectations creates space for genuine closeness.\n\nA sibling or peer-level family member becomes a closer ally. You discover shared interests or values you didn't know about. This connection brings unexpected warmth.\n\nYour home aesthetic matters deeply this year. Creating a beautiful, ordered living space isn't vanity — it's self-care. Invest in your environment. Even one beautiful object in the right place changes how you feel when you walk in the door.`,
+    familyGrowth: `Guard against using criticism as a love language. When you correct someone, ask: "Is this helping them or satisfying my need for things to be right?" The answer determines whether to speak or hold.`,
+    mentor: `An aesthete enters your life — someone who shares your eye for beauty and quality. This could be a creative collaborator, a mentor, or a romantic interest. The connection is immediate because they see the way you see. You've been waiting for someone who gets it. Here they are.\n\nA champion also appears — someone in a position of influence who recognizes your talent and advocates for you. This person opens doors you couldn't open alone. They show up between April and August. Be gracious and prepared.\n\nSomeone who challenges your taste or worldview also plays a role. They're not antagonistic — they're expansive. They show you beauty in places you wouldn't have looked.`,
+    mentorGrowth: "Guard against only connecting with people who share your aesthetic. Diversity of perspective makes your own taste richer, not diluted.",
+    movement: `Change in 2026 is intentional and refined — like upgrading from a studio to a curated apartment. You're not running from anything; you're moving toward a more aligned version of your life. Every change this year should pass the test: "Does this elevate my daily experience?"\n\nTravel is strongly favored, especially to places known for beauty, culture, or craftsmanship. Japan, Italy, Scandinavia — or even a local neighborhood known for its aesthetic. You absorb inspiration from environments, and 2026 trips feed your creative soul for months after.\n\nIf you're considering a move, you'll be characteristically thorough in your research. Good. Just don't research so long that the window closes. Spring and early fall are your best timing windows.`,
+    movementGrowth: "Guard against staying in a beautiful cage. Comfort and aesthetic pleasure are important — but so is growth, even when growth is messy.",
+    growth: `2026 is ideal for mastering a craft. Not just learning — mastering. The difference matters to you. Whether it's writing, design, cooking, coding, or any skill that rewards precision, this is the year you go from good to exceptional.\n\nStudy under someone you admire. Mentorship accelerates your growth faster than self-study, especially for someone with your standards. Finding a mentor whose work you genuinely respect is rare and worth pursuing.\n\nPersonal growth this year centers on self-acceptance. You're your own harshest critic, and while that drives excellence, it also causes suffering. The growth isn't lowering your standards — it's extending to yourself the same grace you'd offer a friend.`,
+    growthGrowth: "Guard against using learning as a delay tactic. You don't need to know everything before you begin. Start imperfect and refine as you go — that's literally what your energy does best.",
+    monthly: [
+      "Clarity on what matters most. Write it down. Commit to it.",
+      "An aesthetic project begins. Follow your taste — it's reliable.",
+      "Professional showcase moment. Prepare with care.",
+      "Financial opportunity through quality work. Charge what you're worth.",
+      "A connection with someone who \"gets it.\" Rare and valuable.",
+      "Creative peak. Make something beautiful.",
+      "Self-reflection month. Be kinder to yourself than usual.",
+      "Career recognition from someone who matters. Accept it gracefully.",
+      "Home/environment upgrade. Small changes, big impact.",
+      "Relationship deepens through honest vulnerability.",
+      "Study and mastery month. Go deep into your craft.",
+      "Refined satisfaction. Not everything is perfect — but what matters is beautiful."
+    ],
+    closing: "Diamonds aren't born flawless — they're cut, polished, and placed in the right light. This year, you find your light."
+  },
+  '壬': {
+    hook: "2026 is your ocean year — vast, unpredictable, and full of currents that carry you exactly where you need to go.",
+    keywords: ["Flow", "Strategy", "Expansion"],
+    keywordIcons: ["icon-water", "icon-water", "icon-earth"],
+    overall: `You're the ocean — vast, deep, and impossible to contain. In 2026, that oceanic energy is amplified. Your mind moves faster, your ideas are bolder, and your reach extends further than previous years. This is a year of expansion in every direction: intellectual, professional, social, maybe even geographical.\n\nThe beauty of your energy is that you can adapt to any container. Corporate job? You fill it. Freelance life? You flow into it. Creative chaos? You thrive. 2026 asks you to be intentional about which container you choose. Not every opportunity deserves your volume. Be selective about where you pour yourself.\n\nThe rhythm of the year is tide-like: push forward (January–April), pull back and assess (May–June), surge again (July–October), then settle into a reflective close (November–December). Ride the rhythm instead of fighting it.`,
+    overallGrowth: "Guard against spreading yourself so thin that you lose depth. An ocean that tries to be everywhere becomes a puddle. Stay deep in what matters.",
+    wealth: `Money flows — literally — for you in 2026. Income comes from multiple directions, possibly multiple sources. The challenge isn't earning; it's managing. You might make great money and wonder where it went by December. The fix: set up systems before the money arrives. Automated savings, separate accounts, a simple budget. Boring? Yes. Effective? Absolutely.\n\nTrading, investments, or anything involving markets and flows aligns with your energy. You have an intuitive sense for timing — when to buy, when to sell, when to hold. Trust it, but verify with data. Intuition + information = wealth.\n\nBe cautious about lending money this year. Your generosity is genuine, but not everyone has the same relationship with money that you do. If you lend, consider it a gift. If it comes back, bonus.`,
+    wealthGrowth: `Guard against financial chaos disguised as "going with the flow." Flow is beautiful when it has banks. Build the banks (systems, budgets, boundaries) and let the money flow within them.`,
+    career: `Professionally, 2026 is about scale. You're ready for bigger — bigger projects, bigger audiences, bigger impact. The skills you've accumulated converge into a capability set that's genuinely impressive. The question is whether you'll stay in the kiddie pool or swim in the ocean.\n\nA strategic career move in Q1-Q2 sets the tone. This might be applying for a bigger role, pitching a larger client, launching something ambitious, or simply thinking bigger about what you're building. The energy supports audacity.\n\nYour networking ability peaks this year. You naturally connect with people across industries, levels, and backgrounds. That network becomes your most valuable professional asset — not just for you, but for others. Being the connector earns you social capital that converts to real capital.`,
+    careerGrowth: "Guard against starting everything and finishing nothing. Your mind generates ideas faster than any human can execute. Pick three. Finish them. Then and only then, start the next three.",
+    vocation: `Your energy suits big-picture, strategic, adaptive roles. Consulting, trading, diplomacy, journalism, research, travel industry, logistics, tech — anywhere that rewards fluid thinking and strategic vision. If your role is rigid, micro-managed, or narrowly defined, you'll suffocate.\n\nEntrepreneurship is deeply aligned with you, especially ventures that involve connecting people, ideas, or markets. You see patterns others miss. That's not just talent — it's a business model.\n\nInternational or cross-cultural work is particularly favored in 2026. If you can work across borders, languages, or cultures, do. Your adaptability is a rare competitive advantage.`,
+    vocationGrowth: "Guard against job-hopping out of restlessness rather than strategy. There's a difference between a strategic move and an escape. Know which one you're making.",
+    love: `Romance is an adventure in 2026. You crave novelty, intellectual stimulation, and emotional depth — in that order. The person who captivates you is the one who can surprise you, challenge your thinking, and still make you feel at ease. A tall order? Maybe. But you've never been interested in easy.\n\nIf single, your most promising romantic connections happen through intellectual spaces — a class, a conference, a debate, an interesting online community. Summer is your window. Someone who makes you think is more attractive than someone who makes you comfortable.\n\nIf partnered, 2026 needs deliberate adventure. Routine kills your romantic energy. Plan new experiences together — travel, try something neither of you has done before, have the kind of deep conversations that remind you why you chose each other.`,
+    loveGrowth: "Guard against emotional unavailability disguised as independence. You value freedom — but freedom and intimacy aren't opposites. You can be deeply connected and deeply free at the same time.",
+    health: `Your health follows your mental state more than most. When your mind is stimulated and active, your body keeps up. When you're bored or stuck, ailments appear — like your body is rebelling against stagnation. Keep your mind engaged and your body follows.\n\nKidneys, bladder, and circulatory system are your areas to watch. Hydration is critical — and you, the water element, ironically often forget to drink water. Set reminders. Your body literally needs its own element.\n\nExercise that involves water is ideal: swimming, surfing, paddleboarding. Failing that, anything with variety — circuit training, sports with changing dynamics, dance. Your body rejects monotonous routines.`,
+    healthGrowth: "Guard against using busyness as a substitute for health. Running from meeting to meeting isn't exercise. Your body needs deliberate attention, not just incidental movement.",
+    family: `Family dynamics in 2026 involve freedom within connection. You love your family, but you also need space. This year is about finding the balance — staying close without feeling caged. The key is communication: tell your family what you need instead of just disappearing.\n\nA sibling or peer might need your strategic thinking applied to their problem. You can see solutions they can't — and your advice, delivered with care, genuinely helps.\n\nIf you have children (or are thinking about it), 2026 brings moments of unexpected joy in the parenting role. Not the Instagram-perfect kind — the real, messy, laughing-at-breakfast kind.`,
+    familyGrowth: "Guard against being physically present but mentally elsewhere. Your family doesn't need you in the room — they need you IN the room. Put the phone down sometimes.",
+    mentor: `A visionary enters your orbit — someone who thinks as big as you do, maybe bigger. This partnership (professional or creative) amplifies both of you. Watch for this person in Q1-Q2, likely in a professional or intellectual setting.\n\nA grounding influence becomes important. This is someone who anchors you without limiting you — a partner, friend, or mentor who says "that's a great idea, now let's make it real." They turn your ocean of ideas into navigable channels.\n\nA connection from a different culture or background enriches your worldview. This person teaches you something you can't learn from books.`,
+    mentorGrowth: "Guard against only surrounding yourself with big thinkers and neglecting the doers. The person who executes your vision is as valuable as the person who inspires it.",
+    movement: `2026 is HIGH movement energy for you. Travel, relocation, major life transitions — the current is flowing, and it's flowing outward. If you've been feeling landlocked (literally or figuratively), this is the year the dam breaks.\n\nInternational travel or relocation is especially favored. If that's not feasible, at minimum explore a new city, neighborhood, or cultural community near you. Your energy needs new input to thrive.\n\nThe best windows for major moves: March–May and August–September. If you're relocating for work, summer is ideal. If it's personal, fall works better.`,
+    movementGrowth: "Guard against running from problems by moving to new places. Your internal landscape travels with you. If something needs fixing, fix it — then move.",
+    growth: `2026 is an exceptional year for intellectual growth. Your capacity to absorb, connect, and synthesize information is at peak levels. Read voraciously. Take courses. Attend lectures. Watch documentaries. Every input becomes a building block for something bigger.\n\nLanguages, cultural studies, and cross-disciplinary learning are particularly favored. If you've been thinking about learning a language, 2026 is the year your brain cooperates. Same goes for any field that bridges two domains you already know.\n\nThe personal growth challenge: finishing. You start brilliantly but sometimes lose interest before completion. This year, practice the discipline of completion. Finish the book. Finish the course. Finish the project. Completion is a muscle, and 2026 is your training year.`,
+    growthGrowth: "Guard against intellectual arrogance. Knowing a lot doesn't mean knowing everything. The moment you think you're the smartest person in the room, find a different room.",
+    monthly: [
+      "Vision month. Dream as big as possible, then make a plan.",
+      "A conversation opens a door you didn't know existed.",
+      "Travel or major change initiates. Say yes to the current.",
+      "Financial flow increases. Manage it wisely.",
+      "Strategic partnership forms. This one's a keeper.",
+      "Pull back and assess. What's working? What's noise?",
+      "Energy surge. Execute on Q1 plans with full force.",
+      "International or cross-cultural opportunity. Take it.",
+      "Relationship milestone — deepening or deciding.",
+      "Creative breakthrough. Your best idea of the year arrives.",
+      "Completion month. Finish what you started.",
+      "Reflection and gratitude. You covered more ground than anyone expected."
+    ],
+    closing: "You are the current, not the shore. Stop trying to stand still and start trusting where the flow takes you — it knows more than you think."
+  },
+  '癸': {
+    hook: "2026 is your underground river year — quiet on the surface, transformative below. By December, everyone sees what you've been building in the dark.",
+    keywords: ["Depth", "Intuition", "Transformation"],
+    keywordIcons: ["icon-water", "icon-water", "icon-earth"],
+    overall: `Where Yang Water is the ocean, you're the underground spring — powerful, quiet, and deeply perceptive. In 2026, that underground energy surfaces. Insights you've been gathering, patterns you've been noticing, intuitions you've been ignoring — they all prove right. Your inner knowing becomes your most trusted guide.\n\nThis year has a mysterious quality. Others might not fully understand what you're doing or why, and that's fine. You're working at a depth most people can't see. By the time your results become visible, they'll seem like they appeared overnight — but you'll know the truth: they've been forming for years.\n\nEmotionally, 2026 is a year of processing. Old feelings, old wounds, old patterns come up — not to torment you, but to be resolved. Think of it as emotional decluttering. It's uncomfortable in the moment but incredibly freeing when it's done.`,
+    overallGrowth: "Guard against withdrawing so deeply that you disappear. Solitude is your recharge — but isolation is your trap. Know the difference. Stay connected even when you need space.",
+    wealth: `Financial growth in 2026 is subtle but real. You're not going to have a dramatic windfall (probably), but your financial situation steadily improves through intelligent decisions. You see value where others see nothing — a bargain investment, an underpriced skill, a market gap. Trust that eye.\n\nIncome from behind-the-scenes work is highlighted. Research, analysis, consulting, ghostwriting, strategy — the kind of work where the output is visible but your name isn't. If this feels underappreciated, consider: would you rather be famous or wealthy? In 2026, the quiet earners win.\n\nSavings and long-term financial planning are your strongest moves. Something you set up this year (a retirement account, an investment, a savings goal) quietly compounds into something significant. Start it early in the year for maximum effect.`,
+    wealthGrowth: "Guard against financial secrecy that limits your options. Being private about money is fine — being so secretive that you can't ask for advice or negotiate openly holds you back.",
+    career: `Professionally, 2026 is about strategic positioning. You're not making the loudest move or the flashiest pivot — you're placing yourself exactly where you need to be for what's coming. This requires patience and faith in your own vision, both of which you have in abundance.\n\nA behind-the-scenes contribution between March and July earns you disproportionate respect. You solve a problem nobody else could, or you see a risk nobody else spotted. That moment quietly cements your reputation.\n\nLate in the year (October–December), a door opens. This might be a promotion, a new role, or a career-defining project. It arrives because of seeds you planted earlier — not through luck, but through positioning. You were in the right place because you chose to be.`,
+    careerGrowth: "Guard against staying behind the scenes permanently because it's comfortable. At some point, your work needs to be visible — not for ego, but for impact. Let people see what you've built.",
+    vocation: `Your energy aligns with work that requires depth, perception, and quiet influence. Research, psychology, intelligence analysis, data science, counseling, writing, spiritual work, medicine — anywhere that rewards going beneath the surface. If your role is all surface and no depth, you wilt.\n\nAdvisory roles suit you beautifully. You don't need to be the leader — you need to be the person the leader trusts. That position carries more influence than most titles, and it plays to your strengths perfectly.\n\nCreative work with a psychological or emotional dimension is also strongly favored. Writing that moves people, art that provokes, design that solves emotional problems — your creativity comes from depth, not spectacle.`,
+    vocationGrowth: `Guard against believing you're "not a leader." You lead differently — through insight and influence rather than authority and charisma. That's not less valid; it's arguably more powerful.`,
+    love: `Love in 2026 is profound. You're not interested in casual connections — you want someone who sees into you, not just at you. That level of intimacy requires vulnerability, which is both your desire and your fear. This year, the desire wins.\n\nIf single, the person who matters most likely appears in a quiet, intimate setting — a small gathering, a one-on-one introduction, even online in a deep conversation. They don't announce themselves loudly; they show up slowly, consistently, and with genuine interest in who you really are. Watch for them between April and September.\n\nIf partnered, 2026 brings a period of renewed emotional intimacy. Something unspoken gets spoken. Something hidden gets revealed. It's scary and beautiful and it makes everything that follows more real.`,
+    loveGrowth: "Guard against mind-reading as a relationship strategy. You're incredibly intuitive about others' feelings, but intuition isn't a substitute for communication. Ask. Confirm. Don't assume.",
+    health: `Your health in 2026 is closely tied to your emotional and spiritual state. When you're emotionally clear, your body feels great. When you're suppressing, avoiding, or overthinking, your body sends distress signals — fatigue, headaches, mysterious aches.\n\nWater-related health areas deserve attention: kidneys, hormones, lymphatic system. Stay hydrated (this seems too simple, but it's genuinely impactful for you), and consider practices that support your body's fluid systems — lymphatic massage, sauna, adequate sleep.\n\nYour ideal exercise is meditative in nature. Swimming, tai chi, yoga, long walks in nature. Anything that calms the mind while moving the body. High-intensity workouts might work occasionally, but your body prefers depth over speed, just like you.`,
+    healthGrowth: "Guard against living entirely in your head. Your body exists. It has wisdom. Listen to it — the tight shoulder, the racing heart, the gut feeling. These are data points your mind can't generate alone.",
+    family: `Family relationships in 2026 involve ancestral healing — not in a mystical sense (though you're open to that), but in a practical one. Patterns that have been in your family for generations might become visible to you. Seeing them is the first step to breaking them.\n\nA maternal or feminine family figure plays an important role this year. This relationship deepens or transforms — either way, it leaves you feeling more understood.\n\nYour home should feel like a sanctuary. More than most people, your environment affects your inner state. Creating a calm, clean, emotionally safe living space is not optional — it's essential. Invest in it.`,
+    familyGrowth: "Guard against carrying ancestral pain as your personal burden. Acknowledging family patterns is wise. Believing you're responsible for fixing all of them is not. Heal what's yours; release what isn't.",
+    mentor: `A spiritual or philosophical guide enters your life. This isn't necessarily a guru — it might be a therapist, a wise friend, an author, or even a podcast host whose words hit different. They help you make sense of things you've been feeling but couldn't articulate.\n\nA mirror person also appears — someone who reflects your hidden qualities back to you. Where you see weakness, they see strength. Where you see weirdness, they see uniqueness. This person's perspective changes your self-image, and that changes everything.\n\nOne relationship reaches a natural conclusion. Not with drama — with understanding. You've both grown in different directions, and that's okay. Releasing with love is a skill 2026 teaches you.`,
+    mentorGrowth: "Guard against psychoanalyzing everyone in your life instead of connecting with them. Not every interaction is a case study. Sometimes a conversation is just a conversation. Be present, not analytical.",
+    movement: `Change in 2026 happens from the inside out. External circumstances might shift, but the real transformation is internal. You end the year as a fundamentally different person from the one who started it — calmer, clearer, more aligned.\n\nIf you're considering a physical move, it's likely motivated by a need for peace. A quieter neighborhood, a more natural setting, a place that feels spiritually aligned. Trust that instinct. Your environment shapes your inner world more than most.\n\nTravel to places with spiritual or emotional significance is highly favored. A pilgrimage (formal or informal), a retreat, or simply visiting a place that calls to you. The trip doesn't have to be far — it has to be meaningful.`,
+    movementGrowth: "Guard against using internal transformation as an excuse to avoid external action. The insight is valuable, but it needs to manifest in the real world. Let your inner changes become outer changes.",
+    growth: `2026 is your deepest growth year in a long time. The learning isn't academic (though it can be) — it's existential. You understand yourself, your patterns, your purpose with increasing clarity. By December, you've answered questions you've been carrying for years.\n\nPractices that favor you: journaling, meditation, dreamwork, therapy, depth psychology, philosophical study. Anything that goes below the surface and makes sense of the depths. You're not afraid of the deep end — you live there.\n\nIf you pursue formal education, choose something that genuinely fascinates you. Your ability to absorb and synthesize information is extraordinary when you're emotionally invested in the subject. Follow your fascination — it's never wrong.`,
+    growthGrowth: "Guard against overthinking as a substitute for living. Understanding everything perfectly before experiencing it isn't possible — and trying robs you of the spontaneity that makes life rich. Jump in. The water's fine.",
+    monthly: [
+      "Introspection month. The answers you need are already inside you.",
+      "An emotional release clears space for something new.",
+      "A quiet insight about your career changes your strategy.",
+      "Connection with someone who truly sees you. Rare and real.",
+      "Financial seed planted now grows all year. Start early.",
+      "Pull back from noise. Your best ideas come in silence.",
+      "Energy rises. Act on the insights you gathered in solitude.",
+      "Spiritual or philosophical breakthrough. Everything clicks.",
+      "Relationship clarity — deep and definitive.",
+      "Career opportunity emerges from behind-the-scenes work.",
+      "Creative expression peaks. Share what you've been holding.",
+      "Transformation complete. You're not who you were in January — and that's the point."
+    ],
+    closing: "The deepest rivers make the least noise. This year, trust your quiet — it's not emptiness. It's power."
+  }
+};
+
+// ─── Sipsin English Mapping (#6) ───
+const SIPSIN_EN = {
+  '比肩': 'Peer', '劫財': 'Rival', '食神': 'Creator', '傷官': 'Maverick',
+  '偏財': 'Windfall', '正財': 'Steady Wealth', '偏官': 'Challenger', '七殺': 'Challenger',
+  '正官': 'Authority', '偏印': 'Intuition', '正印': 'Mentor'
+};
+
+// ─── Un(運) English Mapping (#6) ───
+const UN_EN = {
+  '大運': 'Life Phase', '歲運': 'Annual Flow', '月運': 'Monthly Flow', '日運': 'Daily Flow'
+};
+
+// ─── Element Icon Helper ───
+function getElementIcon(element) {
+  const map = { Wood: 'icon-wood', Fire: 'icon-fire', Earth: 'icon-earth', Metal: 'icon-metal', Water: 'icon-water' };
+  const colors = { Wood: '#4CAF50', Fire: '#FF5722', Earth: '#D4A574', Metal: '#FFD700', Water: '#2196F3' };
+  const id = map[element] || 'icon-earth';
+  const color = colors[element] || '#D4A574';
+  return `<svg class="elem-icon-inline" style="color:${color}"><use href="#${id}"/></svg>`;
 }
 
 const ACC_COPY = {
@@ -3462,6 +4028,7 @@ const ACC_COPY = {
 };
 
 function fillAccordionContent(stemKey) {
+  const fortune = FORTUNE_2026[stemKey] || {};
   const copy = ACC_COPY[stemKey] || {};
   const categories = ['overall','wealth','career','vocation','love','health','family','mentor','movement','growth'];
   const lang = currentLang || 'en';
@@ -3469,9 +4036,76 @@ function fillAccordionContent(stemKey) {
   categories.forEach(catKey => {
     const el = document.getElementById('acc-' + catKey + '-text');
     if (!el) return;
-    const text = copy[catKey]?.[lang] || copy[catKey]?.en || '';
-    el.textContent = text || placeholder;
+    // Use 2026 fortune content if available, else fallback to ACC_COPY
+    const fortuneText = fortune[catKey] || '';
+    const growthKey = catKey + 'Growth';
+    const growthText = fortune[growthKey] || '';
+    if (fortuneText) {
+      const paragraphs = fortuneText.split('\n').filter(p => p.trim());
+      let html = paragraphs.map(p => '<p>' + p + '</p>').join('');
+      if (growthText) {
+        html += '<div class="growth-note"><strong>Growth note:</strong> ' + growthText + '</div>';
+      }
+      el.innerHTML = html;
+    } else {
+      const text = copy[catKey]?.[lang] || copy[catKey]?.en || '';
+      el.textContent = text || placeholder;
+    }
   });
+
+  // Render hero hook from fortune
+  if (fortune.hook) {
+    const hookEl = document.getElementById('dm-hook');
+    if (hookEl) hookEl.textContent = fortune.hook;
+  }
+
+  // Render 3 keywords
+  const kwContainer = document.getElementById('fortune-keywords');
+  if (kwContainer && fortune.keywords) {
+    kwContainer.innerHTML = fortune.keywords.map((kw, i) => {
+      const iconId = fortune.keywordIcons?.[i] || 'icon-earth';
+      return `<div class="fortune-keyword"><svg width="16" height="16"><use href="#${iconId}"/></svg>${kw}</div>`;
+    }).join('');
+    kwContainer.style.display = 'flex';
+  }
+
+  // Render monthly highlights
+  const monthContainer = document.getElementById('monthly-highlights');
+  if (monthContainer && fortune.monthly) {
+    const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    monthContainer.innerHTML = fortune.monthly.map((text, i) =>
+      `<div class="month-card"><div class="month-name">${monthNames[i]}</div><div class="month-text">${text}</div></div>`
+    ).join('');
+    monthContainer.style.display = 'grid';
+  }
+
+  // Render closing advice
+  const closingEl = document.getElementById('closing-advice');
+  if (closingEl && fortune.closing) {
+    closingEl.innerHTML = `<blockquote>"${fortune.closing}"</blockquote><button class="share-btn" onclick="shareClosingAdvice()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>Share</button>`;
+    closingEl.style.display = 'block';
+  }
+
+  // Add hanja watermark to dm-hero (#6)
+  const dmHero = document.getElementById('dm-hero');
+  if (dmHero && !dmHero.querySelector('.hanja-watermark')) {
+    const wmChar = stemKey; // Single hanja character as watermark
+    const wm = document.createElement('div');
+    wm.className = 'hanja-watermark';
+    wm.textContent = wmChar;
+    wm.setAttribute('aria-hidden', 'true');
+    dmHero.insertBefore(wm, dmHero.firstChild);
+  }
+}
+
+function shareClosingAdvice() {
+  const closingEl = document.getElementById('closing-advice');
+  const text = closingEl?.querySelector('blockquote')?.textContent || '';
+  if (navigator.share) {
+    navigator.share({ title: 'Momentor — 2026 Fortune', text: text + '\n\nDiscover yours at momentor.app', url: 'https://momentor.app' }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(text + '\nDiscover yours at momentor.app').then(() => showToast('Copied to clipboard!')).catch(() => {});
+  }
 }
 
 // ═══════════════════════════════════════════════
