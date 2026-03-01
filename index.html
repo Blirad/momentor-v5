@@ -129,15 +129,17 @@
     padding: 3px;
   }
   .lang-btn {
-    padding: 3px 12px;
+    padding: 10px 16px;
     border: none;
     background: none;
     color: var(--text-secondary);
-    font-size: 12px;
+    font-size: 13px;
     font-family: var(--font-sans);
     cursor: pointer;
     border-radius: 16px;
     transition: all .2s;
+    min-height: 44px;
+    min-width: 44px;
   }
   .lang-btn.active {
     background: var(--gold);
@@ -179,7 +181,7 @@
   .form-group { margin-bottom: 20px; }
   .form-group label {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--text-muted);
@@ -202,7 +204,7 @@
   }
   .form-group select option { background: #1a1730; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .gender-select { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .gender-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .gender-btn {
     padding: 14px;
     background: var(--card-bg);
@@ -316,7 +318,7 @@
     background: linear-gradient(90deg, transparent, rgba(201,169,110,0.25) 30%, rgba(201,169,110,0.35) 50%, rgba(201,169,110,0.25) 70%, transparent);
   }
   .chapter-badge {
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.20em;
     color: rgba(201,169,110,0.65);
     font-weight: 600;
@@ -345,7 +347,7 @@
     gap: 16px;
     padding: 40px 0;
     color: var(--gold-dim);
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: .15em;
   }
   .chapter-divider::before, .chapter-divider::after {
@@ -438,15 +440,19 @@
   }
   .dm-char {
     font-family: var(--font-serif);
-    font-size: clamp(48px, 12vw, 64px);
+    font-size: clamp(80px, 18vw, 96px);
     font-weight: 300;
     color: var(--gold);
     line-height: 1;
     display: block;
     margin-bottom: 8px;
-    text-shadow: 0 0 40px rgba(201,169,110,0.35);
-    filter: drop-shadow(0 0 20px rgba(201,169,110,0.40));
+    text-shadow: 0 0 60px rgba(201,169,110,0.5);
+    filter: drop-shadow(0 0 30px rgba(201,169,110,0.55));
     letter-spacing: -0.01em;
+    transition: filter 0.3s ease;
+  }
+  .dm-hero:hover .dm-char {
+    filter: drop-shadow(0 0 50px rgba(201,169,110,0.8));
   }
   .dm-label {
     font-size: 14px;
@@ -468,7 +474,7 @@
     background: rgba(201,169,110,0.07);
     border: 1px solid rgba(201,169,110,0.22);
     color: rgba(255,255,255,0.78);
-    font-size: 11px;
+    font-size: 13px;
     font-family: var(--font-sans);
     font-weight: 500;
     letter-spacing: 0.08em;
@@ -553,13 +559,15 @@
     filter: blur(10px);
     user-select: none; pointer-events: none; opacity: 0.6;
   }
+  .blur-hint { filter: none !important; opacity: 1 !important; user-select: text; pointer-events: auto; }
+  .blur-body { filter: blur(4px); user-select: none; }
   .conviction-preview-card::after {
     content: '🔒';
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-size: 24px; filter: none;
   }
-  .conviction-preview-card:nth-child(3) .card-content { filter: blur(16px); opacity: 0.4; }
+  .conviction-preview-card:nth-child(3) .card-content { filter: blur(8px); opacity: 0.4; }
   .conviction-fade {
     position: relative; height: 60px;
     background: linear-gradient(to bottom, transparent, #0d0b1e);
@@ -567,7 +575,7 @@
     pointer-events: none; z-index: 1;
   }
   .social-proof-text {
-    text-align: center; font-size: 12px;
+    text-align: center; font-size: 14px;
     color: rgba(155,142,160,0.6); letter-spacing: 0.05em; margin-bottom: 16px;
   }
   .conviction-cta {
@@ -601,9 +609,9 @@
   .sp-review.sp-review-active { display: block; animation: spFadeIn 0.5s ease; }
   @keyframes spFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   .sp-review-text { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.82); line-height: 1.7; margin-bottom: 10px; }
-  .sp-review-attr { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; }
+  .sp-review-attr { font-size: 14px; color: var(--text-muted); letter-spacing: 0.05em; }
   /* paywall urgency */
-  .paywall-urgency { font-size: 12px; font-style: italic; color: #c9a96e; text-align: center; margin-top: 8px; }
+  .paywall-urgency { font-size: 14px; font-style: italic; color: #c9a96e; text-align: center; margin-top: 8px; }
   /* result bottom cta */
   .result-bottom-cta { font-family: var(--font-serif); font-size: 16px; font-style: italic; color: rgba(255,255,255,0.7); text-align: center; margin: 20px 0; line-height: 1.6; }
   /* email capture banner */
@@ -614,7 +622,7 @@
     transition: bottom 0.4s ease;
   }
   .email-capture-banner.slide-up { bottom: 0; }
-  .email-banner-dismiss { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+  .email-banner-dismiss { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; min-height: 44px; min-width: 44px; padding: 10px 16px; display: flex; align-items: center; justify-content: center; }
   .email-banner-hook { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.82); line-height: 1.6; margin-bottom: 14px; }
   .email-banner-row { display: flex; gap: 8px; }
   .email-banner-input { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(201,169,110,0.25); border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: var(--font-sans); outline: none; }
@@ -647,7 +655,7 @@
   }
   .progress-meta {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
     margin-top: 6px;
   }
@@ -760,7 +768,7 @@
   .elem-bar.elem-Earth { background: rgba(217,119,6,0.6); }
   .elem-bar.elem-Metal { background: rgba(148,163,184,0.6); }
   .elem-bar.elem-Water { background: rgba(96,165,250,0.6); }
-  .elem-name { font-size: 11px; color: var(--text-muted); }
+  .elem-name { font-size: 13px; color: var(--text-muted); }
   .elem-count { font-size: 16px; font-weight: 600; color: var(--text-secondary); }
 
   /* ─── DAEUN TIMELINE ─── */
@@ -825,7 +833,7 @@
   }
   .era-past { background: rgba(255,255,255,0.06); color: var(--text-muted); }
   .era-current { background: rgba(232,197,71,0.15); color: var(--gold); }
-  .daeun-period { font-size: 12px; color: var(--text-secondary); }
+  .daeun-period { font-size: 14px; color: var(--text-secondary); }
   .daeun-pillars {
     font-family: var(--font-serif);
     font-size: 28px;
@@ -843,13 +851,13 @@
     margin-bottom: 10px;
   }
   .daeun-lifestage {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--text-muted);
     margin-bottom: 10px;
     letter-spacing: .05em;
   }
   .daeun-resonance {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
     font-style: italic;
     margin-top: 8px;
@@ -949,12 +957,12 @@
     pointer-events: none;
   }
   .future-daeun-card.locked {
-    filter: blur(4px);
+    filter: blur(12px);
     opacity: 0.65;
     pointer-events: none;
     min-height: 80px;
   }
-  .fdc-period { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .fdc-period { font-size: 14px; color: var(--text-secondary); margin-bottom: 6px; }
   .fdc-pillar {
     font-family: var(--font-serif);
     font-size: 30px;
@@ -1005,7 +1013,7 @@
   }
   .testimonial-stars { font-size: 14px; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
   .testimonial-text { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.80); line-height: 1.7; margin-bottom: 10px; }
-  .testimonial-attr { font-size: 12px; color: rgba(255,255,255,0.40); letter-spacing: 0.05em; }
+  .testimonial-attr { font-size: 14px; color: rgba(255,255,255,0.40); letter-spacing: 0.05em; }
   /* 이메일 캡처 */
   .email-capture-wrap {
     margin: 32px 0;
@@ -1037,9 +1045,9 @@
   .btn-email-cta:hover { background: rgba(201,169,110,0.18); border-color: rgba(201,169,110,0.5); }
   .email-captured-msg { font-size: 14px; color: var(--gold); text-align: center; padding: 12px 0; display: none; }
   /* 환불 보장 */
-  .refund-note { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 20px; line-height: 1.6; }
-  .trust-badges { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
-  .trust-badge { font-size: 12px; color: rgba(255,255,255,0.40); }
+  .refund-note { font-size: 14px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 20px; line-height: 1.6; }
+  .trust-badges { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .trust-badge { font-size: 13px; color: rgba(201,169,110,0.8); border: 1px solid rgba(201,169,110,0.3); border-radius: 20px; padding: 4px 12px; background: rgba(201,169,110,0.05); }
   .btn-unlock {
     display: flex;
     align-items: center;
@@ -1118,6 +1126,9 @@
     transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
   }
   .reveal.visible { opacity: 1; transform: none; }
+  /* #18 chapter fade-in */
+  .chapter-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .chapter-section.visible { opacity: 1; transform: none; }
   .reveal:nth-child(2) { transition-delay: 0.08s; }
   .reveal:nth-child(3) { transition-delay: 0.16s; }
   .reveal:nth-child(4) { transition-delay: 0.24s; }
@@ -1213,7 +1224,7 @@
   .sticky-cta-btn:active { transform: scale(0.97); }
 
   /* ─── PAYWALL ANCHOR ─── */
-  .paywall-anchor { font-size: 12px; color: var(--text-muted); text-align: center; margin: 8px 0; }
+  .paywall-anchor { font-size: 14px; color: var(--text-muted); text-align: center; margin: 8px 0; }
 
   /* ─── LOADING SCENE ─── */
   .loading-overlay {
@@ -1237,7 +1248,7 @@
     min-height: 30px;
   }
   .loading-text.fade-out { opacity: 0; }
-  .loading-timestamp { font-size: 12px; color: var(--text-muted); margin-top: 16px; font-family: var(--font-sans); letter-spacing: 0.05em; }
+  .loading-timestamp { font-size: 14px; color: var(--text-muted); margin-top: 16px; font-family: var(--font-sans); letter-spacing: 0.05em; }
   .loading-text { font-style: italic; }
   .loading-stars-wrap { position: absolute; inset: 0; pointer-events: none; }
   @keyframes starFloat {
@@ -1402,9 +1413,14 @@
       <p class="form-tagline2" id="form-tagline2" style="margin-top:12px;font-size:13px;color:var(--text-muted);font-style:italic">Western astrology maps the sky. Saju maps the person.</p>
     </div>
 
-    <div class="step-indicator">
-      <div class="step-dot active" id="dot1"></div>
-      <div class="step-dot" id="dot2"></div>
+    <div class="step-indicator" id="step-indicator-bar" style="display:flex;justify-content:center;align-items:center;gap:8px;margin-bottom:32px;font-size:14px;">
+      <span class="step-text active" id="step-text-1" style="color:var(--gold);font-weight:600;">① Name</span>
+      <span class="step-divider" style="color:var(--text-muted)">—</span>
+      <span class="step-text" id="step-text-2" style="color:var(--text-muted)">② Date</span>
+      <span class="step-divider" style="color:var(--text-muted)">—</span>
+      <span class="step-text" id="step-text-3" style="color:var(--text-muted)">③ Time</span>
+      <div class="step-dot active" id="dot1" style="display:none"></div>
+      <div class="step-dot" id="dot2" style="display:none"></div>
     </div>
 
     <!-- STEP 1 -->
@@ -1550,6 +1566,19 @@
       <button onclick="copyShareLink()" style="height:40px;padding:0 18px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:var(--text-secondary);font-size:13px;font-family:var(--font-sans);cursor:pointer;-webkit-tap-highlight-color:transparent">🔗 Copy Link</button>
     </div>
 
+    <!-- Element Donut Chart (#16) -->
+    <div class="reveal" id="element-chart-wrap" style="text-align:center;margin:24px 0;padding:24px;border:1px solid var(--card-border);border-radius:12px;background:var(--card-bg);">
+      <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px">Five Elements Composition</p>
+      <canvas id="element-donut-chart" width="200" height="200" style="max-width:200px;display:inline-block;"></canvas>
+      <p id="dominant-element-text" style="font-size:15px;color:var(--text-secondary);margin-top:12px;font-family:var(--font-serif)"></p>
+    </div>
+
+    <!-- Month Pillar Hint -->
+    <p class="month-pillar-hint reveal" style="font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.65);line-height:1.75;text-align:center;margin:24px 0;padding:16px 20px;border:1px solid rgba(201,169,110,0.12);border-radius:10px;background:rgba(201,169,110,0.03);">
+      Your Month Pillar holds something about how you were shaped before you had words for it.
+      <span class="hint-lock" style="color:var(--gold);cursor:pointer;" onclick="openPayModal()"> It's in the full reading. →</span>
+    </p>
+
     <!-- BRIDGE 1→2 -->
     <div class="chapter-bridge reveal">
       <div class="bridge-inner">
@@ -1590,6 +1619,9 @@
         <p class="chapter-tagline" id="ch3-tagline">The energy you're moving through today.</p>
       </div>
 
+      <!-- #19 Luck Cycle Timeline -->
+      <div class="luck-timeline reveal" id="luck-timeline" style="overflow-x:auto;margin-bottom:24px;padding:16px 0;"></div>
+
       <!-- Current Daeun Hero -->
       <div class="current-hero reveal" id="current-daeun-hero">
         <div class="current-badge" id="current-badge">Current Cycle</div>
@@ -1610,9 +1642,22 @@
         <p class="today-hint-text" id="today-text"></p>
       </div>
 
+      <!-- #23 Today's Daily Energy Card -->
+      <div class="reveal" id="today-daily-energy" style="margin-top:16px;padding:20px;border:1px solid rgba(201,169,110,0.25);border-radius:12px;background:linear-gradient(135deg,rgba(201,169,110,0.06),rgba(201,169,110,0.02));text-align:center">
+        <p style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px">Today's Energy</p>
+        <p id="today-daily-text" style="font-family:var(--font-serif);font-size:17px;color:rgba(255,255,255,0.8);line-height:1.75"></p>
+      </div>
+
       <!-- Past → Present Connection -->
       <div class="connection-moment reveal" style="margin-top:16px">
         <p style="font-family:var(--font-serif);font-size:15px;color:var(--text-secondary);line-height:1.75" id="past-present-link"></p>
+      </div>
+
+      <!-- Next Decade Teaser -->
+      <div class="next-decade-teaser reveal" id="next-decade-teaser" style="margin-top:24px;padding:20px;border:1px solid rgba(201,169,110,0.2);border-radius:12px;background:rgba(201,169,110,0.04);">
+        <p class="teaser-label" style="font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:8px">What's coming next ↓</p>
+        <p class="teaser-text" id="teaser-text" style="font-family:var(--font-serif);font-size:18px;color:rgba(255,255,255,0.78);line-height:1.7;margin-bottom:12px">"The next decade brings a shift in the kind of energy you've been using. Something new is asking to be built."</p>
+        <p class="teaser-lock" style="font-size:14px;color:var(--gold);cursor:pointer;" onclick="openPayModal()">The full picture is in Chapter 4 →</p>
       </div>
 
     </div>
@@ -1621,20 +1666,20 @@
     <div class="conviction-section-new reveal" id="conviction-section">
       <p class="conviction-header" id="conviction-text">✦ There's more about you</p>
       <div class="conviction-preview-card">
+        <p class="blur-hint" style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">Your Day Pillar — <strong><span id="conviction-pillar"></span></strong> — was locked in at the exact hour you were born.</p>
         <div class="card-content">
-          <p style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">Your Day Pillar — <strong><span id="conviction-pillar"></span></strong> — was locked in at the exact hour you were born.</p>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████████████<br>████████████████</p>
+          <p class="blur-body blurred" style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████████████<br>████████████████</p>
         </div>
       </div>
       <div class="conviction-preview-card">
+        <p class="blur-hint" style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">The pattern in your closest relationships goes back further than you think...</p>
         <div class="card-content">
-          <p style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">The pattern in your relationships and the decade ahead.</p>
-          <p style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████<br>████████████</p>
+          <p class="blur-body blurred" style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████<br>████████████</p>
         </div>
       </div>
       <div class="conviction-fade"></div>
       <p class="social-proof-text">87 people discovered themselves today</p>
-      <button class="conviction-cta" onclick="openPayModal()">Unlock the full reading →</button>
+      <button class="conviction-cta" onclick="openPayModal()">Show me what the chart knows →</button>
       <p class="conviction-closer" id="conviction-closer">The chart knew. It always knew.</p>
     </div>
 
@@ -1690,16 +1735,22 @@
 
         <!-- [2] CTA BLOCK -->
         <div class="paywall-cta-wrap reveal">
+          <ul class="unlock-list" style="list-style:none;margin-bottom:24px;text-align:left;border:1px solid rgba(201,169,110,0.15);border-radius:12px;padding:16px 20px;background:rgba(201,169,110,0.03);">
+            <li style="padding:6px 0;font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.78)">✦ The pattern behind your relationships</li>
+            <li style="padding:6px 0;font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.78)">✦ Why you keep hitting the same ceiling</li>
+            <li style="padding:6px 0;font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.78)">✦ Your next two decades, decade by decade</li>
+            <li style="padding:6px 0;font-family:var(--font-serif);font-size:16px;color:rgba(255,255,255,0.78)">✦ The thing your chart knows that you haven't said out loud</li>
+          </ul>
           <p class="paywall-hook" id="paywall-hook">The chart knew. It always knew.</p>
           <p class="paywall-hook-sub" id="paywall-hook-sub" style="font-family:var(--font-serif);font-size:20px;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:28px"></p>
           <p class="paywall-sub" id="paywall-sub">What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
           <!-- [3] 앵커링 -->
           <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
           <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
-            Unlock the full reading →
+            Show me what the chart knows →
           </a>
           <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Yours forever.</p>
-          <p class="paywall-urgency" id="paywall-urgency">🔒 출시 기념가 $7.99 — 정가 전환 전 마지막 기회.</p>
+          <p class="paywall-urgency" id="paywall-urgency">🔒 Launch price $7.99 — before we move to full price.</p>
         </div>
 
         <!-- [5] RESULT BOTTOM CTA -->
@@ -1709,9 +1760,9 @@
         <div class="reveal" style="text-align:center;margin-top:20px;padding:20px 16px;background:rgba(255,255,255,0.02);border-radius:12px">
           <p style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7;font-family:var(--font-serif);margin-bottom:16px">If the reading doesn't feel true to your life — within 24 hours of purchase, email us and we'll refund it. No questions.</p>
           <div class="trust-badges">
-            <span class="trust-badge">🔒 Secure checkout</span>
             <span class="trust-badge">↩ 24h refund</span>
-            <span class="trust-badge">🚫 No subscription</span>
+            <span class="trust-badge">🔒 Secure</span>
+            <span class="trust-badge">∞ No subscription</span>
             <span class="trust-badge">🔐 Private</span>
           </div>
         </div>
@@ -2234,12 +2285,42 @@ function getElementRelation(dayElement, daeunElement) {
 }
 
 const DAEUN_NARRATIVE_EN = {
-  same:       (age) => age < 20 ? "The energy of this period matched you perfectly — everything felt either too fast or, briefly, exactly right. There was a kind of intensity to your early years that others around you didn't quite share." : "This was a period of heightened competition and comparison. You found mirrors everywhere — people who reflected back who you were, sometimes flattering, sometimes uncomfortable. The decade asked: do you know yourself?",
-  generated:  (age) => "This period carried a natural current in your direction. Things had a way of aligning — not perfectly, not without effort, but the conditions were favorable. Many people with your chart describe this kind of decade as the one where opportunities arrived without being chased.",
-  generating: (age) => "This was a giving period — one where you poured your energy outward. Relationships, work, creative output. The resource flowed from you. Looking back, it may have felt generous or depleting depending on whether the giving was chosen.",
-  controlled: (age) => age < 25 ? "This period had a quality of friction to it. Something kept not quite going the way you intended. That wasn't punishment — it was the chart building in resistance while your character was still forming." : "There was pressure in this decade. Things that should have been easier weren't. The question the period kept asking was: are you doing this because you want to, or because you don't know another way?",
-  controlling:(age) => "This was a period of forward motion. You were in charge of the energy — pushing, building, deciding. It cost you something. The drive that made things happen had a price, usually in relationships or rest.",
-  neutral:    (age) => "This period carried a quiet steadiness — not dramatic highs or lows, but a reliable undercurrent that let you move at your own pace.",
+  same:       (age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "This was a period of heightened competition and comparison. You found mirrors everywhere — people who reflected back who you were, sometimes flattering, sometimes uncomfortable. The decade asked: do you know yourself?";
+  },
+  generated:  (age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "This period carried a natural current in your direction. Things had a way of aligning — not perfectly, not without effort, but the conditions were favorable. Many people with your chart describe this kind of decade as the one where opportunities arrived without being chased.";
+  },
+  generating: (age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "This was a giving period — one where you poured your energy outward. Relationships, work, creative output. The resource flowed from you. Looking back, it may have felt generous or depleting depending on whether the giving was chosen.";
+  },
+  controlled: (age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "There was pressure in this decade. Things that should have been easier weren't. The question the period kept asking was: are you doing this because you want to, or because you don't know another way?";
+  },
+  controlling:(age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "This was a period of forward motion. You were in charge of the energy — pushing, building, deciding. It cost you something. The drive that made things happen had a price, usually in relationships or rest.";
+  },
+  neutral:    (age) => {
+    if (age < 10) return "The world was still being explained to you. You absorbed it all — the patterns, the unspoken rules, the weight behind words.";
+    if (age < 20) return "You were figuring out who you were — and who you weren't. Every comparison was a mirror you hadn't asked for.";
+    if (age < 30) return "You were building. Testing. Some things held. Others didn't. The gap between who you were and who you wanted to be felt very loud.";
+    return "This period carried a quiet steadiness — not dramatic highs or lows, but a reliable undercurrent that let you move at your own pace.";
+  },
 };
 
 const DAEUN_NARRATIVE_KO = {
@@ -2285,6 +2366,48 @@ const ELEM_NARRATIVE_KO = {
   Metal: { heavy:"당신에게는 정밀함이 있습니다 — 말하는 것, 지키는 것, 가까이 허락하는 사람에 대해. 사람들은 이것을 통제로 경험합니다. 내부에서는 명확성으로 느낍니다.", lacking:"金 없이, 경계가 있어야 할 것보다 부드럽습니다. 아니오라고 말하는 것이 대부분의 사람들보다 더 많은 에너지가 필요합니다." },
   Water: { heavy:"생각은 흐름으로 움직입니다. 아이디어가 다른 아이디어로 흐릅니다. 세상이 한 길에 멈추고 헌신하도록 요구할 때, 당신의 일부는 항상 선택하지 않은 길을 애도합니다.", lacking:"水 없이, 내성이 자동으로 오지 않습니다. 외향적으로 살아갑니다 — 보이고, 능동적이고, 현존합니다. 내면의 삶이 더 조용합니다." },
 };
+
+// ═══════════════════════════════════════════════
+// ELEMENT DONUT CHART (#16)
+// ═══════════════════════════════════════════════
+function renderElementChart(elements, canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const colors = { Wood:'#4ade80', Fire:'#f87171', Earth:'#d97706', Metal:'#94a3b8', Water:'#60a5fa' };
+  const counts = { Wood:0, Fire:0, Earth:0, Metal:0, Water:0 };
+  (elements || []).forEach(e => { if (counts[e] !== undefined) counts[e]++; });
+  const total = Object.values(counts).reduce((a,b)=>a+b,0) || 1;
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2, outerR = W/2 - 10, innerR = outerR * 0.55;
+  ctx.clearRect(0, 0, W, H);
+  let startAngle = -Math.PI / 2;
+  let dominant = 'Wood', maxCount = -1;
+  Object.entries(counts).forEach(([elem, cnt]) => {
+    if (cnt > maxCount) { maxCount = cnt; dominant = elem; }
+    const sweep = (cnt / total) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(cx + outerR * Math.cos(startAngle), cy + outerR * Math.sin(startAngle));
+    ctx.arc(cx, cy, outerR, startAngle, startAngle + sweep);
+    ctx.arc(cx, cy, innerR, startAngle + sweep, startAngle, true);
+    ctx.closePath();
+    ctx.fillStyle = colors[elem];
+    ctx.globalAlpha = cnt > 0 ? 0.85 : 0.15;
+    ctx.fill();
+    startAngle += sweep;
+  });
+  ctx.globalAlpha = 1;
+  // Center char
+  const ELEM_CHAR = { Wood:'木', Fire:'火', Earth:'土', Metal:'金', Water:'水' };
+  const ELEM_EMOJI = { Wood:'🌿', Fire:'🔥', Earth:'🌍', Metal:'⚙️', Water:'💧' };
+  ctx.fillStyle = colors[dominant];
+  ctx.font = 'bold 36px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(ELEM_CHAR[dominant], cx, cy);
+  const domEl = document.getElementById('dominant-element-text');
+  if (domEl) domEl.textContent = `Your dominant element: ${dominant} ${ELEM_EMOJI[dominant]}`;
+}
 
 // ═══════════════════════════════════════════════
 // TODAY ENERGY HINT
@@ -2433,6 +2556,9 @@ function nextStep() {
   document.getElementById('step2').classList.add('active');
   document.getElementById('dot1').classList.remove('active');
   document.getElementById('dot2').classList.add('active');
+  const st1 = document.getElementById('step-text-1'), st3 = document.getElementById('step-text-3');
+  if (st1) { st1.style.color = 'var(--text-muted)'; st1.style.fontWeight = ''; }
+  if (st3) { st3.style.color = 'var(--gold)'; st3.style.fontWeight = '600'; }
 }
 
 function prevStep() {
@@ -2440,6 +2566,9 @@ function prevStep() {
   document.getElementById('step1').classList.add('active');
   document.getElementById('dot2').classList.remove('active');
   document.getElementById('dot1').classList.add('active');
+  const st1b = document.getElementById('step-text-1'), st3b = document.getElementById('step-text-3');
+  if (st1b) { st1b.style.color = 'var(--gold)'; st1b.style.fontWeight = '600'; }
+  if (st3b) { st3b.style.color = 'var(--text-muted)'; st3b.style.fontWeight = ''; }
 }
 
 function showErrEl(id) {
@@ -2522,6 +2651,16 @@ function renderReport(data) {
   // ── Chapter 1 ──────────────────────────
   document.getElementById('dm-char').textContent  = dp.stem + dp.branch;
   document.getElementById('dm-label').textContent = lang === 'en' ? dm.labelEn : dm.labelKo;
+  // #17 — element-based glow color on dm-hero
+  const ELEM_COLORS_HEX = { Wood:'#4ade80', Fire:'#f87171', Earth:'#d97706', Metal:'#94a3b8', Water:'#60a5fa' };
+  const elemColor = ELEM_COLORS_HEX[dp.element] || '#c9a96e';
+  const dmHeroEl = document.getElementById('dm-hero');
+  if (dmHeroEl) {
+    dmHeroEl.style.background = `linear-gradient(135deg, ${elemColor}12 0%, rgba(100,80,200,0.05) 50%, ${elemColor}08 100%)`;
+    dmHeroEl.style.borderColor = `${elemColor}40`;
+    const dmCharEl = document.getElementById('dm-char');
+    if (dmCharEl) { dmCharEl.style.color = elemColor; dmCharEl.style.textShadow = `0 0 60px ${elemColor}80`; }
+  }
   // Use 60-pillar narrative if available, else fallback to DM stem narrative
   const pillKey = dp.stem + dp.branch;
   const pillar = PILLAR_NARRATIVES[pillKey] || null;
@@ -2591,6 +2730,14 @@ function renderReport(data) {
     : (pillars.elements[lacking] === 0 ? narr[lacking].lacking : (lang === 'en' ? `Your energy is balanced across all five elements — a rare chart. This gives you unusual flexibility, but can also mean the center is harder to find.` : `당신의 에너지는 오행 전체에 걸쳐 균형 잡혀 있습니다 — 드문 사주입니다. 이것은 비범한 유연성을 주지만, 중심을 찾기 어려울 수도 있습니다.`));
   document.getElementById('elements-narrative').textContent = elemText;
 
+  // Render element donut chart (#16)
+  const allElemList = [];
+  ['yearPillar','monthPillar','dayPillar','hourPillar'].forEach(pk => {
+    const p = pillars[pk];
+    if (p) { allElemList.push(p.stemElement); allElemList.push(p.branchElement); }
+  });
+  renderElementChart(allElemList, 'element-donut-chart');
+
   // ── Chapter 2: Past Daeun ──────────────────
   const pastDaeun = pillars.daeun.filter(d => d.isPast);
   const resEl = lang === 'en' ? '💬 Does this time feel familiar?' : '💬 이 시기가 기억나시나요?';
@@ -2613,6 +2760,22 @@ function renderReport(data) {
 
   // ── Chapter 3: Current Daeun ──────────────
   const curDaeun = pillars.daeun.find(d => d.isCurrent);
+
+  // #19 — luck cycle timeline
+  (function renderLuckTimeline() {
+    const timelineEl = document.getElementById('luck-timeline');
+    if (!timelineEl || !pillars.daeun || !pillars.daeun.length) return;
+    const allCycles = pillars.daeun;
+    const items = allCycles.map((d, i) => {
+      const isCur = d.isCurrent;
+      const isFut = d.isFuture;
+      return `<div style="display:inline-flex;flex-direction:column;align-items:center;min-width:90px;padding:8px 12px;border-radius:8px;border:1px solid ${isCur ? 'rgba(201,169,110,0.5)' : 'rgba(255,255,255,0.08)'};background:${isCur ? 'rgba(201,169,110,0.08)' : 'transparent'};opacity:${isFut ? '0.4' : '1'};flex-shrink:0">
+        <span style="font-size:13px;color:${isCur ? '#c9a96e' : 'rgba(255,255,255,0.5)'};font-weight:${isCur?'600':'400'}">${d.startYear}–${d.endYear}${isCur?' ★':''}</span>
+        <span style="font-family:serif;font-size:20px;color:${isCur ? '#c9a96e' : 'rgba(255,255,255,0.65)'};margin-top:4px">${d.stem}${d.branch}</span>
+      </div>`;
+    });
+    timelineEl.innerHTML = `<div style="display:flex;gap:8px;align-items:center;padding:4px 0;white-space:nowrap">${items.join('<span style="color:rgba(255,255,255,0.2);flex-shrink:0">›</span>')}</div>`;
+  })();
   if (curDaeun) {
     document.getElementById('current-pillar-chars').textContent = `${curDaeun.stem}${curDaeun.branch}`;
     const curNarr = lang === 'en' ? getCurrentNarrativeEn(curDaeun, dp.element) : getCurrentNarrativeKo(curDaeun, dp.element);
@@ -2639,6 +2802,33 @@ function renderReport(data) {
 
   // today hint
   document.getElementById('today-text').textContent = lang === 'en' ? getTodayHintEn(dp.element) : getTodayHintKo(dp.element);
+
+  // #23 — Today's daily pillar energy
+  (function renderTodayDailyEnergy() {
+    const todayEl = document.getElementById('today-daily-text');
+    if (!todayEl) return;
+    const now = new Date();
+    // Simple day stem/branch calc: day count from known base
+    // Jan 1, 2000 = 甲子 day (stemIdx=0, branchIdx=0)
+    const base = new Date(2000, 0, 1);
+    const dayDiff = Math.floor((now - base) / 86400000);
+    const todayStemIdx = ((dayDiff % 10) + 10) % 10;
+    const todayBranchIdx = ((dayDiff % 12) + 12) % 12;
+    const todayStem = STEMS[todayStemIdx];
+    const todayBranch = BRANCHES[todayBranchIdx];
+    const todayElem = STEM_ELEMENTS[todayStemIdx];
+    const compatMap = {
+      same: "a day that mirrors your nature — lean into your strengths",
+      generated: "a day that feeds your energy — a good day to receive",
+      generating: "a day where your energy flows outward — give what you can",
+      controlled: "a day with some friction — go gently, not against the grain",
+      controlling: "a day of momentum — push what matters",
+      neutral: "a steady day — reliable, unhurried"
+    };
+    const rel = getElementRelation(dp.element, todayElem);
+    const compatText = compatMap[rel] || "a neutral day";
+    todayEl.textContent = `Today carries ${todayStem}${todayBranch} energy. For ${dp.stem}${dp.branch}, this is ${compatText}.`;
+  })();
 
   // past→present link
   if (curDaeun && pastDaeun.length > 0) {
@@ -2677,9 +2867,19 @@ function renderReport(data) {
   } else {
     // blur preview
     document.getElementById('future-daeun-list').innerHTML = futureDaeun.map((d, i) => {
+      const futureOpeners = [
+        "This decade begins with a question you've been postponing. The chart says it's time.",
+        "Something you built in your 30s and 40s starts to bear fruit — or reveal its cracks.",
+        "The energy shifts toward what lasts. What you leave behind. What carries your name."
+      ];
+      const futureOpenersKo = [
+        "이 10년은 미뤄왔던 질문으로 시작됩니다. 이제 때가 되었다고 사주가 말합니다.",
+        "30대와 40대에 쌓아온 것이 열매를 맺거나, 균열을 드러낼 시기입니다.",
+        "에너지는 오래 지속되는 것, 남기는 것, 당신의 이름을 담은 것을 향해 이동합니다."
+      ];
       const teaser = lang === 'en'
-        ? `In this decade, the energy of ${d.element} meets your ${dp.element} nature. The chart has a story for this period — one that begins with...`
-        : `이 10년에는 ${ELEM_KR[d.element]}의 에너지가 당신의 ${ELEM_KR[dp.element]} 본성을 만납니다. 이 시기를 위한 이야기가 있습니다...`;
+        ? futureOpeners[i] || `In this decade, the energy of ${d.element} meets your ${dp.element} nature. The chart has a story for this period — one that begins with...`
+        : futureOpenersKo[i] || `이 10년에는 ${ELEM_KR[d.element]}의 에너지가 당신의 ${ELEM_KR[dp.element]} 본성을 만납니다. 이 시기를 위한 이야기가 있습니다...`;
       const cls = i === 0 ? 'partial' : 'locked';
       return `<div class="future-daeun-card ${cls}">
         <div class="fdc-period">${d.startYear}–${d.endYear} · ${d.startAge}–${d.endAge}${lang==='en'?' yrs':'세'}</div>
@@ -2727,6 +2927,12 @@ function initReveal() {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.12 });
   els.forEach(el => obs.observe(el));
+
+  // #18 — chapter section fade-in
+  const chapterObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); chapterObs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.story-chapter').forEach(el => { el.classList.add('chapter-section'); chapterObs.observe(el); });
 }
 
 // ═══════════════════════════════════════════════
@@ -3113,10 +3319,14 @@ let _emailBannerTimer = null;
 function initEmailCaptureBanner() {
   if (localStorage.getItem('email_dismissed') === 'true') return;
   if (localStorage.getItem('email_captured')) return;
-  _emailBannerTimer = setTimeout(() => {
-    const banner = document.getElementById('email-capture-banner');
-    if (banner) banner.classList.add('slide-up');
-  }, 30000);
+  window.addEventListener('scroll', function emailScrollTrigger() {
+    const scrollPct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    if (scrollPct >= 50) {
+      const banner = document.getElementById('email-capture-banner');
+      if (banner) banner.classList.add('slide-up');
+      window.removeEventListener('scroll', emailScrollTrigger);
+    }
+  });
 }
 function dismissEmailBanner() {
   const banner = document.getElementById('email-capture-banner');
