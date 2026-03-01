@@ -1662,21 +1662,7 @@
       <!-- Paywall wrapper (hidden until unlocked state is known) -->
       <div id="paywall-cta">
 
-        <!-- [2] CTA BLOCK -->
-        <div class="paywall-cta-wrap reveal">
-          <p class="paywall-hook" id="paywall-hook">The chart knew. It always knew.</p>
-          <p class="paywall-hook-sub" id="paywall-hook-sub" style="font-family:var(--font-serif);font-size:20px;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:28px"></p>
-          <p class="paywall-sub" id="paywall-sub">What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
-          <!-- [3] 앵커링 -->
-          <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
-          <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
-            Unlock the full reading →
-          </a>
-          <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Yours forever.</p>
-          <p class="paywall-urgency" id="paywall-urgency">🔒 출시 기념가 $7.99 — 정가 전환 전 마지막 기회.</p>
-        </div>
-
-        <!-- [4] SOCIAL PROOF CAROUSEL (페이월 직전) -->
+        <!-- [4] SOCIAL PROOF CAROUSEL (결제 버튼 위로 이동) -->
         <div class="social-proof-section reveal" id="social-proof-section">
           <div class="sp-counter-row">
             <span class="sp-counter">12,400+</span>
@@ -1700,6 +1686,20 @@
               <p class="sp-review-attr">— Marcus T., London &nbsp;★★★★★</p>
             </div>
           </div>
+        </div>
+
+        <!-- [2] CTA BLOCK -->
+        <div class="paywall-cta-wrap reveal">
+          <p class="paywall-hook" id="paywall-hook">The chart knew. It always knew.</p>
+          <p class="paywall-hook-sub" id="paywall-hook-sub" style="font-family:var(--font-serif);font-size:20px;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:28px"></p>
+          <p class="paywall-sub" id="paywall-sub">What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
+          <!-- [3] 앵커링 -->
+          <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
+          <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
+            Unlock the full reading →
+          </a>
+          <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Yours forever.</p>
+          <p class="paywall-urgency" id="paywall-urgency">🔒 출시 기념가 $7.99 — 정가 전환 전 마지막 기회.</p>
         </div>
 
         <!-- [5] RESULT BOTTOM CTA -->
@@ -3133,6 +3133,17 @@ function submitEmailBanner() {
   showToast("We'll be in touch. ✦");
 }
 
+</script>
+<script>
+// 이메일 배너 키보드 대응
+if (window.visualViewport) {
+  window.visualViewport.addEventListener('resize', () => {
+    const banner = document.getElementById('email-capture-banner');
+    if (!banner) return;
+    const offsetFromBottom = window.innerHeight - window.visualViewport.height;
+    banner.style.bottom = offsetFromBottom > 0 ? offsetFromBottom + 'px' : '0px';
+  });
+}
 </script>
 </body>
 </html>
