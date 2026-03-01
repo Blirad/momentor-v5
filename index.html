@@ -2361,9 +2361,9 @@ function populateTimeSelects() {
 
 function populateDateSelects() {
   const yearSel = document.getElementById('inp-year');
-  const maxYear = new Date().getFullYear() - 5;
+  const maxYear = new Date().getFullYear();
   yearSel.innerHTML = `<option value="">Year</option>`;
-  for (let y = maxYear; y >= 1900; y--) {
+  for (let y = maxYear; y >= 1930; y--) {
     yearSel.innerHTML += `<option value="${y}">${y}</option>`;
   }
   updateDaySelect();
@@ -2412,7 +2412,7 @@ function toggleNoTime() {
       : (currentLang==='ko' ? '태어난 시간을 모르시나요?' : "Don't know your birth time?");
   }
   showToast(_noTimeActive
-    ? 'Birth time set to unknown — we'll use noon.'
+    ? "Birth time set to unknown — we'll use noon."
     : 'Enter your birth time above.');
 }
 
@@ -3038,8 +3038,8 @@ function checkShareParams() {
     const h = parseInt(p.get('h')) || 12;
     if (!y || !m || !d) return;
     // pre-fill form and auto-generate
-    const maxYear = new Date().getFullYear() - 5;
-    if (y < 1900 || y > maxYear) return;
+    const maxYear = new Date().getFullYear();
+    if (y < 1930 || y > maxYear) return;
     if (m < 1 || m > 12) return;
     if (d < 1 || d > 31) return;
     if (p.has('h') && (h < 0 || h > 23)) return;
