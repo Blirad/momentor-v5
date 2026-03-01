@@ -1419,28 +1419,44 @@
   }
 /* ── Accordion Domain Section ── */
 .accordion-section-intro, .accordion-domains { display: none; }
+#section-results.visible ~ .accordion-section-intro { display: block; }
+#section-results.visible ~ .accordion-domains { display: block; }
 .accordion-section-intro { padding: 48px 0 32px; text-align: center; }
-.acc-item.locked .acc-content { position: relative; overflow: hidden; }
+.acc-item.locked .acc-content { 
+  display: block !important; 
+  position: relative; 
+  overflow: hidden; 
+  max-height: 100px;
+  user-select: none;
+}
 .acc-item.locked .acc-content::after {
   content: '';
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(6px);
-  background: rgba(10,8,20,0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: linear-gradient(180deg, rgba(10,8,20,0.2) 0%, rgba(10,8,20,0.85) 100%);
   border-radius: 4px;
 }
 .acc-locked-cta {
   position: absolute;
-  top: 50%;
+  bottom: 8px;
   left: 50%;
-  transform: translate(-50%,-50%);
-  font-family: 'Cormorant Garamond', serif;
-  color: var(--gold);
-  font-size: 14px;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  color: #0d0b1e;
+  font-size: 13px;
+  font-weight: 600;
   text-align: center;
   z-index: 2;
   pointer-events: auto;
   cursor: pointer;
+  background: var(--gold);
+  padding: 8px 20px;
+  border-radius: 20px;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 16px rgba(201,169,110,0.3);
 }
 .accordion-divider { width: 60px; height: 1px; background: var(--gold-dim, #c9a96e66); margin: 0 auto 24px; }
 .accordion-intro-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: var(--text-secondary, #a89b8c); font-style: italic; letter-spacing: 0.03em; }
@@ -1949,7 +1965,7 @@
     </button>
     <div class="acc-content" id="acc-wealth-content">
       <p class="acc-text" id="acc-wealth-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -1963,7 +1979,7 @@
     </button>
     <div class="acc-content" id="acc-career-content">
       <p class="acc-text" id="acc-career-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -1977,7 +1993,7 @@
     </button>
     <div class="acc-content" id="acc-vocation-content">
       <p class="acc-text" id="acc-vocation-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -1991,7 +2007,7 @@
     </button>
     <div class="acc-content" id="acc-love-content">
       <p class="acc-text" id="acc-love-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2005,7 +2021,7 @@
     </button>
     <div class="acc-content" id="acc-health-content">
       <p class="acc-text" id="acc-health-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2019,7 +2035,7 @@
     </button>
     <div class="acc-content" id="acc-family-content">
       <p class="acc-text" id="acc-family-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2033,7 +2049,7 @@
     </button>
     <div class="acc-content" id="acc-mentor-content">
       <p class="acc-text" id="acc-mentor-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2047,7 +2063,7 @@
     </button>
     <div class="acc-content" id="acc-movement-content">
       <p class="acc-text" id="acc-movement-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2061,7 +2077,7 @@
     </button>
     <div class="acc-content" id="acc-growth-content">
       <p class="acc-text" id="acc-growth-text"></p>
-      <span class="acc-locked-cta" onclick="document.getElementById('paywall-cta')?.scrollIntoView({behavior:'smooth'})">Unlock all domains →</span>
+      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 </div>
@@ -2162,23 +2178,23 @@ const T = {
   'acc-overall-label':  { en:'총운', ko:'총운' },
   'acc-overall-sub':    { en:'The Shape of Your Entire Sky', ko:'당신의 하늘 전체 지도' },
   'acc-wealth-label':   { en:'재물운', ko:'재물운' },
-  'acc-wealth-sub':     { en:'How Money Finds You', ko:'돈이 당신을 찾는 방식' },
+  'acc-wealth-sub':     { en:'How Money Finds You', ko:'돈이 당신을 찾아오는 방식' },
   'acc-career-label':   { en:'성공/커리어운', ko:'성공/커리어운' },
-  'acc-career-sub':     { en:"The Mountain You're Meant to Climb", ko:'당신이 오를 산' },
+  'acc-career-sub':     { en:"The Mountain You're Meant to Climb", ko:'당신이 오르도록 태어난 산' },
   'acc-vocation-label': { en:'직업/적성운', ko:'직업/적성운' },
   'acc-vocation-sub':   { en:'What Your Hands Were Made For', ko:'당신의 손이 만들어진 이유' },
   'acc-love-label':     { en:'연애운', ko:'연애운' },
-  'acc-love-sub':       { en:"The One You'll Recognize", ko:'알아볼 수밖에 없는 사람' },
+  'acc-love-sub':       { en:"The One You'll Recognize", ko:'당신이 알아볼 그 사람' },
   'acc-health-label':   { en:'건강운', ko:'건강운' },
-  'acc-health-sub':     { en:'Where Your Body Whispers', ko:'몸이 속삭이는 곳' },
+  'acc-health-sub':     { en:'Where Your Body Whispers', ko:'몸이 먼저 말하는 곳' },
   'acc-family-label':   { en:'가족운', ko:'가족운' },
-  'acc-family-sub':     { en:'The Roots Beneath You', ko:'당신 아래의 뿌리' },
+  'acc-family-sub':     { en:'The Roots Beneath You', ko:'당신 아래의 뿌리들' },
   'acc-mentor-label':   { en:'귀인운', ko:'귀인운' },
   'acc-mentor-sub':     { en:'Who Will Open the Door', ko:'문을 열어줄 사람' },
   'acc-movement-label': { en:'이동/변화운', ko:'이동/변화운' },
   'acc-movement-sub':   { en:'When the Ground Shifts', ko:'땅이 움직이는 순간' },
   'acc-growth-label':   { en:'학업/성장운', ko:'학업/성장운' },
-  'acc-growth-sub':     { en:"The Mind That Won't Stop Growing", ko:'멈추지 않는 성장' },
+  'acc-growth-sub':     { en:"The Mind That Won't Stop Growing", ko:'멈추지 않는 정신' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
   'err-date':           { en:'Please enter a valid date.', ko:'올바른 날짜를 입력해 주세요.' },
   'err-gender':         { en:'Please select a gender.', ko:'성별을 선택해 주세요.' },
@@ -3267,8 +3283,7 @@ function renderReport(data) {
   });
 
   // ── Accordion domains ──
-  document.getElementById('accordion-section-intro').style.display = 'block';
-  document.getElementById('accordion-domains').style.display = 'block';
+  // accordion visibility controlled by CSS sibling selector
   const accStemKey = dp.stem;
   fillAccordionContent(accStemKey);
   initAccordion();
@@ -3285,6 +3300,10 @@ function renderReport(data) {
 // ═══════════════════════════════════════════════
 function toggleAcc(id) {
   const item = document.getElementById(id);
+  if (item.classList.contains('locked')) {
+    openPayModal();
+    return;
+  }
   const content = document.getElementById(id + '-content');
   const isOpen = item.classList.contains('open');
   item.classList.toggle('open', !isOpen);
@@ -3422,6 +3441,9 @@ const ACC_COPY = {
     growth: { en: "Your mind grows through intuition — the understanding that arrives before the study, the knowing that precedes the proof. There's a good chance you've had moments of intellectual clarity that felt like remembering rather than learning, as if the knowledge was already there waiting to be uncovered. Your learning style is receptive, almost meditative: you absorb rather than attack. The growth edge: trusting that quiet knowing and backing it with structure. Intuition without framework is a whisper; intuition with framework is prophecy.", ko: "당신의 정신은 직관을 통해 자랍니다 — 공부 전에 도착하는 이해, 증명에 앞선 앎. 학습이라기보다 기억처럼 느껴지는 지적 명확함의 순간이 있었을 가능성이 높습니다, 마치 지식이 이미 발견되기를 기다리며 거기 있었던 것처럼. 학습 스타일은 수용적이고, 거의 명상적입니다: 공격하기보다 흡수합니다. 성장 경계: 조용한 앎을 신뢰하고 구조로 뒷받침하는 것. 프레임워크 없는 직관은 속삭임입니다; 프레임워크를 가진 직관은 예언입니다." }
   },
 };
+
+function fillAccordionContent(stemKey) {
+  const copy = ACC_COPY[stemKey] || {};
   const categories = ['overall','wealth','career','vocation','love','health','family','mentor','movement','growth'];
   const lang = currentLang || 'en';
   const placeholder = lang === 'en' ? 'Your reading for this domain is being prepared…' : '이 영역의 리딩이 준비 중입니다…';
