@@ -13,7 +13,7 @@
 <meta name="twitter:description" content="More precise than astrology. Older than the zodiac.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   /* ─── RESET & BASE ─── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,54 +22,65 @@
     --bg2: #110f27;
     --card-bg: rgba(255,255,255,0.04);
     --card-border: rgba(255,255,255,0.08);
-    --gold: #e8c547;
-    --gold-soft: rgba(232,197,71,0.7);
-    --gold-dim: rgba(232,197,71,0.3);
+    --gold: #c9a96e;
+    --gold-light: #dfc08a;
+    --gold-soft: rgba(201,169,110,0.75);
+    --gold-dim: rgba(201,169,110,0.35);
+    --gold-tint: rgba(201,169,110,0.08);
+    --gold-glow: rgba(201,169,110,0.20);
     --text-primary: rgba(255,255,255,0.92);
-    --text-secondary: rgba(255,255,255,0.58);
-    --text-muted: rgba(255,255,255,0.35);
+    --text-secondary: rgba(255,255,255,0.68);
+    --text-muted: rgba(255,255,255,0.48);
     --font-serif: 'Cormorant Garamond', Georgia, serif;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --radius: 12px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
     --max-w: 680px;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+    --space-2xl: 64px;
+    --touch-min: 44px;
+    --ls-wider: 0.12em;
+    --ls-widest: 0.18em;
+    --lh-body: 1.75;
+    --lh-relaxed: 1.9;
   }
   html { scroll-behavior: smooth; }
   body {
-    background: linear-gradient(145deg, #0d0b1e 0%, #130d2e 40%, #1a0d2e 70%, #0f1526 100%);
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(100,80,200,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,169,110,0.06) 0%, transparent 50%),
+      linear-gradient(180deg, #0d0b1e 0%, #111030 30%, #130d2a 60%, #0e1020 100%);
     color: var(--text-primary);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.7;
+    line-height: var(--lh-body);
     min-height: 100vh;
   }
   body::before {
     content: ''; position: fixed; inset: 0; z-index: 0;
     background-image:
-      radial-gradient(1px 1px at 5% 8%,rgba(255,255,255,.4) 0%,transparent 100%),
-      radial-gradient(1px 1px at 12% 22%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(1.5px 1.5px at 20% 5%,rgba(255,255,255,.35) 0%,transparent 100%),
-      radial-gradient(1px 1px at 28% 45%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1px 1px at 35% 15%,rgba(255,255,255,.3) 0%,transparent 100%),
-      radial-gradient(1.5px 1.5px at 42% 68%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(1px 1px at 50% 30%,rgba(255,255,255,.35) 0%,transparent 100%),
-      radial-gradient(1px 1px at 57% 85%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1.5px 1.5px at 63% 12%,rgba(255,255,255,.4) 0%,transparent 100%),
-      radial-gradient(1px 1px at 70% 55%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(1px 1px at 77% 38%,rgba(255,255,255,.3) 0%,transparent 100%),
-      radial-gradient(1.5px 1.5px at 83% 72%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1px 1px at 88% 20%,rgba(255,255,255,.35) 0%,transparent 100%),
-      radial-gradient(1px 1px at 93% 48%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(1px 1px at 97% 88%,rgba(255,255,255,.3) 0%,transparent 100%),
-      radial-gradient(1px 1px at 15% 90%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1.5px 1.5px at 48% 95%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(1px 1px at 75% 92%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1px 1px at 3% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
-      radial-gradient(1px 1px at 92% 8%,rgba(255,255,255,.25) 0%,transparent 100%),
-      radial-gradient(2px 2px at 33% 33%,rgba(232,197,71,.15) 0%,transparent 100%),
-      radial-gradient(2px 2px at 66% 66%,rgba(155,127,212,.12) 0%,transparent 100%),
-      radial-gradient(1px 1px at 18% 75%,rgba(255,255,255,.2) 0%,transparent 100%),
-      radial-gradient(1px 1px at 82% 42%,rgba(255,255,255,.3) 0%,transparent 100%),
-      radial-gradient(1px 1px at 55% 58%,rgba(255,255,255,.15) 0%,transparent 100%);
+      radial-gradient(1px 1px at 8% 12%,rgba(255,255,255,.35) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 22% 5%,rgba(255,255,255,.25) 0%,transparent 100%),
+      radial-gradient(0.8px 0.8px at 35% 42%,rgba(255,255,255,.2) 0%,transparent 100%),
+      radial-gradient(1px 1px at 50% 18%,rgba(255,255,255,.3) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 65% 8%,rgba(255,255,255,.4) 0%,transparent 100%),
+      radial-gradient(1px 1px at 78% 55%,rgba(255,255,255,.2) 0%,transparent 100%),
+      radial-gradient(0.8px 0.8px at 88% 30%,rgba(255,255,255,.25) 0%,transparent 100%),
+      radial-gradient(1px 1px at 15% 75%,rgba(255,255,255,.2) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 88%,rgba(255,255,255,.15) 0%,transparent 100%),
+      radial-gradient(1px 1px at 92% 65%,rgba(255,255,255,.3) 0%,transparent 100%),
+      radial-gradient(0.8px 0.8px at 30% 95%,rgba(255,255,255,.2) 0%,transparent 100%),
+      radial-gradient(1px 1px at 72% 82%,rgba(255,255,255,.18) 0%,transparent 100%),
+      radial-gradient(2px 2px at 55% 25%,rgba(201,169,110,.25) 0%,transparent 100%),
+      radial-gradient(1.5px 1.5px at 20% 60%,rgba(201,169,110,.18) 0%,transparent 100%),
+      radial-gradient(2px 2px at 80% 15%,rgba(138,100,220,.18) 0%,transparent 100%);
     pointer-events: none;
   }
 
@@ -225,10 +236,12 @@
     font-weight: 600;
     font-family: var(--font-sans);
     cursor: pointer;
-    transition: opacity .2s, transform .1s;
+    transition: opacity 0.2s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
-  .btn-primary:hover { opacity: .9; }
-  .btn-primary:active { transform: scale(.99); }
+  .btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,169,110,0.3); }
+  .btn-primary:active { transform: scale(0.97) translateY(0); box-shadow: 0 2px 8px rgba(201,169,110,0.2); }
   .btn-secondary {
     background: none;
     border: 1px solid var(--card-border);
@@ -264,50 +277,51 @@
   .step-dot.active { background: var(--gold); }
 
   /* ─── RESULTS ─── */
-  #section-results { display: none; padding-bottom: 80px; }
+  #section-results { display: none; padding-bottom: 96px; }
   #section-results.visible { display: block; }
+  body { padding-bottom: 72px; }
 
   /* ─── CHAPTER STRUCTURE ─── */
   .story-chapter {
-    padding: 40px 0;
+    padding: 48px 0;
     background: rgba(255,255,255,0.02);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     margin-bottom: 8px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
     position: relative;
     z-index: 1;
   }
   @media (hover: hover) {
-    .story-chapter:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
-    }
-    .dm-hero:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
-    }
-    .daeun-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(232,197,71,0.15);
-    }
+    .story-chapter:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.10); }
+    .dm-hero:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(201,169,110,0.15); }
+    .daeun-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.14); }
+    .daeun-card.is-current:hover { transform: translateY(-2px); box-shadow: 0 12px 36px rgba(201,169,110,0.15); }
   }
   .chapter-header {
     text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--card-border);
+    margin-bottom: 40px;
+    padding-bottom: 28px;
+    border-bottom: none;
+    position: relative;
+  }
+  .chapter-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,169,110,0.25) 30%, rgba(201,169,110,0.35) 50%, rgba(201,169,110,0.25) 70%, transparent);
   }
   .chapter-badge {
-    font-size: 10px;
-    letter-spacing: .2em;
-    color: var(--gold-soft);
-    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.20em;
+    color: rgba(201,169,110,0.65);
+    font-weight: 600;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+    font-family: var(--font-sans);
   }
+  .chapter-badge::before { content: '— '; letter-spacing: 0; opacity: 0.5; }
   .chapter-title {
     font-family: var(--font-serif);
     font-size: clamp(22px, 5vw, 30px);
@@ -339,9 +353,10 @@
 
   /* ─── BRIDGE ─── */
   .chapter-bridge {
-    padding: 32px 0;
+    padding: 40px 0;
     text-align: center;
     position: relative;
+    background: linear-gradient(180deg, #0d0b1e 0%, #12103a 50%, #0d0b1e 100%);
   }
   .chapter-bridge::before {
     content: '';
@@ -351,19 +366,24 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
   }
+  .chapter-bridge.bridge-to-paywall {
+    padding: 56px 0;
+    background: radial-gradient(ellipse 100% 100% at 50% 50%, rgba(201,169,110,0.05) 0%, transparent 70%);
+  }
   .bridge-inner {
     position: relative;
-    background: var(--bg);
+    background: transparent;
     display: inline-block;
-    padding: 0 20px;
-    max-width: 340px;
+    padding: 0 32px;
+    max-width: 320px;
   }
   .bridge-inner p {
     font-family: var(--font-serif);
-    font-size: 15px;
-    font-style: italic;
-    color: var(--text-secondary);
-    line-height: 1.8;
+    font-size: 18px;
+    font-style: normal;
+    color: rgba(255,255,255,0.90);
+    line-height: var(--lh-relaxed);
+    letter-spacing: -0.01em;
   }
   .bridge-question {
     font-size: 20px !important;
@@ -374,43 +394,32 @@
 
   /* ─── CARDS ─── */
   .card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(255,255,255,0.13);
+    border-radius: var(--radius-lg);
     padding: 24px;
     margin-bottom: 16px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 8px 24px rgba(0,0,0,0.25), 0 2px 6px rgba(0,0,0,0.15);
   }
 
   /* ─── DAY MASTER HERO ─── */
   .dm-hero {
-    background: linear-gradient(135deg, rgba(232,197,71,0.06), rgba(138,100,255,0.06));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--gold-dim);
-    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, rgba(100,80,200,0.05) 50%, rgba(201,169,110,0.04) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201,169,110,0.20);
+    border-top: 1px solid rgba(201,169,110,0.30);
+    border-radius: var(--radius-xl);
     padding: 32px 24px;
     margin-bottom: 20px;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
     position: relative;
     z-index: 1;
+    box-shadow: 0 1px 0 rgba(201,169,110,0.15) inset, 0 20px 48px rgba(0,0,0,0.3), 0 0 60px rgba(201,169,110,0.06);
   }
-  .dm-char {
-    font-family: var(--font-serif);
-    font-size: 72px;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-    display: block;
-    margin-bottom: 8px;
-    text-shadow: 0 0 40px rgba(232,197,71,0.4);
-  }
-  .dm-label {
-    font-size: 16px;
-    color: var(--gold-soft);
-    letter-spacing: .1em;
-    margin-bottom: 20px;
-  }
+  /* dm-hook comes before dm-char in DOM (리라 spec) */
   .dm-hook {
     font-family: var(--font-serif);
     font-size: clamp(17px, 4vw, 21px);
@@ -421,7 +430,26 @@
     border-left: 2px solid var(--gold);
     padding-left: 16px;
     text-align: left;
-    margin-top: 16px;
+    margin-bottom: 20px;
+  }
+  .dm-char {
+    font-family: var(--font-serif);
+    font-size: clamp(48px, 12vw, 64px);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+    margin-bottom: 8px;
+    text-shadow: 0 0 40px rgba(201,169,110,0.35);
+    filter: drop-shadow(0 0 20px rgba(201,169,110,0.40));
+    letter-spacing: -0.01em;
+  }
+  .dm-label {
+    font-size: 14px;
+    color: var(--gold-soft);
+    letter-spacing: .1em;
+    margin-bottom: 20px;
+    font-family: var(--font-sans);
   }
 
   /* ─── IDENTITY TAGS ─── */
@@ -432,12 +460,15 @@
     margin-bottom: 20px;
   }
   .identity-tag {
-    border-radius: 999px;
-    background: rgba(232,197,71,0.1);
-    border: 1px solid rgba(232,197,71,0.25);
-    color: var(--gold);
-    font-size: 12px;
-    padding: 4px 12px;
+    border-radius: 4px;
+    background: rgba(201,169,110,0.07);
+    border: 1px solid rgba(201,169,110,0.22);
+    color: rgba(255,255,255,0.78);
+    font-size: 11px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
   }
   .identity-tag span { color: var(--gold-soft); margin-right: 4px; }
 
@@ -445,17 +476,34 @@
   .story-text {
     font-family: var(--font-serif);
     font-size: 17px;
-    color: var(--text-primary);
-    line-height: 1.85;
+    color: rgba(255,255,255,0.88);
+    line-height: var(--lh-relaxed);
     margin-bottom: 16px;
+    letter-spacing: 0.01em;
   }
-  .story-text + .story-text { margin-top: 12px; }
+  .story-text + .story-text { margin-top: 20px; }
   .story-section-label {
-    font-size: 11px;
-    letter-spacing: .15em;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: var(--ls-wider);
     text-transform: uppercase;
-    color: var(--gold-soft);
-    margin: 24px 0 10px;
+    color: rgba(201,169,110,0.85);
+    margin: 32px 0 16px;
+    font-family: var(--font-sans);
+  }
+  /* Shadow section overlay */
+  .shadow-section-wrap {
+    background: rgba(0,0,0,0.30);
+    margin: 16px -24px;
+    padding: 24px 24px;
+    position: relative;
+  }
+  .shadow-section-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.15), transparent);
+    pointer-events: none;
   }
 
   /* T3-A: Past→Present connection block */
@@ -467,25 +515,27 @@
     border-radius: 0 12px 12px 0;
   }
 
-  /* T2-A: Conviction section */
+  /* T2-A: Conviction section (순수 텍스트 단락 - 미라 spec) */
   .conviction-section {
-    border-left: 3px solid var(--gold);
-    background: rgba(232,197,71,0.04);
-    padding: 28px 24px;
-    margin: 32px 0;
-    border-radius: 0 12px 12px 0;
+    padding: 40px 0;
+    margin: 0 0 8px;
   }
   .conviction-section p {
     font-family: var(--font-serif);
     font-size: 17px;
-    line-height: 1.9;
-    color: var(--text-primary);
+    line-height: 1.75;
+    color: rgba(255,255,255,0.88);
+    text-align: left;
+    margin-bottom: 1.5em;
   }
+  .conviction-section p:last-child { margin-bottom: 0; }
   .conviction-section .conviction-closer {
-    margin-top: 20px;
-    font-size: 15px;
-    font-style: italic;
-    color: var(--gold-soft);
+    font-family: var(--font-serif);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   /* T3-B: Daeun progress bar */
@@ -517,14 +567,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 0;
+    padding: 14px 16px;
     cursor: pointer;
     font-size: 14px;
     color: var(--text-secondary);
-    border-top: 1px solid var(--card-border);
+    border-top: none;
     user-select: none;
+    min-height: 48px;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+  .accordion-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.08) 80%, transparent);
   }
   .accordion-header:hover { color: var(--text-primary); }
+  .accordion-header:active { background: rgba(255,255,255,0.03); }
   .accordion-arrow { transition: transform .3s; }
   .accordion-header.open .accordion-arrow { transform: rotate(180deg); }
   .accordion-body { display: none; padding: 12px 0; }
@@ -625,13 +688,15 @@
   .daeun-card {
     position: relative;
     background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--card-border);
-    border-radius: var(--radius);
+    border-top: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-lg);
     padding: 20px;
     margin-bottom: 14px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
   .daeun-card::before {
     content: '';
@@ -642,9 +707,11 @@
     background: var(--card-bg);
     border: 2px solid var(--gold-dim);
   }
+  .daeun-card:active { transform: scale(0.99); }
   .daeun-card.is-current {
-    border-color: var(--gold-dim);
-    background: rgba(232,197,71,0.04);
+    border-color: rgba(201,169,110,0.15);
+    background: rgba(201,169,110,0.04);
+    box-shadow: 0 0 0 1px rgba(201,169,110,0.15) inset, 0 8px 32px rgba(201,169,110,0.12), 0 4px 16px rgba(0,0,0,0.25);
   }
   .daeun-card.is-current::before {
     background: var(--gold);
@@ -792,8 +859,8 @@
     pointer-events: none;
   }
   .future-daeun-card.locked {
-    filter: blur(5px);
-    opacity: 0.3;
+    filter: blur(4px);
+    opacity: 0.65;
     pointer-events: none;
     min-height: 80px;
   }
@@ -813,48 +880,110 @@
   }
   .paywall-cta-wrap {
     text-align: center;
-    padding: 32px 0 20px;
+    padding: 40px 0 20px;
   }
   .paywall-hook {
     font-family: var(--font-serif);
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--gold);
+    font-size: clamp(28px, 7vw, 36px);
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .paywall-hook-sub {
+    font-family: var(--font-serif);
+    font-size: clamp(22px, 5vw, 28px);
+    font-weight: 400;
+    color: rgba(255,255,255,0.78);
     line-height: 1.4;
-    margin-bottom: 6px;
+    margin-top: 12px;
+    margin-bottom: 20px;
   }
   .paywall-sub {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 28px;
-    line-height: 1.5;
+    font-size: 15px;
+    color: rgba(255,255,255,0.68);
+    margin-bottom: 32px;
+    line-height: 1.65;
   }
+  /* 소셜 프루프 */
+  .testimonial-block {
+    margin: 24px 0;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    text-align: left;
+  }
+  .testimonial-stars { font-size: 14px; letter-spacing: 2px; color: var(--gold); margin-bottom: 10px; }
+  .testimonial-text { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.80); line-height: 1.7; margin-bottom: 10px; }
+  .testimonial-attr { font-size: 12px; color: rgba(255,255,255,0.40); letter-spacing: 0.05em; }
+  /* 이메일 캡처 */
+  .email-capture-wrap {
+    margin: 32px 0;
+    padding: 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius-lg);
+    text-align: left;
+  }
+  .email-capture-label { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 16px; line-height: 1.5; }
+  .email-capture-input {
+    width: 100%; height: 48px; padding: 0 16px;
+    background: var(--card-bg); border: 1px solid rgba(255,255,255,0.20);
+    border-radius: var(--radius-md); color: var(--text-primary); font-size: 16px;
+    font-family: var(--font-sans); outline: none; margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .email-capture-input:focus { border-color: var(--gold-dim); }
+  .btn-email-cta {
+    width: 100%; height: 46px;
+    background: rgba(201,169,110,0.12);
+    border: 1px solid rgba(201,169,110,0.35);
+    border-radius: var(--radius-md);
+    color: var(--gold); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background 0.2s, border-color 0.2s;
+    font-family: var(--font-sans);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-email-cta:hover { background: rgba(201,169,110,0.18); border-color: rgba(201,169,110,0.5); }
+  .email-captured-msg { font-size: 14px; color: var(--gold); text-align: center; padding: 12px 0; display: none; }
+  /* 환불 보장 */
+  .refund-note { font-size: 12px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 20px; line-height: 1.6; }
+  .trust-badges { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .trust-badge { font-size: 12px; color: rgba(255,255,255,0.40); }
   .btn-unlock {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
     max-width: 380px;
-    padding: 18px 24px;
-    background-image: linear-gradient(135deg, #f0b860, #e8a840, #ffd080, #c9a84c, #f0b860);
-    background-size: 200% auto;
-    animation: shimmer 6s linear infinite;
+    margin: 0 auto;
+    height: 54px;
+    padding: 0 24px;
+    background-image: linear-gradient(105deg, #c9a96e 0%, #dfc08a 35%, #f5d899 50%, #dfc08a 65%, #c9a96e 100%);
+    background-size: 300% auto;
+    animation: shimmer 8s ease-in-out infinite;
     color: #0d0b1e;
     border: none;
-    border-radius: var(--radius);
-    font-size: 17px;
+    border-radius: var(--radius-md);
+    font-size: 16px;
     font-weight: 700;
     font-family: var(--font-sans);
     cursor: pointer;
     text-decoration: none;
-    transition: opacity .2s, transform .1s;
+    transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: 0.03em;
   }
+  .btn-unlock::before { content: '✦'; font-size: 12px; opacity: 0.8; }
   @keyframes shimmer {
-    0% { background-position: 0% center; }
+    0% { background-position: -200% center; }
     100% { background-position: 200% center; }
   }
-  .btn-unlock:hover { opacity: .92; }
-  .btn-unlock:active { transform: scale(.99); }
+  .btn-unlock:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(201,169,110,0.35); opacity: 1; }
+  .btn-unlock:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(201,169,110,0.2); }
   .paywall-fine {
     font-size: 13px;
     color: var(--text-muted);
@@ -890,16 +1019,30 @@
 
   /* ─── REVEAL ─── */
   @keyframes revealUp {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
   .reveal {
     opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .5s ease, transform .5s ease;
+    transform: translateY(10px);
+    transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
   }
   .reveal.visible { opacity: 1; transform: none; }
-  .revealed { animation: revealUp 0.6s ease forwards; }
+  .reveal:nth-child(2) { transition-delay: 0.08s; }
+  .reveal:nth-child(3) { transition-delay: 0.16s; }
+  .reveal:nth-child(4) { transition-delay: 0.24s; }
+  .dm-hero.reveal {
+    filter: blur(4px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1), filter 0.8s cubic-bezier(0.16,1,0.3,1);
+  }
+  .dm-hero.reveal.visible { filter: blur(0); }
+  .revealed { animation: revealUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: opacity 0.3s ease; transform: none; filter: none; }
+    .dm-hero.reveal { filter: none; }
+    .btn-unlock { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+  }
 
   /* ─── CHAPTER NAV DOTS ─── */
   .chapter-nav {
@@ -958,25 +1101,94 @@
   /* ─── STICKY CTA BAR ─── */
   .sticky-cta-bar {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 900;
-    background: linear-gradient(135deg, rgba(20,12,40,0.97), rgba(30,15,50,0.97));
-    border-top: 1px solid rgba(232,197,71,0.3);
-    padding: 12px 20px calc(12px + env(safe-area-inset-bottom,0px));
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    background: rgba(13,11,30,0.92);
+    border-top: 1px solid rgba(201,169,110,0.30);
+    padding: 12px 24px calc(12px + env(safe-area-inset-bottom,0px));
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     display: flex; justify-content: center;
   }
   .sticky-cta-inner { display: flex; align-items: center; gap: 16px; max-width: 680px; width: 100%; justify-content: space-between; }
-  .sticky-cta-text { color: var(--text-secondary); font-size: 14px; }
+  .sticky-cta-text { color: rgba(255,255,255,0.72); font-size: 13px; line-height: 1.3; flex: 1; }
   .sticky-cta-btn {
-    background: linear-gradient(135deg, #f0b860, #e8a840, #ffd080, #c9a84c, #f0b860);
-    background-size: 200% auto;
-    animation: shimmer 3.2s linear infinite;
-    color: #0d0b1e; font-weight: 700; font-size: 15px;
-    padding: 10px 24px; border-radius: 999px; text-decoration: none;
-    white-space: nowrap;
+    flex-shrink: 0;
+    height: 40px; padding: 0 18px;
+    background: var(--gold);
+    color: #0d0b1e; font-weight: 700; font-size: 13px;
+    border-radius: 8px; text-decoration: none;
+    white-space: nowrap; border: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
+    display: flex; align-items: center;
   }
+  .sticky-cta-btn:active { transform: scale(0.97); }
 
   /* ─── PAYWALL ANCHOR ─── */
   .paywall-anchor { font-size: 12px; color: var(--text-muted); text-align: center; margin: 8px 0; }
+
+  /* ─── LOADING SCENE ─── */
+  .loading-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(13,11,30,0.96);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.5s ease;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-symbol { font-family: var(--font-serif); font-size: 48px; color: var(--gold); margin-bottom: 24px; animation: pulsate 2s ease-in-out infinite; }
+  @keyframes pulsate { 0%,100% { opacity: 0.5; transform: scale(0.97); } 50% { opacity: 1; transform: scale(1.03); } }
+  .loading-text {
+    font-family: var(--font-serif);
+    font-size: 17px;
+    color: rgba(255,255,255,0.82);
+    text-align: center;
+    line-height: 1.6;
+    transition: opacity 0.4s ease;
+    min-height: 30px;
+  }
+  .loading-text.fade-out { opacity: 0; }
+  .loading-timestamp { font-size: 12px; color: var(--text-muted); margin-top: 16px; font-family: var(--font-sans); letter-spacing: 0.05em; }
+
+  /* ─── EXIT INTENT POPUP ─── */
+  .exit-popup {
+    position: fixed; inset: 0; z-index: 8000;
+    background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .exit-popup.show { display: flex; }
+  .exit-popup-inner {
+    background: linear-gradient(135deg, #1a1534, #111030);
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: var(--radius-xl);
+    padding: 32px 28px;
+    max-width: 380px; width: 100%;
+    text-align: center;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+  }
+  .exit-popup-hook { font-family: var(--font-serif); font-size: 24px; font-weight: 500; color: var(--text-primary); margin-bottom: 12px; line-height: 1.3; }
+  .exit-popup-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+  .exit-popup-close { font-size: 13px; color: var(--text-muted); cursor: pointer; margin-top: 16px; display: block; -webkit-tap-highlight-color: transparent; }
+  .exit-popup-close:hover { color: var(--text-secondary); }
+
+  /* ─── "DON'T KNOW BIRTH TIME" link ─── */
+  .no-time-link {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--gold-soft);
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .no-time-link:hover { color: var(--gold); }
+
+  /* ─── GENDER LAYOUT (3 옵션) ─── */
+  .gender-select { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+  /* global tap highlight reset */
+  button, a, [role="button"] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 480px) {
@@ -985,6 +1197,10 @@
     .pillar-stem-char { font-size: 24px; }
     .chapter-nav { display: none !important; }
     .strength-grid { grid-template-columns: 1fr; }
+    .gender-select { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 390px) {
+    .container { padding: 0 20px; }
   }
 </style>
 </head>
@@ -992,6 +1208,25 @@
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading-overlay" style="display:none">
+  <div class="loading-symbol">✦</div>
+  <div class="loading-text" id="loading-text">Calculating your chart...</div>
+  <div class="loading-timestamp" id="loading-timestamp"></div>
+</div>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-popup" id="exit-popup">
+  <div class="exit-popup-inner">
+    <div class="exit-popup-hook">Wait — your chart is still here.</div>
+    <p class="exit-popup-sub" id="exit-popup-sub">The decades ahead are written. The reading takes 3 minutes to unlock and stays yours forever.</p>
+    <a class="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="document.getElementById('exit-popup').classList.remove('show'); openPayModal(); return false;" style="max-width:none">
+      See My Full Forecast — $7.99
+    </a>
+    <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">No thanks, I'll pass on knowing what's next.</span>
+  </div>
+</div>
 
 <!-- CHAPTER NAV DOTS -->
 <div class="chapter-nav" id="chapterNav">
@@ -1063,6 +1298,7 @@
         <div class="gender-select">
           <div class="gender-btn" id="gb-m" onclick="selectGender('M')">♂ <span id="gb-m-label">Male</span></div>
           <div class="gender-btn" id="gb-f" onclick="selectGender('F')">♀ <span id="gb-f-label">Female</span></div>
+          <div class="gender-btn" id="gb-o" onclick="selectGender('O')">⚬ <span id="gb-o-label">Other</span></div>
         </div>
         <div class="error-msg" id="err-gender">Please select a gender.</div>
       </div>
@@ -1084,10 +1320,8 @@
             <option value="" id="opt-min">Minute</option>
           </select>
         </div>
-        <label class="no-time-label" style="margin-top:12px">
-          <input type="checkbox" id="chk-notime" onchange="toggleTime()">
-          <span id="notime-label">I don't know my birth time</span>
-        </label>
+        <span class="no-time-link" id="notime-label" onclick="toggleNoTime()" tabindex="0" role="button">Don't know your birth time?</span>
+        <input type="hidden" id="chk-notime" value="0">
       </div>
       <button class="btn-primary" onclick="generateReport()" id="btn-generate">See My Reading →</button>
       <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:12px;">Free. Private. Instant. Just your birth moment, just your chart.</p>
@@ -1115,6 +1349,7 @@
         <span class="dm-char" id="dm-char">甲</span>
         <div class="dm-label" id="dm-label">Yang Wood · The Ancient Tree</div>
       </div>
+      <!-- identity tags (moved below dm-hero) -->
 
       <!-- Identity Tags -->
       <div class="identity-tags reveal" id="identity-tags"></div>
@@ -1158,7 +1393,7 @@
     <div class="chapter-bridge reveal">
       <div class="bridge-inner">
         <p id="bridge-12a">There is a reason you became this person.</p>
-        <p class="bridge-question" id="bridge-12b">그 시간들이 사주에 새겨져 있습니다.</p>
+        <p class="bridge-question" id="bridge-12b">The chart remembers every decade that made you.</p>
       </div>
     </div>
 
@@ -1219,21 +1454,18 @@
         <p style="font-family:var(--font-serif);font-size:15px;color:var(--text-secondary);line-height:1.75" id="past-present-link"></p>
       </div>
 
-      <!-- ④ 납득 (Conviction) Section -->
-      <div class="conviction-section reveal" id="conviction-section">
-        <p id="conviction-text">Here is what the chart did to reach this reading:<br><br>
-        Your Day Pillar — <span id="conviction-pillar"></span> — was locked in at the exact hour you were born.
-        Every cycle since then has been running on the same 60-year clock,
-        unchanged for 3,000 years.<br><br>
-        The past decades you just read? Calculated.
-        The one you're living now? Calculated.
-        What comes next is already in the numbers.</p>
-        <p class="conviction-closer">This isn't astrology. This is arithmetic on time.</p>
-      </div>
+    </div>
+
+    <!-- CONVICTION SECTION (Bridge 3→4 직전 독립 섹션) -->
+    <div class="conviction-section reveal container" id="conviction-section">
+      <p id="conviction-text">Here is what the chart did to reach this reading.</p>
+      <p>Your Day Pillar — <strong><span id="conviction-pillar"></span></strong> — was locked in at the exact hour you were born. Every cycle since then has been running on the same 60-year clock, unchanged for 3,000 years.</p>
+      <p>The past decades you just read? Calculated. The one you're living now? Calculated. What comes next is already in the numbers.</p>
+      <p class="conviction-closer" id="conviction-closer">The chart knew. It always knew.</p>
     </div>
 
     <!-- BRIDGE 3→4 -->
-    <div class="chapter-bridge reveal">
+    <div class="chapter-bridge bridge-to-paywall reveal">
       <div class="bridge-inner">
         <p id="bridge-34a">You know who you are. You know where you've been.</p>
         <p class="bridge-question" id="bridge-34b">What comes next?</p>
@@ -1250,24 +1482,58 @@
         <p class="chapter-tagline" id="ch4-tagline">The story not yet written.</p>
       </div>
 
-      <!-- Future Daeun Preview (blur) -->
+      <!-- [1] HERO - Future Daeun Preview (blur) -->
       <div class="future-preview-wrap reveal" id="future-daeun-list"></div>
 
-      <!-- Trust line -->
-      <p class="reveal" style="font-size:14px;color:var(--text-secondary);line-height:1.7;margin-bottom:24px;font-family:var(--font-serif)" id="paywall-trust-text">
-        The past was already written when you were born.<br>So is what comes next.<br><br><span id="paywall-name-span"></span>the chart doesn't stop at today.
-      </p>
+      <!-- Paywall wrapper (hidden until unlocked state is known) -->
+      <div id="paywall-cta">
 
-      <!-- CTA -->
-      <div class="paywall-cta-wrap reveal" id="paywall-cta">
-        <p class="paywall-hook" id="paywall-hook">Aren't you curious what comes next?</p>
-        <p class="paywall-sub" id="paywall-sub">The next decade is waiting.<br>And the one after that.<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
-        <p class="paywall-anchor">Co-Star: $8.99/month. Momentor: $7.99 one-time.</p>
-        <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
-          ✦ See My Next Decade — $7.99
-        </a>
-        <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Your chart, forever.</p>
-      </div>
+        <!-- [2] CTA BLOCK -->
+        <div class="paywall-cta-wrap reveal">
+          <p class="paywall-hook" id="paywall-hook">The chart knew. It always knew.</p>
+          <p class="paywall-hook-sub" id="paywall-hook-sub" style="font-family:var(--font-serif);font-size:20px;color:rgba(255,255,255,0.72);line-height:1.5;margin-bottom:28px"></p>
+          <p class="paywall-sub" id="paywall-sub">What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won't start now.</p>
+          <!-- [3] 앵커링 -->
+          <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
+          <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
+            See My Full Forecast — $7.99
+          </a>
+          <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Yours forever.</p>
+        </div>
+
+        <!-- [4] SOCIAL PROOF -->
+        <div class="testimonial-block reveal">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I was skeptical. Then I read the chapter about my past decade. It described a relationship I never mentioned to anyone. How does a 3,000-year-old system know that?"</p>
+          <p class="testimonial-attr">— Verified reader, 34, Seoul</p>
+        </div>
+        <div class="testimonial-block reveal" style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I've used Co-Star for years. This is different. It doesn't tell you personality traits — it tells you what period of your life you're actually in. That changed everything."</p>
+          <p class="testimonial-attr">— Verified reader, 28, New York</p>
+        </div>
+
+        <!-- [5] EMAIL CAPTURE -->
+        <div class="email-capture-wrap reveal" id="email-capture-section">
+          <p class="email-capture-label">Not ready? Get a reminder when you are — we'll send your reading link once, no spam.</p>
+          <div id="email-capture-form">
+            <input class="email-capture-input" type="email" id="inp-email" placeholder="your@email.com">
+            <button class="btn-email-cta" onclick="saveEmail()">Save My Reading Link</button>
+          </div>
+          <p class="email-captured-msg" id="email-captured-msg">✦ Saved. Your link is waiting whenever you're ready.</p>
+        </div>
+
+        <!-- [6] REFUND & TRUST -->
+        <div class="reveal" style="text-align:center;margin-top:20px;padding:20px 16px;background:rgba(255,255,255,0.02);border-radius:12px">
+          <p style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7;font-family:var(--font-serif);margin-bottom:16px">If the reading doesn't feel true to your life — within 24 hours of purchase, email us and we'll refund it. No questions.</p>
+          <div class="trust-badges">
+            <span class="trust-badge">🔒 Secure checkout</span>
+            <span class="trust-badge">↩ 24h refund</span>
+            <span class="trust-badge">🚫 No subscription</span>
+            <span class="trust-badge">🔐 Private</span>
+          </div>
+        </div>
+      </div><!-- end paywall-cta -->
     </div>
 
   </div>
@@ -1277,7 +1543,7 @@
 <div class="sticky-cta-bar" id="sticky-cta" style="display:none">
   <div class="sticky-cta-inner">
     <span class="sticky-cta-text">✦ Unlock Your Full Reading</span>
-    <a href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" class="sticky-cta-btn" onclick="openPayModal();return false;">$7.99</a>
+    <a href="#" class="sticky-cta-btn" onclick="openPayModal();return false;">Unlock — $7.99</a>
   </div>
 </div>
 
@@ -1285,6 +1551,7 @@
 // ═══════════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════════
+const CHECKOUT_URL = 'https://momentor.lemonsqueezy.com/checkout/buy/1350661';
 const STEMS   = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
 const BRANCHES= ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const STEM_ELEMENTS   = ['Wood','Wood','Fire','Fire','Earth','Earth','Metal','Metal','Water','Water'];
@@ -1313,21 +1580,22 @@ const T = {
   'label-gender':       { en:'Gender', ko:'성별' },
   'gb-m-label':         { en:'Male', ko:'남성' },
   'gb-f-label':         { en:'Female', ko:'여성' },
+  'gb-o-label':         { en:'Other', ko:'기타' },
   'btn-step1-next':     { en:'Continue →', ko:'다음 →' },
   'step2-title':        { en:'Birth time (optional)', ko:'태어난 시간 (선택)' },
   'label-time':         { en:'Time of birth', ko:'출생 시각' },
   'opt-hour':           { en:'Hour', ko:'시' },
   'opt-min':            { en:'Minute', ko:'분' },
-  'notime-label':       { en:"I don't know my birth time", ko:'태어난 시간을 모릅니다' },
+  'notime-label':       { en:"Don't know your birth time?", ko:'태어난 시간을 모르시나요?' },
   'btn-back-label':     { en:'Back', ko:'이전' },
-  'btn-generate':       { en:'See My Reading →', ko:'리포트 보기 →' },
+  'btn-generate':       { en:'See My Reading →', ko:'내 사주 읽기 →' },
   'ch1-title':          { en:'Why You Are This Way', ko:'당신이 이런 사람인 이유' },
   'ch1-tagline':        { en:'You were this person from the beginning.', ko:'당신은 처음부터 이런 사람이었습니다.' },
   'ch2-title':          { en:"What You've Been Through", ko:'당신이 겪어온 것들' },
   'ch2-tagline':        { en:'The chart remembers your past.', ko:'사주는 당신의 과거를 알고 있습니다.' },
   'ch3-title':          { en:'Where You Stand Now', ko:'지금 당신이 서 있는 곳' },
   'ch3-tagline':        { en:"The energy you're moving through today.", ko:'지금 이 순간, 당신의 에너지.' },
-  'ch4-title':          { en:"Where You're Going", ko:'당신이 가야 할 곳' },
+  'ch4-title':          { en:"Where You're Going", ko:'당신 앞에 펼쳐진 것' },
   'ch4-tagline':        { en:'The story not yet written.', ko:'아직 쓰이지 않은 이야기.' },
   'acc-pillars-label':  { en:'Your Four Pillars', ko:'사주 원국' },
   'acc-elements-label': { en:'Energy Composition', ko:'오행 분포' },
@@ -1339,14 +1607,15 @@ const T = {
   'current-badge':      { en:'Current Cycle', ko:'현재 대운' },
   'today-label':        { en:"Today's Energy", ko:'오늘의 에너지' },
   'bridge-12a':         { en:'There is a reason you became this person.', ko:'당신이 이런 사람이 된 데는 이유가 있습니다.' },
-  'bridge-12b':         { en:"The chart remembers every decade that made you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
-  'bridge12b':          { en:"The chart remembers every decade that made you.", ko:'그 시간들이 사주에 새겨져 있습니다.' },
+  'bridge-12b':         { en:"The chart remembers every decade that made you.", ko:'사주는 당신을 만든 모든 십년을 기억합니다.' },
+  'bridge12b':          { en:"The chart remembers every decade that made you.", ko:'사주는 당신을 만든 모든 십년을 기억합니다.' },
   'bridge-23a':         { en:'None of those years were accidents.', ko:'그 어떤 해도 우연이 아니었습니다.' },
   'bridge-23b':         { en:'Now look where you are.', ko:'지금 당신이 서 있는 곳을 보세요.' },
   'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
   'bridge-34b':         { en:'What comes next?', ko:'그렇다면, 다음은 무엇일까요?' },
-  'paywall-hook':       { en:"Aren't you curious what comes next?", ko:'다음 이야기가 궁금하지 않으신가요?' },
-  'paywall-sub':        { en:'The next decade is waiting.<br>And the one after that.<br><br>The chart has never been wrong about your past.<br>It won\'t start now.', ko:'다음 10년이 기다리고 있습니다.<br>그리고 그 다음도.<br><br>사주는 당신의 과거에 대해 한 번도 틀린 적이 없습니다.<br>이제 와서 틀릴 리 없습니다.' },
+  'conviction-closer':  { en:"The chart knew. It always knew.", ko:'사주는 알고 있었습니다. 처음부터.' },
+  'paywall-hook':       { en:"The chart knew. It always knew.", ko:'사주는 알고 있었습니다. 처음부터.' },
+  'paywall-sub':        { en:'What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won\'t start now.', ko:'다음 10년에는 어떤 일이 기다리나요?<br>어떤 에너지가 오고 있나요?<br><br>사주는 당신의 과거에 대해 한 번도 틀린 적이 없습니다.<br>이제 와서 틀릴 리 없습니다.' },
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
   'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
@@ -1515,7 +1784,8 @@ function calcFourPillars(year, month, day, hour, gender, noTime) {
   });
 
   const yearYang = yearPillar.stemIdx % 2 === 0;
-  const forward  = (yearYang && gender === 'M') || (!yearYang && gender === 'F');
+  const genderCalc = gender === 'O' ? 'F' : gender; // Other → Yin (feminine polarity)
+  const forward  = (yearYang && genderCalc === 'M') || (!yearYang && genderCalc === 'F');
 
   const currentYear = new Date().getFullYear();
   const personAge   = currentYear - year;
@@ -1545,6 +1815,72 @@ function calcFourPillars(year, month, day, hour, gender, noTime) {
 
   return { yearPillar, monthPillar, dayPillar, hourPillar, elements, daeun, noTime };
 }
+
+// ═══════════════════════════════════════════════
+// PILLAR NARRATIVES — 60 일주 카피 (Mira)
+// ═══════════════════════════════════════════════
+const PILLAR_NARRATIVES = {
+"甲子": { hook: "You came into this world with a destination already in mind — and the water to carry you there.", origin: "甲木 meets 子Water: a tree rooted in an underground spring. The river doesn't fight the tree's direction — it feeds it, quietly, from below. Before you could name what drove you, you were already moving. Not scrambling — flowing toward something. The ambition was never loud. But it was always there, always deep, always cold-clear as winter water finding the path of least resistance toward the sea.", shadow: "The spring feeds the tree, but sometimes the roots drink so deep that the surface dries out. You can be consumed by the direction without remembering to surface, to rest, to let someone actually reach you rather than just watch you move.", invitation: "The water knows where it's going. What would happen if you let someone travel with you?", hookKo: "당신은 이미 목적지를 마음에 품고 태어났습니다 — 그리고 그곳까지 데려다줄 물도 함께.", originKo: "甲木과 子水: 지하 샘에 뿌리내린 나무. 강은 나무의 방향과 싸우지 않습니다 — 아래에서, 조용히, 그것을 먹입니다. 이름 붙이기도 전에 당신은 이미 움직이고 있었습니다.", shadowKo: "샘은 나무를 먹이지만, 때로 뿌리가 너무 깊이 마시면 표면이 건조해집니다.", invitationKo: "물은 어디로 가는지 알고 있습니다. 누군가가 함께 여행하도록 허락한다면 어떻게 될까요?" },
+"甲寅": { hook: "You've never needed permission to begin. The question was always just — when, not whether.", origin: "Two woods in the same pillar: the tree planted in a forest of its own making. 甲Wood in 寅Wood ground — primal will. You were the child who decided something and could not be reasoned out of it. Not stubbornness — orientation. The compass was set before anyone thought to ask where you were going.", shadow: "The double wood burns hot and climbs fast — but there are no other elements to tell it when to stop. You've overextended. You've committed to directions you couldn't unmake.", invitation: "The forest doesn't need another tree. What does it need? What do you need?", hookKo: "당신은 시작하기 위해 허락이 필요했던 적이 없습니다.", originKo: "두 개의 목(木)이 같은 기둥에: 자신이 만든 숲에 심어진 나무. 원초적인 의지입니다.", shadowKo: "이중 목은 뜨겁게 타오르고 빠르게 올라갑니다 — 하지만 언제 멈춰야 할지 알려줄 다른 원소가 없습니다.", invitationKo: "숲에 또 다른 나무가 필요하지 않습니다. 무엇이 필요한가요?" },
+"甲辰": { hook: "You carry authority you never asked for — and have spent years figuring out what to do with it.", origin: "甲Wood planted in 辰Earth — the Dragon's soil. A tree planted in dragon ground doesn't just grow — it becomes something that reorganizes the landscape. There is a gravitational weight to you that appeared early. In school, in groups, in rooms — things arranged around your presence before you spoke a word.", shadow: "Power without permission creates a particular kind of loneliness. People followed you; they didn't always choose you.", invitation: "The dragon's earth transforms everything it holds. What is it time to let change?", hookKo: "당신은 요청하지 않은 권위를 갖고 있습니다.", originKo: "甲木과 辰土 — 용의 땅에 심어진 나무. 용의 땅에 심어진 나무는 단순히 자라는 것이 아닙니다 — 풍경을 재편하는 무언가가 됩니다.", shadowKo: "허락 없는 권력은 특별한 종류의 외로움을 만듭니다.", invitationKo: "용의 땅은 그것이 담고 있는 모든 것을 변환합니다. 이제 무엇을 변하게 할 시간인가요?" },
+"甲午": { hook: "There's a fire in you that other people mistake for impatience. They've never understood what it's actually pushing toward.", origin: "甲Wood above 午Fire: the tree that catches sunlight and runs with it. Wood feeds fire; fire accelerates the wood's energy upward. You've always moved faster than the plan, felt things more intensely than the occasion called for, been ten steps ahead.", shadow: "Fire and wood together, unchecked — this burns. There's a version of you that has run straight into walls at full speed because the momentum was too good to question.", invitation: "The noon sun burns brightest — but even it sets. What does the fire look like when it finally slows down?", hookKo: "당신 안에는 다른 사람들이 조급함으로 착각하는 불이 있습니다.", originKo: "甲木과 午火: 햇빛을 잡아 달려가는 나무. 목은 화를 먹이고, 화는 목의 에너지를 위로 가속합니다.", shadowKo: "제어되지 않은 화와 목 — 이것은 불탑니다.", invitationKo: "정오의 태양이 가장 밝게 타오릅니다 — 하지만 그것도 집니다." },
+"甲申": { hook: "You've been sharpened by things that were supposed to break you. They didn't. You noticed.", origin: "甲Wood meeting 申Metal: the tree and the axe in the same body. 申Metal brings precision, systems, the ability to see what's unnecessary and release it. The result is a person shaped by pressure into something specific — someone who came out of difficult seasons with an edge others don't have.", shadow: "The sharpness in you, when turned inward, is unkind. You've been harder on yourself than any outside force — and convinced yourself that's discipline.", invitation: "The axe and the tree made each other. What were you made to build?", hookKo: "당신은 당신을 부수기로 되어 있었던 것들에 의해 다듬어졌습니다.", originKo: "甲木과 申金: 같은 몸 안의 나무와 도끼. 결과는 어려운 계절을 통해 날을 가진 채로 나온 사람입니다.", shadowKo: "당신 안의 예리함은 내면으로 향할 때 친절하지 않습니다.", invitationKo: "도끼와 나무는 서로를 만들었습니다. 당신은 무엇을 만들기 위해 만들어졌나요?" },
+"甲戌": { hook: "You are someone people think of years later — not because of what you said, but because of what you held.", origin: "甲Wood above 戌Earth: the tree at dusk, rooted in the fire-keeper's ground. 戌 holds the memory of the day's heat. A 甲木 planted here grows with unusual rootedness. Less upward rush, more depth. The direction is real, but something in you also knows how to stay.", shadow: "The fire-keeper can become the one who never leaves the fire. 甲戌 sometimes sacrifices movement for what it's protecting — staying too long in places, relationships, roles that no longer need tending.", invitation: "What you've been guarding is safe now. What does it look like to move with that instead of staying to protect it?", hookKo: "당신은 사람들이 수년 후에 떠올리는 사람입니다.", originKo: "甲木과 戌土: 황혼에, 불을 지키는 자의 땅에 뿌리내린 나무.", shadowKo: "불을 지키는 자는 불 곁을 결코 떠나지 않는 자가 될 수 있습니다.", invitationKo: "당신이 지키고 있던 것은 이제 안전합니다." },
+"乙丑": { hook: "You've outlasted everyone who underestimated you. Not by force — by patience so deep it looks like peace.", origin: "乙Wood in 丑Earth: the vine taking hold in frozen winter ground. Most things die in this soil. The vine doesn't. It finds the smallest crack and roots there, quietly, waiting for the season to change.", shadow: "The vine in winter ground can wait so long that it forgets to bloom when spring finally arrives. 乙丑 sometimes sacrifices spontaneity for safety.", invitation: "The winter is over. What are you still waiting for permission to grow toward?", hookKo: "당신을 과소평가한 모든 사람을 살아남았습니다.", originKo: "乙木과 丑土: 얼어붙은 겨울 땅에 뿌리내리는 덩굴. 대부분의 것들이 이 토양에서 죽습니다. 덩굴은 그러지 않습니다.", shadowKo: "겨울 땅의 덩굴은 너무 오래 기다려서 봄이 왔을 때 꽃 피우는 것을 잊을 수 있습니다.", invitationKo: "겨울이 끝났습니다. 성장하도록 허락받기를 아직도 기다리고 있는 것이 무엇인가요?" },
+"乙卯": { hook: "You were built for elegance, and the world kept asking for something harder. You found a way to give both.", origin: "乙Wood in 卯Wood: pure vine energy, doubled. This combination is the most aesthetically attuned: you have always felt the texture of things, the beauty in how something is said rather than just what is said.", shadow: "Too much wood and the vine can overgrow — spreading everywhere, attached to everything, unable to say where it begins and where the structure ends.", invitation: "The vine is most beautiful when it knows which wall it's climbing. What is your wall?", hookKo: "당신은 우아함을 위해 만들어졌고, 세상은 계속 더 단단한 것을 요구했습니다.", originKo: "乙木과 卯木: 순수한 덩굴 에너지, 두 배로. 이 조합은 가장 미적으로 조율된 것입니다.", shadowKo: "목이 너무 많으면 덩굴이 경계를 넘어 자랄 수 있습니다.", invitationKo: "덩굴은 어떤 벽을 올라가는지 알 때 가장 아름답습니다." },
+"乙巳": { hook: "You've always known things before they happened. Not because you're psychic — because you're watching everything.", origin: "乙Wood above 巳Fire: the vine that runs toward the light. 巳 is intelligent fire that burns with direction and calculation. You have always read the room three moves ahead. The thing people call intuition in you is actually attention.", shadow: "The vine that grows only toward light can become dependent on a particular source of it. When that light disappears, the disorientation is profound.", invitation: "The snake's fire burns in a particular direction. What does your intelligence want to illuminate?", hookKo: "당신은 항상 일어나기 전에 일들을 알았습니다.", originKo: "乙木과 巳火: 빛을 향해 달리는 덩굴. 巳는 지능적인 불입니다.", shadowKo: "빛을 향해서만 자라는 덩굴은 특정 빛의 원천에 의존하게 될 수 있습니다.", invitationKo: "뱀의 불은 특별한 방향으로 타오릅니다. 당신의 지능은 무엇을 밝히고 싶어하나요?" },
+"乙未": { hook: "People trust you with things they've never told anyone. That's not accident — something about you makes secrets feel safe.", origin: "乙Wood above 未Earth: the vine in the afternoon garden. 未 is earth warmed all day — the most receptive, creative, and emotionally rich. You carry a quality of emotional temperature that other people recognize instinctively.", shadow: "The vine in warm earth can become so comfortable that it stops moving. Warmth used to stay rather than to grow.", invitation: "The garden you've tended is beautiful. Is there somewhere wilder you've been curious about?", hookKo: "사람들은 누구에게도 말한 적 없는 것들을 당신에게 맡깁니다.", originKo: "乙木과 未土: 오후 정원의 덩굴. 따뜻하고 수용적인 未土.", shadowKo: "따뜻한 땅의 덩굴은 너무 편안해져서 움직이기를 멈출 수 있습니다.", invitationKo: "당신이 가꿔온 정원은 아름답습니다. 더 거칠고 궁금했던 곳이 있나요?" },
+"乙酉": { hook: "You are precise in a way that most people can't place — you edit the room you're in, you edit yourself, before anyone notices.", origin: "乙Wood above 酉Metal: the vine shaped by the pruning blade. You were formed by contact with high standards. The vine grew in the shape the blade allowed — not smaller, but more intentional.", shadow: "A vine pruned too often stops volunteering growth. 乙酉 can become overly self-editing — pre-rejecting ideas before they're half-formed.", invitation: "The most beautiful gardens have one wild corner. What are you not allowing to grow freely?", hookKo: "당신은 대부분의 사람들이 파악할 수 없는 방식으로 정밀합니다.", originKo: "乙木과 酉金: 가지치기 날에 의해 다듬어진 덩굴.", shadowKo: "너무 자주 가지치기 된 덩굴은 자발적 성장을 멈춥니다.", invitationKo: "가장 아름다운 정원에는 거친 구석이 하나 있습니다. 자유롭게 자라도록 허락하지 않고 있는 것은 무엇인가요?" },
+"乙亥": { hook: "You've lived in the undercurrent of things — the meaning beneath the meeting, the feeling beneath the words — your entire life.", origin: "乙Wood above 亥Water: the vine floating on deep water, rooted in mystery. You've always inhabited the space between things: between what's said and what's meant, between who someone is and who they could become.", shadow: "Water this deep can disorient. 乙亥 sometimes loses the thread between the inner world and the practical one.", invitation: "The depth you navigate is real. Who else knows how to read these waters?", hookKo: "당신은 평생 사물의 저류에 살아왔습니다.", originKo: "乙木과 亥水: 깊은 물 위에 떠 있는, 신비에 뿌리내린 덩굴.", shadowKo: "이처럼 깊은 물은 방향감각을 잃게 할 수 있습니다.", invitationKo: "당신이 항해하는 깊이는 실재합니다. 이 물을 읽는 방법을 아는 다른 사람은 누구인가요?" },
+"丙子": { hook: "You carry a warmth that has survived cold that would have extinguished most people. That's not resilience — that's physics.", origin: "丙Fire above 子Water: the sun reflected in midnight water. You are bright, but underneath there are currents that the brightness doesn't reveal. 子 is midnight potential: everything gathered, nothing yet released.", shadow: "丙子 can illuminate without revealing, shine without showing. People are warmed by you without understanding you, and that gap becomes a loneliness that is very hard to name.", invitation: "The midnight water knows what the noon sun doesn't. What do you know that you haven't said yet?", hookKo: "당신은 대부분의 사람들을 꺼뜨렸을 추위를 살아남은 따뜻함을 지니고 있습니다.", originKo: "丙火와 子水: 자정 물에 반영된 태양. 당신은 밝지만, 아래에는 밝음이 드러내지 않는 조류가 있습니다.", shadowKo: "丙子는 드러내지 않고 빛을 발할 수 있습니다. 사람들은 당신을 이해하지 못한 채 따뜻함을 받습니다.", invitationKo: "자정의 물은 정오의 태양이 모르는 것을 알고 있습니다." },
+"丙寅": { hook: "You were the one who moved first. Not because you were the most prepared — because you couldn't wait.", origin: "丙Fire above 寅Wood: the rising sun above the tiger's mountain. 寅 is the hour of the tiger — action before thought, instinct that has never needed to justify itself. You've started things. You've led. You've been the one who walked into the dark with a torch.", shadow: "The fire that burns twice as fast gives twice as much light — and exhausts its fuel in half the time.", invitation: "What would it look like to be both the torch and the one who gets to rest?", hookKo: "당신은 먼저 움직인 사람이었습니다.", originKo: "丙火와 寅木: 호랑이의 산 위의 떠오르는 태양.", shadowKo: "두 배로 빠르게 타오르는 불은 두 배의 빛을 주고 절반의 시간에 연료를 소진합니다.", invitationKo: "횃불이면서 동시에 쉴 수 있는 사람이 되는 것은 어떤 모습일까요?" },
+"丙辰": { hook: "You've transformed every room you've been long enough in. Sometimes you knew it. Sometimes you didn't.", origin: "丙Fire above 辰Earth: the sun above the dragon's transforming ground. You have a quality of catalysis: things become something different for having been near you. Conversations go somewhere they wouldn't have.", shadow: "The transformer doesn't always get to experience the result of its transformation. 丙辰 moves things forward — and sometimes moves on before seeing what it made.", invitation: "You've changed the shape of things for a long time. What has changed the shape of you?", hookKo: "당신은 충분히 오래 머문 모든 방을 변환시켰습니다.", originKo: "丙火와 辰土: 용의 변환하는 땅 위의 태양. 촉매의 자질.", shadowKo: "변환자는 항상 자신의 변환 결과를 경험하지 못합니다.", invitationKo: "오랫동안 사물의 형태를 바꿔왔습니다. 무엇이 당신의 형태를 바꿨나요?" },
+"丙午": { hook: "When you walk in, something shifts. Not because you try — because you can't not.", origin: "丙Fire above 午Fire: the sun at its absolute noon, doubled. 丙午 is the combination that doesn't do subtle. You arrived in the world at full volume. People orbit you. That's not metaphor.", shadow: "Maximum light creates maximum shadow. There's a loneliness inside the sun: nothing can look directly at you for long.", invitation: "At the height of noon, the sun finally stops climbing. What does stillness feel like for you?", hookKo: "당신이 들어오면 무언가가 바뀝니다.", originKo: "丙火와 午火: 두 배가 된 절정의 정오. 丙午는 섬세함을 하지 않는 조합입니다.", shadowKo: "최대 빛은 최대 그림자를 만듭니다. 태양 안에는 외로움이 있습니다.", invitationKo: "정오의 정점에서 태양은 마침내 올라가기를 멈춥니다. 당신에게 고요함은 어떤 느낌인가요?" },
+"丙申": { hook: "You are warm and exact — a combination that takes people completely off guard.", origin: "丙Fire above 申Metal: the sun above the refining furnace. When the sun's heat meets metal precision, the result is unusual: warmth that has standards, generosity that has limits.", shadow: "Metal cools what it touches, even in the fire. The warmth is real, but the precision around it can be experienced as judgment.", invitation: "The furnace refines what enters it. What are you in the process of refining right now?", hookKo: "당신은 따뜻하고 정밀합니다.", originKo: "丙火와 申金: 정련 용광로 위의 태양. 기준이 있는 따뜻함.", shadowKo: "금속은 불 안에서도 그것이 닿는 것을 식힙니다.", invitationKo: "용광로는 그것에 들어오는 것을 정제합니다. 지금 무엇을 정제하는 과정 중에 있나요?" },
+"丙戌": { hook: "People have always brought you their heaviest things. Not because you asked — because you were already carrying your own, and still standing.", origin: "丙Fire above 戌Earth: the sun at dusk, warming the earth that guards the day's memory. You have lit candles for people at their darkest hours, held steady when others panicked.", shadow: "The sun doesn't go out in 丙戌 — but it gets heavy. 丙戌 sometimes carries wounds that it cannot express because the warmth must be maintained.", invitation: "You've kept the light going for a long time. What would it feel like to let someone else hold the torch tonight?", hookKo: "사람들은 항상 가장 무거운 것들을 당신에게 가져왔습니다.", originKo: "丙火와 戌土: 황혼에, 낮의 기억을 지키는 땅을 따뜻하게 하는 태양.", shadowKo: "丙戌에서 태양은 꺼지지 않습니다 — 하지만 무거워집니다.", invitationKo: "오랫동안 빛을 지속시켜왔습니다. 오늘 밤 누군가 다른 사람이 횃불을 잡게 한다면 어떤 느낌일까요?" },
+"丁丑": { hook: "You've kept your flame burning through winters that were meant to put it out. That takes something most people don't have.", origin: "丁Fire above 丑Earth: a candle burning in frozen ground. You have maintained your warmth under conditions that were not designed for warmth — not by ignoring the cold, but by burning more precisely.", shadow: "A flame in frozen ground gives everything to surviving — and may have nothing left for thriving.", invitation: "The winter you survived is the proof. The spring is asking: what do you want to grow?", hookKo: "당신은 꺼뜨리기 위해 의도된 겨울들을 통해 불꽃을 계속 태웠습니다.", originKo: "丁火와 丑土: 얼어붙은 땅에서 타오르는 촛불.", shadowKo: "얼어붙은 땅의 불꽃은 살아남기 위해 모든 것을 줍니다 — 번성할 것이 남지 않을 수 있습니다.", invitationKo: "살아남은 겨울이 증거입니다. 봄이 묻고 있습니다: 무엇을 기르고 싶나요?" },
+"丁卯": { hook: "You are gentler than you look and sharper than you seem. People rarely guess the combination until it's too late.", origin: "丁Fire above 卯Wood: the candle held in an open hand in spring. You move through the world with a quality of grace that feels effortless from outside. From inside, you know the attention it requires.", shadow: "Wood feeds fire, but wood also burns. 丁卯 can give away warmth faster than it regenerates.", invitation: "Spring is the season of emergence. What is ready to come forward in you?", hookKo: "당신은 보기보다 더 부드럽고 보이는 것보다 더 예리합니다.", originKo: "丁火와 卯木: 봄에 열린 손에 들린 촛불.", shadowKo: "목은 불을 먹이지만, 목도 탑니다. 丁卯은 재생되는 것보다 더 빨리 따뜻함을 줄 수 있습니다.", invitationKo: "봄은 꽃만을 위한 출현의 계절이 아닙니다. 당신 안에서 무엇이 앞으로 나올 준비가 되어 있나요?" },
+"丁巳": { hook: "There's a version of your life where you trust the intelligence you carry. You're starting to live it.", origin: "丁Fire above 巳Fire: two fires — the intimate candle above the serpent's directed flame. Your care has always had architecture. The conversations you've ignited weren't accidental.", shadow: "Two fires together can be very consuming. 丁巳 sometimes burns so intentionally toward goals that it forgets that warmth, at its best, is not a tool.", invitation: "The serpent knows exactly where it's going. Does the candle know what it wants to illuminate?", hookKo: "당신이 지니고 있는 지능을 신뢰하는 삶의 버전이 있습니다.", originKo: "丁火와 巳火: 다른 성격의 두 불.", shadowKo: "두 불이 함께하면 매우 소비적일 수 있습니다.", invitationKo: "뱀은 정확히 어디로 가는지 알고 있습니다. 촛불은 무엇을 밝히고 싶은지 알고 있나요?" },
+"丁未": { hook: "You hold the warmth of things long after they've passed. That's not sentimentality — that's a different kind of knowing.", origin: "丁Fire above 未Earth: the candle in the afternoon garden. 丁Fire here doesn't burn and release — it burns and accumulates, carrying the heat of past moments into present ones. You remember things that other people have forgotten.", shadow: "The earth that holds everything can also hold what should be released. 丁未 sometimes carries old warmth and old wounds with equal tenderness.", invitation: "The garden holds every season that has passed through it. Which one are you still living in?", hookKo: "당신은 지나간 것들의 따뜻함을 오래 간직합니다.", originKo: "丁火와 未土: 오후 정원의 촛불. 丁火는 태우고 방출하지 않습니다 — 쌓습니다.", shadowKo: "모든 것을 담고 있는 땅은 방출해야 할 것도 담고 있을 수 있습니다.", invitationKo: "정원은 그것을 통과한 모든 계절을 담고 있습니다. 당신은 아직 어느 계절에 살고 있나요?" },
+"丁酉": { hook: "You see the flaw in the beautiful thing — and you love it anyway. That's rarer than it sounds.", origin: "丁Fire above 酉Metal: the candlelight refracted through crystal. You have an extraordinary sensory precision: you feel the quality of things, the rightness and wrongness of them, in ways that don't require explanation.", shadow: "The crystal that refracts everything also fractures in the wrong light. Standards and sorrow live very close together here.", invitation: "The gem doesn't need to be flawless to be precious. Do you know that in your own case?", hookKo: "아름다운 것의 결함을 보고 그럼에도 불구하고 사랑합니다.", originKo: "丁火와 酉金: 수정을 통해 굴절된 촛불.", shadowKo: "丁酉는 선물과 매우 가까운 상처-민감성을 지닙니다.", invitationKo: "보석은 귀하기 위해 흠 없을 필요가 없습니다. 당신 자신의 경우에 그것을 알고 있나요?" },
+"丁亥": { hook: "You've been swimming in depths that most people can't see from the surface. Not drowning — navigating.", origin: "丁Fire above 亥Water: the candle flame on the surface of the deep ocean. A candle here burns with unusual wisdom, because it has been formed by the impossible: maintaining warmth and light in an element that should extinguish it.", shadow: "The flame on the ocean is extraordinary — and precarious. 丁亥 can be destabilized by emotional storms that others barely register.", invitation: "The flame on the water burns, against all reason. What in your life deserves that same impossible commitment?", hookKo: "대부분의 사람들이 표면에서 볼 수 없는 깊이에서 헤엄쳐왔습니다.", originKo: "丁火와 亥水: 깊은 대양 표면의 촛불.", shadowKo: "대양 위의 불꽃은 특별하고 불안정합니다.", invitationKo: "물 위의 불꽃은 모든 이성에 반하여 타오릅니다." },
+"戊子": { hook: "There's a stillness in you that people mistake for contentment. Only you know what it's actually holding.", origin: "戊Earth above 子Water: the mountain with an underground spring. On the surface — unmovable, steady. Below — a current of water in constant motion. The mountain absorbs the water; the water influences the mountain — invisibly, over time.", shadow: "Underground water can erode what seems permanent. The collapse, when it comes, surprises even the mountain itself.", invitation: "The mountain keeps its underground rivers private. What would happen if you let someone hear the water?", hookKo: "당신 안의 고요함을 사람들은 만족으로 착각합니다.", originKo: "戊土와 子水: 지하 샘이 있는 산. 표면은 움직임 없지만 아래에는 끊임없이 움직이는 물의 흐름이 있습니다.", shadowKo: "지하수는 영구적으로 보이는 것을 침식할 수 있습니다.", invitationKo: "산은 지하 강을 비밀로 유지합니다. 누군가가 물을 들을 수 있도록 허락하면 어떻게 될까요?" },
+"戊寅": { hook: "You've protected people who didn't know they needed protecting. That's a particular kind of grace.", origin: "戊Earth above 寅Wood: the mountain where the tiger was born. You have a quality of readiness that others feel instinctively: something in you is always prepared, always watching, always positioned to meet what might come.", shadow: "The guardian who is always ready can forget what it's like to be unguarded. 戊寅 sometimes becomes so focused on protection that it misses the experience it's protecting.", invitation: "The tiger rests between hunts. What does rest look like for someone built like you?", hookKo: "필요로 한다는 것을 몰랐던 사람들을 보호해왔습니다.", originKo: "戊土와 寅木: 호랑이가 태어난 산.", shadowKo: "항상 준비된 수호자는 무방비 상태가 어떤 것인지 잊을 수 있습니다.", invitationKo: "호랑이는 사냥 사이에 쉽니다. 당신처럼 만들어진 누군가에게 휴식은 어떤 모습인가요?" },
+"戊辰": { hook: "You are one of the most powerful things in any room, and you dress it in ordinary clothes.", origin: "戊Earth above 辰Earth: mountain upon transforming earth. You carry both: the profound stillness of the mountain and the capacity for dramatic transformation underneath. When you do move, everything moves with you.", shadow: "Double earth can become unmovable to the point of rigidity. 戊辰 sometimes protects stability so fiercely that necessary change is treated as threat.", invitation: "You contain the earthquake. When was the last time you let yourself shake?", hookKo: "당신은 어떤 방에서든 가장 강력한 것들 중 하나이고, 그것을 평범한 옷으로 입습니다.", originKo: "戊土와 辰土: 변환하는 땅 위의 산.", shadowKo: "이중 흙은 경직성의 지점까지 움직이지 않게 될 수 있습니다.", invitationKo: "당신은 지진을 담고 있습니다. 마지막으로 자신이 흔들리도록 한 것이 언제였나요?" },
+"戊午": { hook: "You burn steady when everything else is chaos. People have been counting on that their whole lives without telling you.", origin: "戊Earth above 午Fire: the mountain warmed by the noon sun. You have the steadiness of the mountain with the warmth of the fire. Your presence itself reorganizes panic into something manageable.", shadow: "The mountain absorbs the noon heat and holds it — heat that has nowhere to go accumulates. 戊午 can carry unprocessed intensity.", invitation: "You've been steady for so many people. What does it feel like when you let yourself burn freely?", hookKo: "모든 것이 혼란일 때 당신은 꾸준히 타오릅니다.", originKo: "戊土와 午火: 정오의 태양으로 따뜻해진 산.", shadowKo: "갈 곳 없는 열기는 쌓입니다. 戊午는 처리되지 않은 강도를 지닐 수 있습니다.", invitationKo: "많은 사람들을 위해 꾸준했습니다. 자유롭게 타오르도록 자신을 놓아줄 때 어떤 느낌인가요?" },
+"戊申": { hook: "You've carved something precise out of something enormous. That takes patience of a kind most people haven't needed.", origin: "戊Earth above 申Metal: the mountain that contains veins of metal — enormous potential that requires specific conditions and time. You have been shaped by systems, by structure, by forms of discipline that felt limiting and turned out to be liberating.", shadow: "Metal inside stone requires a force to emerge that can be mistaken for violence. 戊申 sometimes uses precision and control as distance.", invitation: "The mountain holds the ore. Who has the patience to help you bring it out?", hookKo: "방대한 것에서 정밀한 것을 조각해냈습니다.", originKo: "戊土와 申金: 금속 맥이 있는 산.", shadowKo: "戊申은 때로 정밀함과 통제를 거리로 사용합니다.", invitationKo: "산이 광석을 담고 있습니다. 그것을 꺼내는 것을 도울 인내심이 있는 사람은 누구인가요?" },
+"戊戌": { hook: "You've been the ground beneath things. The invisible foundation. The thing that made other things possible.", origin: "戊Earth above 戌Earth: double earth, both guarding fire within. There is a devotion in you that runs deeper than most people's loyalty — a commitment not to individuals or projects, but to what should be true.", shadow: "The mountain that guards its fire against everything guards it against the things it needs too. 戊戌 can become isolated in its groundedness.", invitation: "The deepest fire needs air to keep burning. What are you letting in?", hookKo: "당신은 사물 아래의 땅이었습니다. 보이지 않는 기반.", originKo: "戊土와 戌土: 이중 흙, 둘 다 안에 불을 지키고 있습니다.", shadowKo: "모든 것에 반해 불을 지키는 산은 필요한 것들에 대해서도 지킵니다.", invitationKo: "가장 깊은 불은 계속 타오르기 위해 공기가 필요합니다. 무엇을 들여보내고 있나요?" },
+"己丑": { hook: "You've built things quietly, over a very long time, that people will be standing on long after you're gone.", origin: "己Earth above 丑Earth: double earth in the dead of winter. 己丑 is the patience of seeds — the work that looks like nothing and is everything. You plant, you tend, you wait.", shadow: "Winter earth can become so patient that it forgets spring is an option. 己丑 sometimes chooses difficulty because it's familiar.", invitation: "The ground has been keeping things alive all winter. What does it want to grow this year?", hookKo: "아주 오랜 시간 동안 조용히 무언가를 쌓아왔습니다.", originKo: "己土와 丑土: 한겨울의 이중 흙.", shadowKo: "겨울 흙은 너무 인내심이 생겨서 봄이 선택지임을 잊을 수 있습니다.", invitationKo: "땅은 겨울 내내 것들을 살아있게 유지했습니다. 올해 무엇을 기르고 싶나요?" },
+"己卯": { hook: "You make the complicated look easy and the easy look meaningful. That's a specific kind of genius.", origin: "己Earth above 卯Wood: the garden in full spring. You've been creating conditions for other people's success for so long that you've become invisible to the outcome.", shadow: "The spring garden gives everything to the season before it knows whether the season will be kind. 己卯 can be vulnerable to giving in contexts that don't reciprocate.", invitation: "The garden decides what it grows. What are you choosing to cultivate this season?", hookKo: "복잡한 것을 쉬워 보이게 하고 쉬운 것을 의미 있어 보이게 만듭니다.", originKo: "己土와 卯木: 봄이 한창인 정원.", shadowKo: "봄 정원은 계절이 친절할지 알기 전에 종종 모든 것을 줍니다.", invitationKo: "정원은 무엇을 기를지 결정합니다. 이번 계절 당신은 무엇을 기르기로 선택하고 있나요?" },
+"己巳": { hook: "You understand how things work. Not just people — systems, undercurrents, the logic behind the logic.", origin: "己Earth above 巳Fire: the warm field in late spring. You have always known more about how things work than you've revealed. The practical intelligence in you is extraordinary — the ability to see the mechanism beneath the surface.", shadow: "Too much directed heat dries the soil. 己巳 can overthink, over-analyze, over-prepare — the field that calculates every variable before planting may miss the season entirely.", invitation: "The field knows what it needs. Does the analytical mind trust the ground's intelligence?", hookKo: "사물이 어떻게 작동하는지 이해합니다.", originKo: "己土와 巳火: 늦봄의 따뜻한 들판.", shadowKo: "너무 많은 방향을 가진 열기는 흙을 건조하게 만듭니다.", invitationKo: "들판은 무엇이 필요한지 압니다. 분석적인 마음이 땅의 지능을 신뢰하나요?" },
+"己未": { hook: "You've held space for more people than you can count. When was the last time someone held it for you?", origin: "己Earth above 未Earth: double earth in warm summer afternoon — extraordinary empathy. You have an almost bottomless capacity for care — for seeing what people need, for providing the right conditions.", shadow: "The richest soil, unreplenished, goes fallow. 己未 gives so consistently that the depletion is gradual and invisible.", invitation: "The most fertile ground needs fallow years. What would it feel like to rest the field?", hookKo: "셀 수 없이 많은 사람들을 위해 공간을 만들어왔습니다.", originKo: "己土와 未土: 따뜻한 여름 오후의 이중 흙.", shadowKo: "보충되지 않은 가장 풍부한 흙은 휴경지가 됩니다.", invitationKo: "가장 비옥한 땅은 휴경년이 필요합니다. 들판을 쉬게 한다면 어떤 느낌일까요?" },
+"己酉": { hook: "You have an eye for what's wrong and a patience for making it right. Not everyone could manage that combination.", origin: "己Earth above 酉Metal: the harvest field in autumn. You don't just see what's wrong — you tend to what's wrong. You don't just notice the gap — you fill it. Quietly, consistently, without being asked.", shadow: "The autumn harvest can become ruthless assessment. 己酉 sometimes turns precision inward — harvesting itself before the season is done.", invitation: "The harvest is not the end of the field's story. What is it time to let rest before the next season?", hookKo: "무엇이 잘못되었는지에 대한 눈과 그것을 바로잡는 인내를 갖고 있습니다.", originKo: "己土와 酉金: 가을의 수확 들판.", shadowKo: "가을 수확은 무자비한 평가가 될 수 있습니다.", invitationKo: "수확은 들판 이야기의 끝이 아닙니다. 다음 계절 전에 쉬게 할 시간이 된 것은 무엇인가요?" },
+"己亥": { hook: "You carry something between earth and ocean — a weight that is also a gift that is also sometimes just very heavy.", origin: "己Earth above 亥Water: the garden's edge at the sea. You have an unusual relationship with other people's interior worlds — you absorb them, you understand them, you carry them in ways that blur the line between empathy and identity.", shadow: "The garden at the ocean's edge is the most fertile and the most vulnerable. 己亥 can be overwhelmed by the same emotional currents that make it extraordinary.", invitation: "The shore is where land and sea negotiate their edge. Where is yours?", hookKo: "흙과 대양 사이의 무언가를 지니고 있습니다.", originKo: "己土와 亥水: 바다 끝의 정원.", shadowKo: "대양의 가장자리 정원은 가장 비옥하고 가장 취약합니다.", invitationKo: "해안은 땅과 바다가 경계를 협상하는 곳입니다. 당신의 경계는 어디인가요?" },
+"庚子": { hook: "You've had more ideas in a single decade than most people have in a lifetime. The question has always been which ones to cut.", origin: "庚Metal above 子Water: the sword forged in deep water. Your capability runs deep and wide. You don't just have answers — you have the context for why the answers matter.", shadow: "Water erodes metal, given enough time. 庚子 sometimes loses its edge to its own fluidity — the directness softened by too many perspectives.", invitation: "The blade and the water shaped each other. What clarity has the depth given you?", hookKo: "단 한 십 년 동안 대부분의 사람들이 평생 갖는 것보다 더 많은 아이디어를 가졌습니다.", originKo: "庚金과 子水: 깊은 물에서 단련된 검.", shadowKo: "충분한 시간이 주어지면 물은 금속을 침식합니다.", invitationKo: "날과 물이 서로를 형성했습니다. 깊이가 어떤 명료함을 주었나요?" },
+"庚寅": { hook: "When you decide something, it's done. Not because you're impulsive — because you're already twenty steps ahead.", origin: "庚Metal above 寅Wood: the blade born in the tiger's dawn. You are not reckless — you are ready. The sword knows what it's for. The tiger knows where it's going. You have both.", shadow: "The blade in the tiger's energy can cut before the moment requires it. 庚寅 can act so decisively that it forecloses options before they've fully opened.", invitation: "The tiger's power is in its patience as much as its speed. Which decisions deserve more waiting?", hookKo: "무언가를 결정하면, 그것은 완료됩니다.", originKo: "庚金과 寅木: 호랑이의 새벽에 태어난 날.", shadowKo: "호랑이 에너지 속의 날은 순간이 요구하기 전에 자를 수 있습니다.", invitationKo: "호랑이의 힘은 속도만큼 인내에 있습니다. 어떤 결정들이 더 많은 기다림을 받을 자격이 있나요?" },
+"庚辰": { hook: "You've transformed more than once. Each time, you kept what was real and released what wasn't. That takes ruthlessness with yourself.", origin: "庚Metal above 辰Earth: the sword forged in the dragon's transforming ground. You have a quality of renewal — you've been through significant changes and come out with a different edge, a different clarity.", shadow: "Transformation is addictive. 庚辰 can become someone who needs crisis to feel alive.", invitation: "The dragon's ground can transform anything. What are you choosing to become this time?", hookKo: "한 번 이상 변환했습니다. 매번, 진짜인 것을 유지하고 그렇지 않은 것을 방출했습니다.", originKo: "庚金과 辰土: 용의 변환하는 땅에서 단련된 검.", shadowKo: "변환은 중독성이 있습니다. 庚辰은 위기가 필요한 사람이 될 수 있습니다.", invitationKo: "용의 땅은 무엇이든 변환할 수 있습니다. 이번에 무엇이 되기로 선택하고 있나요?" },
+"庚午": { hook: "You have the courage to say the thing that changes the room. You've paid for that your whole life, and you'd do it again.", origin: "庚Metal above 午Fire: the sword in the forge at full heat. You carry the quality of being forged while in use — still being clarified, still being refined, still doing the work while it happens.", shadow: "The metal in the forge is soft before it's hard. 庚午 can be more vulnerable than its directness suggests.", invitation: "The forge is how the blade becomes itself. What is the fire clarifying in you right now?", hookKo: "방을 바꾸는 말을 할 용기가 있습니다.", originKo: "庚金과 午火: 최고 열기의 용광로 속 검.", shadowKo: "용광로 속 금속은 단단해지기 전에 부드럽습니다.", invitationKo: "용광로는 날이 자신이 되는 방법입니다. 지금 불이 당신 안에서 무엇을 명료하게 하고 있나요?" },
+"庚申": { hook: "You've never needed anyone to tell you what standard to hold yourself to. That's a gift. It's also sometimes a prison.", origin: "庚Metal above 申Metal: double metal — the blade in the metal's own ground. You know exactly what you stand for. You know exactly what you don't accept. The clarity is the blade.", shadow: "The blade without a scabbard cuts everything — including the hand that carries it. 庚申 can be exhausting to inhabit: the standards applied to the self as fully as to everything else.", invitation: "Even the best blade needs a scabbard. Have you found yours?", hookKo: "자신을 어떤 기준으로 잡아야 하는지 말해줄 사람이 필요한 적이 없습니다.", originKo: "庚金과 申金: 이중 금속.", shadowKo: "칼집 없는 날은 모든 것을 자릅니다.", invitationKo: "최고의 날도 칼집이 필요합니다. 당신의 것을 찾았나요?" },
+"庚戌": { hook: "You are someone who keeps their word. In the world as it is, that is a rarer thing than it should be.", origin: "庚Metal above 戌Earth: the blade resting in the watchman's dusk earth. You are the person whose word is genuinely their bond, whose commitments are made slowly but held indefinitely.", shadow: "The loyal sword can guard what has long since needed releasing. 庚戌 can stay committed past the point where commitment serves anyone.", invitation: "Loyalty is a sword. What is it protecting, and is that thing worth the vigilance?", hookKo: "약속을 지키는 사람입니다.", originKo: "庚金과 戌土: 파수꾼의 황혼 땅에서 쉬고 있는 날.", shadowKo: "충성스러운 검은 오래전에 방출이 필요했던 것을 지킬 수 있습니다.", invitationKo: "충성은 검입니다. 무엇을 보호하고 있으며, 그것은 그 경계를 받을 가치가 있나요?" },
+"辛丑": { hook: "You became something extraordinary through conditions that were not extraordinary at all. That's the rarest kind of gem.", origin: "辛Metal above 丑Earth: the jewel in winter's compressed ground. You were refined not in favorable circumstances but despite them — shaped by friction, by difficulty, by standards maintained when nothing external required it.", shadow: "The gem formed in winter cold can hold that cold inside. 辛丑 sometimes carries a reserve — an inner frost — that keeps people at a precise distance.", invitation: "The gem is already made. What would it be like to let yourself be held, rather than only displayed?", hookKo: "특별하지 않은 조건들을 통해 특별한 것이 되었습니다.", originKo: "辛金과 丑土: 겨울의 압축된 땅의 보석.", shadowKo: "겨울 추위에 형성된 보석은 내면에 그 추위를 담을 수 있습니다.", invitationKo: "보석은 이미 만들어졌습니다. 단지 전시되는 것이 아니라 담겨지는 것은 어떤 느낌일까요?" },
+"辛卯": { hook: "You feel the difference between beautiful and almost beautiful. Most people never learn to hear that gap.", origin: "辛Metal above 卯Wood: the jewel in spring's open hand. You have an extraordinary sensory intelligence: the ability to detect and inhabit the quality of things, to know when something is right in a way that's entirely embodied.", shadow: "The gem in spring is exquisite — and also exposed. 辛卯 carries an aesthetic wound-sensitivity: the same system that perceives beauty precisely also feels its absence as pain.", invitation: "The gem and the spring are both alive to the same things. What have you been too refined to enjoy lately?", hookKo: "아름다운 것과 거의 아름다운 것의 차이를 느낍니다.", originKo: "辛金과 卯木: 봄의 열린 손의 보석.", shadowKo: "봄의 보석은 절묘하고 노출되어 있습니다.", invitationKo: "보석과 봄은 둘 다 같은 것들에 살아있습니다. 최근에 너무 정제되어서 즐기지 못한 것이 무엇인가요?" },
+"辛巳": { hook: "You see what things are worth — accurately, immediately, permanently. That's not judgment. That's calibration.", origin: "辛Metal above 巳Fire: the gem in the heat of the intelligent flame. You have an extraordinary precision of assessment: you know what things are worth in a conversation, in a relationship, in a context — as perception, not calculation.", shadow: "辛巳 sometimes experiences being seen and assessed by others as something clinical — the precision applied to itself, the sense of being evaluated rather than met.", invitation: "The flame that reveals the gem reveals everything. What are you ready to see clearly about yourself?", hookKo: "사물의 가치를 봅니다 — 정확하게, 즉시, 영구적으로.", originKo: "辛金과 巳火: 지능적인 불꽃의 열기 속 보석.", shadowKo: "辛巳는 때로 다른 사람들에게 보이고 평가받는 것을 임상적인 것으로 경험합니다.", invitationKo: "보석을 드러내는 불꽃은 모든 것을 드러냅니다." },
+"辛未": { hook: "You carry beauty and meaning as a weight, not a decoration. That makes you different from most people who claim to value those things.", origin: "辛Metal above 未Earth: the gem embedded in warm, receptive summer soil. You have grounded beauty — an aesthetic precision woven into life, making the everyday more than it was before you touched it.", shadow: "The gem in warm earth can become comfortable to the point of being buried. 辛未 sometimes allows itself to be covered by others' needs until its own precise nature is obscured.", invitation: "The gem doesn't need to be above the ground to be valuable. But it does need to be seen. Who sees you?", hookKo: "아름다움과 의미를 장식이 아닌 무게로 지닙니다.", originKo: "辛金과 未土: 따뜻하고 수용적인 여름 흙에 박힌 보석.", shadowKo: "따뜻한 흙의 보석은 묻힐 정도로 편안해질 수 있습니다.", invitationKo: "보석은 귀하기 위해 땅 위에 있을 필요가 없습니다. 하지만 보여질 필요는 있습니다." },
+"辛酉": { hook: "You are the standard. Not because you set yourself there — because everything in your vicinity organizes around what's genuine and what isn't.", origin: "辛Metal above 酉Metal: double metal at the hour of the rooster. You know exactly what you stand for. The clarity is the blade. You were probably told your standards were impossible before you realized that impossible was just other people's ceiling.", shadow: "The double metal loupe sees everything — including flaws in itself. 辛酉 can turn precision into relentless self-assessment, allowing no declaration of good enough.", invitation: "The finest jewel in the collection is allowed to rest in its setting. When do you let yourself rest in yours?", hookKo: "당신이 기준입니다.", originKo: "辛金과 酉金: 닭의 시간의 이중 금속.", shadowKo: "이중 금속 렌즈는 모든 것을 봅니다 — 자신의 결함도 포함해서.", invitationKo: "컬렉션에서 가장 훌륭한 보석은 자신의 세팅에서 쉬도록 허락됩니다." },
+"辛亥": { hook: "You hold depth and clarity in the same hand — and most people only get one or the other.", origin: "辛Metal above 亥Water: the gem at the bottom of the deep ocean. You have both: the emotional depth of someone who has been in the water all their life, and the precision of someone who has also been watching it from outside.", shadow: "The gem in the ocean is extraordinary — and very far from the surface. 辛亥 can be inaccessible in its depth.", invitation: "The deep ocean holds the clearest gems. Who has shown they can go that deep?", hookKo: "깊이와 명료함을 같은 손에 담고 있습니다.", originKo: "辛金과 亥水: 깊은 대양 바닥의 보석.", shadowKo: "대양 속의 보석은 특별하고 표면에서 매우 멀리 있습니다.", invitationKo: "깊은 대양은 가장 맑은 보석을 담고 있습니다. 그 깊이까지 갈 수 있음을 보여준 사람은 누구인가요?" },
+"壬子": { hook: "You've always lived in the undercurrent — processing everything at a depth that the surface doesn't show.", origin: "壬Water above 子Water: the great river meeting the midnight spring. You have insight that other people mistake for opinion. It's pattern recognition from very far down.", shadow: "Double water can become lost in itself. 壬子 sometimes overthinks in real-time — the analysis looping, the pattern-matching outrunning the action.", invitation: "The river and the spring both know where they're going. Do you let yourself be guided by that knowing?", hookKo: "당신은 항상 저류에 살아왔습니다.", originKo: "壬水와 子水: 자정 샘을 만나는 대강.", shadowKo: "이중 물은 자신 안에 길을 잃을 수 있습니다.", invitationKo: "강과 샘 둘 다 어디로 가는지 알고 있습니다. 그 앎에 이끌리도록 자신을 허락하나요?" },
+"壬寅": { hook: "You see where things are going before most people see where they are. That's useful. It's also isolating.", origin: "壬Water above 寅Wood: the great river flowing through the tiger's mountain. You have both the depth and the decisiveness — the ability to understand a situation completely and then move with it rather than just observing.", shadow: "The river moving through tiger country can run too fast for its own intelligence. 壬寅 sometimes mistakes momentum for wisdom.", invitation: "The river runs fastest through the tiger's mountain. What is it carrying to the sea?", hookKo: "대부분의 사람들이 지금 있는 곳을 보기 전에 사물이 어디로 가는지 봅니다.", originKo: "壬水와 寅木: 호랑이의 산을 통해 흐르는 대강.", shadowKo: "호랑이 지역을 통해 흐르는 강은 자신의 지능을 위해 너무 빠르게 달릴 수 있습니다.", invitationKo: "강은 호랑이의 산을 통해 가장 빠르게 흐릅니다. 무엇을 바다로 운반하고 있나요?" },
+"壬辰": { hook: "You carry a power that you've spent a long time figuring out what to do with. The figuring is almost over.", origin: "壬Water above 辰Earth: the great river meeting the dragon's transforming ground. You carry the past and the future simultaneously — people sense the weight of what you know and the openness of what you're becoming.", shadow: "壬辰 can be hard to contain — the energy moving in multiple directions at once, the transformation potential sometimes expressed as turbulence.", invitation: "The river becomes the ocean at the dragon's gate. What are you in the process of becoming?", hookKo: "당신은 오랫동안 무엇을 해야 할지 파악해온 힘을 지니고 있습니다.", originKo: "壬水와 辰土: 용의 변환하는 땅을 만나는 대강.", shadowKo: "壬辰은 담기 어려울 수 있습니다.", invitationKo: "강은 용의 문에서 대양이 됩니다. 무엇이 되는 과정 중에 있나요?" },
+"壬午": { hook: "You've always known where the energy in a room is going before the room did. That's not luck. That's 壬午.", origin: "壬Water above 午Fire: the great river meeting the noon sun. 壬午 is the most dynamic water pillar: intelligence that is heated, intuition that has urgency, depth that moves with purpose and force.", shadow: "Fire and water together create unstable weather. 壬午 carries the pressure of insight that arrives before the words to express it.", invitation: "Steam rises where water meets fire. What are you ready to let rise?", hookKo: "당신은 항상 방의 에너지가 어디로 가는지 방이 알기 전에 알았습니다.", originKo: "壬水와 午火: 정오의 태양을 만나는 대강.", shadowKo: "불과 물이 함께하면 불안정한 날씨를 만듭니다.", invitationKo: "증기는 물이 불을 만나는 곳에서 오릅니다." },
+"壬申": { hook: "You cut through confusion the way rivers cut through stone — not by force, but by persistence and precision.", origin: "壬Water above 申Metal: the great river with a metal blade at its heart. You think in systems — you see the architecture of situations before others see the walls — and you communicate that with a clarity that other water pillars don't always achieve.", shadow: "Metal in the river can cut things that should have been allowed to flow. 壬申 sometimes imposes structure on what needed freedom.", invitation: "The river and the blade both know their purpose. Which one is guiding you right now?", hookKo: "강이 돌을 자르는 방식으로 혼란을 자릅니다.", originKo: "壬水와 申金: 금속 날을 중심에 가진 대강.", shadowKo: "강 안의 금속은 흐르도록 허락되었어야 할 것들을 자를 수 있습니다.", invitationKo: "강과 날 둘 다 자신의 목적을 알고 있습니다. 지금 당신을 이끌고 있는 것은 어느 쪽인가요?" },
+"壬戌": { hook: "You carry wisdom that came from experience, not from books. People feel the difference when you speak.", origin: "壬Water above 戌Earth: the great river meeting the watchman's dusk earth. You have earned your understanding the hard way — through time, through presence, through staying when easier options were available.", shadow: "The river held by the watchman's earth can become still — stopped, not peaceful. 壬戌 can hold on to the past with the same loyalty 戌 uses to guard the fire.", invitation: "The loyal earth teaches the river to stay. What has the river learned from that lesson that's worth carrying forward?", hookKo: "책이 아닌 경험에서 온 지혜를 지니고 있습니다.", originKo: "壬水와 戌土: 파수꾼의 황혼 땅을 만나는 대강.", shadowKo: "파수꾼의 땅에 의해 담긴 강은 고요해질 수 있습니다.", invitationKo: "충성스러운 땅은 강에게 머무는 법을 가르칩니다." },
+"癸丑": { hook: "You've nourished things in secret that are still living because of you. You'll never know them all.", origin: "癸Water above 丑Earth: the mountain spring in winter's frozen ground. Your care has gone places you'll never trace. It became part of people who don't know your name.", shadow: "The spring that seeps through frozen ground exhausts itself slowly. 癸丑 can give so quietly that the depletion is invisible to everyone — including itself.", invitation: "Spring is a door the ice can't hold forever. What are you ready to emerge into?", hookKo: "비밀스럽게 당신 때문에 아직 살아있는 것들을 양육했습니다.", originKo: "癸水와 丑土: 겨울의 얼어붙은 땅의 산속 샘.", shadowKo: "얼어붙은 땅을 통해 스며드는 샘은 천천히 소진됩니다.", invitationKo: "봄은 얼음이 영원히 붙들 수 없는 문입니다. 무엇으로 나아갈 준비가 되었나요?" },
+"癸卯": { hook: "You feel things before they arrive. You've learned to call that sensitivity rather than strangeness.", origin: "癸Water above 卯Wood: the mountain rain falling on spring's open earth. You enter situations at their most receptive points, you sense exactly when and how to offer what you carry, you leave things changed without announcing that you did it.", shadow: "The rain that falls in spring can fall too readily. 癸卯 sometimes gives without checking whether the ground needs more water.", invitation: "Spring rain and spring soil are in conversation. Are you listening to both sides?", hookKo: "도달하기 전에 것들을 느낍니다.", originKo: "癸水와 卯木: 봄의 열린 땅에 내리는 산비.", shadowKo: "봄에 내리는 비는 너무 쉽게 내릴 수 있습니다.", invitationKo: "봄비와 봄 흙은 대화 중입니다. 양쪽을 듣고 있나요?" },
+"癸巳": { hook: "You understand things that other people only manage to feel. That's a strange kind of loneliness.", origin: "癸Water above 巳Fire: the mountain spring flowing toward the intelligent flame. 巳Fire distills the water, bringing out the essence. You can hold feeling and understanding simultaneously — the world kept asking you to pick one.", shadow: "癸巳 can become too concentrated — the sensitivity too intense, the perception too accurate, the understanding of others so precise that crowds become difficult.", invitation: "The distilled water is more powerful than the rain. What are you most concentrated toward?", hookKo: "다른 사람들이 겨우 느끼는 것들을 이해합니다.", originKo: "癸水와 巳火: 지능적인 불꽃을 향해 흐르는 산속 샘.", shadowKo: "증류된 샘은 강력합니다. 癸巳는 너무 농축될 수 있습니다.", invitationKo: "증류된 물은 비보다 더 강력합니다. 무엇을 향해 가장 농축되어 있나요?" },
+"癸未": { hook: "You've been the invisible thing that made everything grow. It's time someone named what you actually did.", origin: "癸Water above 未Earth: the gentle rain on the afternoon garden. You are a catalyst for other people's becoming, and you do it so quietly that most people don't trace it back to you.", shadow: "癸未 sometimes finds that the creativity and care it offers has been absorbed by everything around it — the garden thriving while the rain doesn't know where itself ends.", invitation: "The garden in afternoon light is something you helped make. Are you in it, or only behind it?", hookKo: "모든 것이 자라게 한 보이지 않는 것이었습니다.", originKo: "癸水와 未土: 오후 정원의 부드러운 비.", shadowKo: "정원 비는 자신이 무엇을 돕고 자라는지 선택하지 못합니다.", invitationKo: "오후 빛의 정원은 당신이 만드는 데 도움을 준 것입니다." },
+"癸酉": { hook: "You hear what isn't said. That's not a skill you developed — it's just how you're tuned.", origin: "癸Water above 酉Metal: the mountain spring filtered through autumn crystal. You've always known when people were lying — not because you're suspicious, but because you can hear the frequency that doesn't match the words.", shadow: "癸酉 sometimes carries the burden of knowing too much about the people around them — the gap between what people say and what the spring hears always present.", invitation: "The filtered spring is the clearest water. What has it shown you about yourself that you haven't acknowledged yet?", hookKo: "말해지지 않은 것을 듣습니다.", originKo: "癸水와 酉金: 가을 수정을 통해 걸러진 산속 샘.", shadowKo: "수정의 명료함은 볼 수 없게 된 것을 포함하여 모든 것을 보여줍니다.", invitationKo: "걸러진 샘은 가장 맑은 물입니다." },
+"癸亥": { hook: "You are the oldest feeling in the room. Not because of age — because of what you carry.", origin: "癸Water above 亥Water: double water, both ancient, both deep. You feel things that don't have words yet. You've always been a little out of time — belonging to no particular moment, reading all the moments at once.", shadow: "Double water can become the place where everything disappears. 癸亥 sometimes absorbs so much that there is no clear center.", invitation: "The deepest water knows the oldest things. What does it know about you that you haven't let yourself hear?", hookKo: "당신은 방에서 가장 오래된 감정입니다.", originKo: "癸水와 亥水: 이중 물, 둘 다 오래되고, 둘 다 깊습니다.", shadowKo: "이중 물은 모든 것이 사라지는 장소가 될 수 있습니다.", invitationKo: "가장 깊은 물은 가장 오래된 것들을 알고 있습니다." }
+}; // end PILLAR_NARRATIVES
 
 // ═══════════════════════════════════════════════
 // DAY MASTER DATA (Storyteller Voice)
@@ -1830,14 +2166,34 @@ function populateTimeSelects() {
 
 function populateDateSelects() {
   const yearSel = document.getElementById('inp-year');
-  const daySel  = document.getElementById('inp-day');
+  const maxYear = new Date().getFullYear() - 5;
   yearSel.innerHTML = `<option value="">Year</option>`;
-  for (let y = 2020; y >= 1930; y--) {
+  for (let y = maxYear; y >= 1900; y--) {
     yearSel.innerHTML += `<option value="${y}">${y}</option>`;
   }
+  updateDaySelect();
+  // dynamic update on month/year change
+  document.getElementById('inp-month').addEventListener('change', updateDaySelect);
+  document.getElementById('inp-year').addEventListener('change', updateDaySelect);
+}
+
+function updateDaySelect() {
+  const yearSel  = document.getElementById('inp-year');
+  const monthSel = document.getElementById('inp-month');
+  const daySel   = document.getElementById('inp-day');
+  const yr = parseInt(yearSel.value);
+  const mo = parseInt(monthSel.value);
+  const prevDay = parseInt(daySel.value) || 0;
+  let maxDays = 31;
+  if (mo && yr) {
+    maxDays = new Date(yr, mo, 0).getDate();
+  } else if (mo) {
+    const mDays = [31,29,31,30,31,30,31,31,30,31,30,31];
+    maxDays = mDays[mo-1] || 31;
+  }
   daySel.innerHTML = `<option value="">Day</option>`;
-  for (let d = 1; d <= 31; d++) {
-    daySel.innerHTML += `<option value="${d}">${d}</option>`;
+  for (let d = 1; d <= maxDays; d++) {
+    daySel.innerHTML += `<option value="${d}" ${d===prevDay?'selected':''}>${d}</option>`;
   }
 }
 
@@ -1845,12 +2201,24 @@ function selectGender(g) {
   selectedGender = g;
   document.getElementById('gb-m').classList.toggle('selected', g === 'M');
   document.getElementById('gb-f').classList.toggle('selected', g === 'F');
+  const gbO = document.getElementById('gb-o');
+  if (gbO) gbO.classList.toggle('selected', g === 'O');
 }
 
-function toggleTime() {
-  const checked = document.getElementById('chk-notime').checked;
-  document.getElementById('inp-hour').disabled   = checked;
-  document.getElementById('inp-minute').disabled = checked;
+let _noTimeActive = false;
+function toggleNoTime() {
+  _noTimeActive = !_noTimeActive;
+  document.getElementById('inp-hour').disabled   = _noTimeActive;
+  document.getElementById('inp-minute').disabled = _noTimeActive;
+  const lbl = document.getElementById('notime-label');
+  if (lbl) {
+    lbl.textContent = _noTimeActive
+      ? (currentLang==='ko' ? '시간 입력하기' : 'I know my birth time')
+      : (currentLang==='ko' ? '태어난 시간을 모르시나요?' : "Don't know your birth time?");
+  }
+  showToast(_noTimeActive
+    ? 'Birth time set to unknown — we'll use noon.'
+    : 'Enter your birth time above.');
 }
 
 function nextStep() {
@@ -1898,7 +2266,7 @@ function generateReport() {
   const year    = parseInt(document.getElementById('inp-year').value);
   const month   = parseInt(document.getElementById('inp-month').value);
   const day     = parseInt(document.getElementById('inp-day').value);
-  const noTime  = document.getElementById('chk-notime').checked;
+  const noTime  = _noTimeActive;
   const hour    = noTime ? 12 : parseInt(document.getElementById('inp-hour').value) || 12;
 
   const pillars = calcFourPillars(year, month, day, hour, selectedGender, noTime);
@@ -1916,13 +2284,17 @@ function generateReport() {
     });
   }
 
-  document.getElementById('section-form').style.display    = 'none';
-  document.getElementById('section-results').classList.add('visible');
-  document.getElementById('chapterNav').classList.add('visible');
+  document.getElementById('section-form').style.display = 'none';
 
-  renderReport(reportData);
-  initReveal();
-  initChapterNav();
+  // Loading scene (P0-20)
+  showLoadingScene(() => {
+    document.getElementById('section-results').classList.add('visible');
+    document.getElementById('chapterNav').classList.add('visible');
+    renderReport(reportData);
+    initReveal();
+    initChapterNav();
+    initExitIntent();
+  });
 
   // Sticky CTA: show when chapter-1 is in view, hide when unlocked
   if (!reportData.unlocked) {
@@ -1954,7 +2326,12 @@ function renderReport(data) {
   // ── Chapter 1 ──────────────────────────
   document.getElementById('dm-char').textContent  = dp.stem + dp.branch;
   document.getElementById('dm-label').textContent = lang === 'en' ? dm.labelEn : dm.labelKo;
-  document.getElementById('dm-hook').textContent  = lang === 'en' ? dm.hookEn  : dm.hookKo;
+  // Use 60-pillar narrative if available, else fallback to DM stem narrative
+  const pillKey = dp.stem + dp.branch;
+  const pillar = PILLAR_NARRATIVES[pillKey] || null;
+  document.getElementById('dm-hook').textContent  = pillar
+    ? (lang === 'en' ? pillar.hook : pillar.hookKo)
+    : (lang === 'en' ? dm.hookEn  : dm.hookKo);
 
   // identity tags
   const elemName = lang === 'en' ? dp.element : ELEM_KR[dp.element];
@@ -1965,10 +2342,18 @@ function renderReport(data) {
   ];
   document.getElementById('identity-tags').innerHTML = tags.map(t => `<div class="identity-tag">${t}</div>`).join('');
 
-  // story body
-  document.getElementById('dm-body1').textContent = lang === 'en' ? dm.originEn     : dm.originKo;
-  document.getElementById('dm-body2').textContent = lang === 'en' ? dm.shadowEn     : dm.shadowKo;
-  document.getElementById('dm-body3').textContent = lang === 'en' ? dm.invitationEn : dm.invitationKo;
+  // story body — use PILLAR_NARRATIVES if available, else fallback to DM
+  const pillKey2 = dp.stem + dp.branch;
+  const pillar2 = PILLAR_NARRATIVES[pillKey2] || null;
+  document.getElementById('dm-body1').textContent = pillar2
+    ? (lang === 'en' ? pillar2.origin     : pillar2.originKo)
+    : (lang === 'en' ? dm.originEn     : dm.originKo);
+  document.getElementById('dm-body2').textContent = pillar2
+    ? (lang === 'en' ? pillar2.shadow     : pillar2.shadowKo)
+    : (lang === 'en' ? dm.shadowEn     : dm.shadowKo);
+  document.getElementById('dm-body3').textContent = pillar2
+    ? (lang === 'en' ? pillar2.invitation : pillar2.invitationKo)
+    : (lang === 'en' ? dm.invitationEn : dm.invitationKo);
 
   // pillars grid
   const pLabels = lang === 'en' ? ['Year','Month','Day','Hour'] : ['년주','월주','일주','시주'];
@@ -2064,14 +2449,15 @@ function renderReport(data) {
     document.getElementById('past-present-link').textContent = pText;
   }
 
-  // ── Bridge 3→4 personalization ────────────
+  // ── Bridge 3→4 personalization — dynamic next decade year ────────────
   const nextDaeunForBridge = pillars.daeun.find(d => d.isFuture);
   const bridge34b = document.getElementById('bridge-34b');
   if (bridge34b && nextDaeunForBridge) {
     const nextYear = nextDaeunForBridge.startYear;
+    const nextDecadeYear = Math.ceil(nextYear / 10) * 10; // next decade marker
     bridge34b.innerHTML = lang === 'ko'
-      ? `${nextYear}년, 다음 챕터가 시작됩니다.`
-      : `Your next chapter begins in ${nextYear}.`;
+      ? `${nextDecadeYear}년에 다음 챕터가 펼쳐집니다.`
+      : `The decade ahead opens in ${nextDecadeYear}.`;
   }
 
   // ── Chapter 4: Future Daeun ───────────────
@@ -2106,12 +2492,19 @@ function renderReport(data) {
 
   // update paywall CTA text with personalization
   const nextDaeun = futureDaeun[0];
-  if (nextDaeun && !data.unlocked) {
-    const safeName = escapeHtml(name);
-    const hookText = lang === 'en'
-      ? `The chart already knows what ${nextDaeun.startYear} brings.\n${safeName} — it's been written since the hour you were born.`
-      : `${safeName}, 다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.\n무엇이 기다리는지 궁금하지 않으신가요?`;
-    document.getElementById('paywall-hook').innerHTML = hookText.replace(/\n/g, '<br>');
+  if (!data.unlocked) {
+    // paywall hook — static Seer voice
+    document.getElementById('paywall-hook').textContent = lang === 'en'
+      ? 'The chart knew. It always knew.'
+      : '사주는 알고 있었습니다. 처음부터.';
+    // paywall hook sub — personalized
+    const subEl = document.getElementById('paywall-hook-sub');
+    if (subEl && nextDaeun) {
+      const safeName = escapeHtml(name);
+      subEl.innerHTML = lang === 'en'
+        ? `${safeName ? safeName + ' — t' : 'T'}he chart already knows what ${nextDaeun.startYear} brings.`
+        : `${safeName ? safeName + ', ' : ''}다음 대운은 ${nextDaeun.startYear}년에 시작됩니다.`;
+    }
   }
 
   // update paywall-name-span (conviction/trust section)
@@ -2179,7 +2572,92 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function openPayModal() {
-  window.open('https://momentor.lemonsqueezy.com/checkout/buy/1350661', '_blank');
+  window.open(CHECKOUT_URL, '_blank');
+}
+
+// ═══════════════════════════════════════════════
+// EMAIL CAPTURE
+// ═══════════════════════════════════════════════
+function saveEmail() {
+  const email = document.getElementById('inp-email').value.trim();
+  if (!email || !email.includes('@')) { showToast('Please enter a valid email.'); return; }
+  localStorage.setItem('momentor_email', email);
+  document.getElementById('email-capture-form').style.display = 'none';
+  document.getElementById('email-captured-msg').style.display = 'block';
+  showToast('✦ Reading link saved!');
+}
+
+// ═══════════════════════════════════════════════
+// LOADING SCENE (P0-20)
+// ═══════════════════════════════════════════════
+function showLoadingScene(onComplete) {
+  const overlay = document.getElementById('loading-overlay');
+  const textEl  = document.getElementById('loading-text');
+  const tsEl    = document.getElementById('loading-timestamp');
+  const msgs = [
+    'Calculating your Four Pillars...',
+    'Reading the 60-year cycle...',
+    'Tracing your decade energies...',
+    'Your chart is ready.'
+  ];
+  const now = new Date();
+  tsEl.textContent = `${now.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'})} · ${now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'})}`;
+  overlay.style.display = 'flex';
+  overlay.style.opacity = '1';
+  let step = 0;
+  textEl.textContent = msgs[step];
+  const interval = setInterval(() => {
+    step++;
+    if (step < msgs.length) {
+      textEl.classList.add('fade-out');
+      setTimeout(() => {
+        textEl.textContent = msgs[step];
+        textEl.classList.remove('fade-out');
+      }, 400);
+    }
+    if (step >= msgs.length - 1) {
+      clearInterval(interval);
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        setTimeout(() => { overlay.style.display = 'none'; overlay.classList.remove('hidden'); overlay.style.opacity = '1'; onComplete(); }, 500);
+      }, 700);
+    }
+  }, 750);
+}
+
+// ═══════════════════════════════════════════════
+// EXIT INTENT (P0 기술 제약)
+// ═══════════════════════════════════════════════
+let _exitShown = false;
+function initExitIntent() {
+  if (_exitShown) return;
+  const isMobile = window.innerWidth < 768 || /Mobi/i.test(navigator.userAgent);
+  if (!isMobile) {
+    // Desktop: mouseleave (heading to address bar)
+    document.addEventListener('mouseleave', function onMouseLeave(e) {
+      if (e.clientY < 0 && !_exitShown) {
+        _exitShown = true;
+        document.getElementById('exit-popup').classList.add('show');
+        document.removeEventListener('mouseleave', onMouseLeave);
+      }
+    });
+  } else {
+    // Mobile: scroll 70% + 3초 타이머
+    let timer70Started = false;
+    const scrollThreshold = () => {
+      const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      if (scrolled > 0.70 && !timer70Started && !_exitShown) {
+        timer70Started = true;
+        setTimeout(() => {
+          if (!_exitShown) {
+            _exitShown = true;
+            document.getElementById('exit-popup').classList.add('show');
+          }
+        }, 3000);
+      }
+    };
+    window.addEventListener('scroll', scrollThreshold, { passive: true });
+  }
 }
 </script>
 </body>
