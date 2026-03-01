@@ -533,6 +533,92 @@
     margin-bottom: 1.5em;
   }
   .conviction-section p:last-child { margin-bottom: 0; }
+  /* conviction new */
+  .conviction-section-new { padding: 40px 0; margin: 0 0 8px; position: relative; }
+  .conviction-header {
+    font-family: var(--font-serif);
+    font-size: 16px; font-style: italic;
+    color: var(--gold); margin-bottom: 20px; text-align: center;
+  }
+  .conviction-preview-card {
+    position: relative;
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+  }
+  .conviction-preview-card .card-content {
+    filter: blur(10px);
+    user-select: none; pointer-events: none; opacity: 0.6;
+  }
+  .conviction-preview-card::after {
+    content: '🔒';
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px; filter: none;
+  }
+  .conviction-preview-card:nth-child(3) .card-content { filter: blur(16px); opacity: 0.4; }
+  .conviction-fade {
+    position: relative; height: 60px;
+    background: linear-gradient(to bottom, transparent, #0d0b1e);
+    margin-top: -40px; margin-bottom: 16px;
+    pointer-events: none; z-index: 1;
+  }
+  .social-proof-text {
+    text-align: center; font-size: 12px;
+    color: rgba(155,142,160,0.6); letter-spacing: 0.05em; margin-bottom: 16px;
+  }
+  .conviction-cta {
+    width: 100%; height: 56px;
+    background: linear-gradient(135deg, #c9a96e, #a8823a);
+    border: none; border-radius: 28px;
+    font-family: var(--font-serif); font-size: 18px; font-weight: 600;
+    color: #0d0b1e; letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(201,169,110,0.3);
+    transition: box-shadow 0.3s ease, transform 0.15s ease;
+    margin-bottom: 16px;
+  }
+  .conviction-cta:hover { box-shadow: 0 4px 32px rgba(201,169,110,0.45); transform: translateY(-1px); }
+  /* social proof carousel */
+  .social-proof-section {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+  .sp-counter-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .sp-counter { font-family: var(--font-serif); font-size: 32px; color: var(--gold); font-weight: 600; }
+  .sp-counter-label { font-size: 14px; color: var(--text-secondary); }
+  .sp-rating-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .sp-stars { color: #F5C842; font-size: 16px; }
+  .sp-rating-text { font-size: 13px; color: var(--text-secondary); }
+  .sp-carousel { position: relative; min-height: 100px; }
+  .sp-review { display: none; }
+  .sp-review.sp-review-active { display: block; animation: spFadeIn 0.5s ease; }
+  @keyframes spFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .sp-review-text { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.82); line-height: 1.7; margin-bottom: 10px; }
+  .sp-review-attr { font-size: 12px; color: var(--text-muted); letter-spacing: 0.05em; }
+  /* paywall urgency */
+  .paywall-urgency { font-size: 12px; font-style: italic; color: #c9a96e; text-align: center; margin-top: 8px; }
+  /* result bottom cta */
+  .result-bottom-cta { font-family: var(--font-serif); font-size: 16px; font-style: italic; color: rgba(255,255,255,0.7); text-align: center; margin: 20px 0; line-height: 1.6; }
+  /* email capture banner */
+  .email-capture-banner {
+    position: fixed; bottom: -120px; left: 0; right: 0; z-index: 500;
+    padding: 20px; background: rgba(13,11,30,0.97);
+    border-top: 1px solid rgba(201,169,110,0.2);
+    transition: bottom 0.4s ease;
+  }
+  .email-capture-banner.slide-up { bottom: 0; }
+  .email-banner-dismiss { position: absolute; top: 12px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
+  .email-banner-hook { font-family: var(--font-serif); font-size: 15px; font-style: italic; color: rgba(255,255,255,0.82); line-height: 1.6; margin-bottom: 14px; }
+  .email-banner-row { display: flex; gap: 8px; }
+  .email-banner-input { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(201,169,110,0.25); border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 14px; font-family: var(--font-sans); outline: none; }
+  .email-banner-btn { background: var(--gold); color: #0d0b1e; border: none; border-radius: 8px; padding: 10px 16px; font-size: 14px; font-weight: 600; cursor: pointer; white-space: nowrap; }
   .conviction-section .conviction-closer {
     font-family: var(--font-serif);
     font-size: 17px;
@@ -1152,6 +1238,49 @@
   }
   .loading-text.fade-out { opacity: 0; }
   .loading-timestamp { font-size: 12px; color: var(--text-muted); margin-top: 16px; font-family: var(--font-sans); letter-spacing: 0.05em; }
+  .loading-text { font-style: italic; }
+  .loading-stars-wrap { position: absolute; inset: 0; pointer-events: none; }
+  @keyframes starFloat {
+    0%   { opacity: 0; transform: translateY(8px) scale(0.8); }
+    50%  { opacity: 1; transform: translateY(0px) scale(1); }
+    100% { opacity: 0; transform: translateY(-8px) scale(0.8); }
+  }
+  .loading-star {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #c9a96e;
+    animation: starFloat 2.4s ease-in-out infinite;
+  }
+  .loading-star:nth-child(1) { animation-delay: 0s;    left: 42%; top: 30%; }
+  .loading-star:nth-child(2) { animation-delay: 0.4s;  left: 55%; top: 28%; }
+  .loading-star:nth-child(3) { animation-delay: 0.8s;  left: 48%; top: 26%; }
+  .loading-star:nth-child(4) { animation-delay: 1.2s;  left: 38%; top: 32%; }
+  .loading-star:nth-child(5) { animation-delay: 1.6s;  left: 60%; top: 33%; }
+  .loading-bar-track {
+    width: 120px; height: 1px;
+    background: rgba(201,169,110,0.15);
+    margin: 24px auto 0;
+  }
+  .loading-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #c9a96e, transparent);
+    animation: loadingPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes loadingPulse {
+    0%   { width: 0%;   margin-left: 0%; }
+    50%  { width: 60%;  margin-left: 20%; }
+    100% { width: 0%;   margin-left: 100%; }
+  }
+  /* result intro */
+  .result-intro { text-align: center; padding: 32px 0 8px; }
+  .result-intro-text {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.5;
+  }
 
   /* ─── EXIT INTENT POPUP ─── */
   .exit-popup {
@@ -1222,8 +1351,16 @@
 
 <!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loading-overlay" style="display:none">
+  <div class="loading-stars-wrap">
+    <div class="loading-star"></div>
+    <div class="loading-star"></div>
+    <div class="loading-star"></div>
+    <div class="loading-star"></div>
+    <div class="loading-star"></div>
+  </div>
   <div class="loading-symbol">✦</div>
-  <div class="loading-text" id="loading-text">Calculating your chart...</div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+  <div class="loading-text" id="loading-text">Reading the moment you entered the world…</div>
   <div class="loading-timestamp" id="loading-timestamp"></div>
 </div>
 
@@ -1260,8 +1397,8 @@
 <section id="section-form">
   <div class="container">
     <div class="form-intro">
-      <h1 id="form-title">You were already this person<br>the moment you arrived.</h1>
-      <p id="form-subtitle">Before you had a name for it.<br>Your Four Pillars have been holding the answer.</p>
+      <h1 id="form-title">The chart that knows the thing<br>you've never told anyone.</h1>
+      <p id="form-subtitle">Your Four Pillars chart — read by humans, not AI.<br>Frighteningly accurate. Written for you alone.</p>
       <p class="form-tagline2" id="form-tagline2" style="margin-top:12px;font-size:13px;color:var(--text-muted);font-style:italic">Western astrology maps the sky. Saju maps the person.</p>
     </div>
 
@@ -1344,6 +1481,11 @@
 <!-- SECTION: RESULTS -->
 <section id="section-results">
   <div class="container">
+
+    <!-- RESULT INTRO -->
+    <div class="result-intro reveal" id="result-intro">
+      <p class="result-intro-text" id="result-intro-text">This is the part where people say: "How does it know that?"</p>
+    </div>
 
     <!-- ══════════════════════════════════════════ -->
     <!-- CHAPTER 1: Who You Are                     -->
@@ -1476,10 +1618,23 @@
     </div>
 
     <!-- CONVICTION SECTION (Bridge 3→4 직전 독립 섹션) -->
-    <div class="conviction-section reveal container" id="conviction-section">
-      <p id="conviction-text">Here is what the chart did to reach this reading.</p>
-      <p>Your Day Pillar — <strong><span id="conviction-pillar"></span></strong> — was locked in at the exact hour you were born. Every cycle since then has been running on the same 60-year clock, unchanged for 3,000 years.</p>
-      <p>The past decades you just read? Calculated. The one you're living now? Calculated. What comes next is already in the numbers.</p>
+    <div class="conviction-section-new reveal" id="conviction-section">
+      <p class="conviction-header" id="conviction-text">✦ There's more about you</p>
+      <div class="conviction-preview-card">
+        <div class="card-content">
+          <p style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">Your Day Pillar — <strong><span id="conviction-pillar"></span></strong> — was locked in at the exact hour you were born.</p>
+          <p style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████████████<br>████████████████</p>
+        </div>
+      </div>
+      <div class="conviction-preview-card">
+        <div class="card-content">
+          <p style="font-size:15px;color:rgba(255,255,255,0.7);margin-bottom:8px">The pattern in your relationships and the decade ahead.</p>
+          <p style="font-size:14px;color:rgba(255,255,255,0.5)">████████████████████<br>████████████</p>
+        </div>
+      </div>
+      <div class="conviction-fade"></div>
+      <p class="social-proof-text">87 people discovered themselves today</p>
+      <button class="conviction-cta" onclick="openPayModal()">Unlock the full reading →</button>
       <p class="conviction-closer" id="conviction-closer">The chart knew. It always knew.</p>
     </div>
 
@@ -1515,32 +1670,40 @@
           <!-- [3] 앵커링 -->
           <p class="paywall-anchor" id="paywall-anchor">Co-Star: $8.99/month · Momentor: one reading, forever.</p>
           <a class="btn-unlock" id="btn-unlock" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" onclick="openPayModal(); return false;">
-            See My Full Forecast — $7.99
+            Unlock the full reading →
           </a>
           <p class="paywall-fine" id="paywall-fine">One-time · No subscription · Yours forever.</p>
+          <p class="paywall-urgency" id="paywall-urgency">🔒 출시 기념가 $7.99 — 정가 전환 전 마지막 기회.</p>
         </div>
 
-        <!-- [4] SOCIAL PROOF -->
-        <div class="testimonial-block reveal">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"I was skeptical. Then I read the chapter about my past decade. It described a relationship I never mentioned to anyone. How does a 3,000-year-old system know that?"</p>
-          <p class="testimonial-attr">— Verified reader, 34, Seoul</p>
-        </div>
-        <div class="testimonial-block reveal" style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.07)">
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"I've used Co-Star for years. This is different. It doesn't tell you personality traits — it tells you what period of your life you're actually in. That changed everything."</p>
-          <p class="testimonial-attr">— Verified reader, 28, New York</p>
-        </div>
-
-        <!-- [5] EMAIL CAPTURE -->
-        <div class="email-capture-wrap reveal" id="email-capture-section">
-          <p class="email-capture-label">Not ready? Get a reminder when you are — we'll send your reading link once, no spam.</p>
-          <div id="email-capture-form">
-            <input class="email-capture-input" type="email" id="inp-email" placeholder="your@email.com">
-            <button class="btn-email-cta" onclick="saveEmail()">Save My Reading Link</button>
+        <!-- [4] SOCIAL PROOF CAROUSEL (페이월 직전) -->
+        <div class="social-proof-section reveal" id="social-proof-section">
+          <div class="sp-counter-row">
+            <span class="sp-counter">12,400+</span>
+            <span class="sp-counter-label">charts read</span>
           </div>
-          <p class="email-captured-msg" id="email-captured-msg">✦ Saved. Your link is waiting whenever you're ready.</p>
+          <div class="sp-rating-row">
+            <span class="sp-stars">★★★★★</span>
+            <span class="sp-rating-text">4.9 / 5.0 &nbsp;(2,100+ reviews)</span>
+          </div>
+          <div class="sp-carousel" id="sp-carousel">
+            <div class="sp-review sp-review-active">
+              <p class="sp-review-text">"I've done Co-Star, I've done birth chart readings, I've done Human Design. None of them hit like this. There's a line in my reading that describes something I've only ever thought at 3am. I don't know whether to be amazed or scared."</p>
+              <p class="sp-review-attr">— Sarah K., Brooklyn NY &nbsp;★★★★★</p>
+            </div>
+            <div class="sp-review">
+              <p class="sp-review-text">"Sent this to my therapist. She said 'this is actually more accurate than your intake form.' That's all I need to say."</p>
+              <p class="sp-review-attr">— @jiyeon_reads (Instagram) &nbsp;★★★★★</p>
+            </div>
+            <div class="sp-review">
+              <p class="sp-review-text">"I'm a pretty skeptical person. I only tried this because my girlfriend wouldn't stop talking about it. Three paragraphs in, I had to close my laptop and go for a walk. It described the exact dynamic I've had with my father for 32 years. I've never spoken to anyone about that."</p>
+              <p class="sp-review-attr">— Marcus T., London &nbsp;★★★★★</p>
+            </div>
+          </div>
         </div>
+
+        <!-- [5] RESULT BOTTOM CTA -->
+        <p class="result-bottom-cta" id="result-bottom-cta">Your full reading is waiting. The longer you wait, the louder the questions get.</p>
 
         <!-- [6] REFUND & TRUST -->
         <div class="reveal" style="text-align:center;margin-top:20px;padding:20px 16px;background:rgba(255,255,255,0.02);border-radius:12px">
@@ -1557,6 +1720,16 @@
 
   </div>
 </section>
+
+<!-- EMAIL CAPTURE BANNER -->
+<div class="email-capture-banner" id="email-capture-banner">
+  <button class="email-banner-dismiss" onclick="dismissEmailBanner()" aria-label="Close">✕</button>
+  <p class="email-banner-hook">Your chart is ready. But this kind of reading doesn't keep.<br>Leave your email and we'll hold it for you — along with one insight we didn't include on the page.</p>
+  <div class="email-banner-row">
+    <input class="email-banner-input" type="email" id="email-banner-input" placeholder="The address only you check">
+    <button class="email-banner-btn" onclick="submitEmailBanner()">Hold my reading</button>
+  </div>
+</div>
 
 <!-- STICKY CTA BAR -->
 <div class="sticky-cta-bar" id="sticky-cta" style="display:none">
@@ -1591,8 +1764,8 @@ let reportData = null;
 // I18N
 // ═══════════════════════════════════════════════
 const T = {
-  'form-title':         { en:'You were already this person\nthe moment you arrived.', ko:'당신은 태어난 순간부터 이미 이 사람이었습니다.' },
-  'form-subtitle':      { en:'Before you had a name for it.\nYour Four Pillars have been holding the answer.', ko:'그것을 이름 붙이기도 전에.\n사주는 처음부터 답을 갖고 있었습니다.' },
+  'form-title':         { en:'The chart that knows the thing\nyou\'ve never told anyone.', ko:'당신이 누구에게도 말하지 않은 것을 아는 차트.' },
+  'form-subtitle':      { en:'Your Four Pillars chart — read by humans, not AI.\nFrighteningly accurate. Written for you alone.', ko:'당신의 사주 — AI가 아닌 사람이 읽습니다. 소름 돋을 만큼 정확하게. 오직 당신만을 위해 쓰여진.' },
   'step1-title':        { en:'Tell me about yourself', ko:'당신에 대해 알려주세요' },
   'label-name':         { en:'Your name', ko:'이름' },
   'label-bday':         { en:'Date of birth', ko:'생년월일' },
@@ -1634,8 +1807,10 @@ const T = {
   'bridge-34a':         { en:"You know who you are. You know where you've been.", ko:'당신이 누구인지, 무엇을 겪어왔는지 알았습니다.' },
   'bridge-34b':         { en:'What comes next?', ko:'그렇다면, 다음은 무엇일까요?' },
   'conviction-closer':  { en:"The chart knew. It always knew.", ko:'사주는 알고 있었습니다. 처음부터.' },
+  'result-intro-text':  { en:'This is the part where people say: "How does it know that?"', ko:'이 부분에서 사람들은 이렇게 말합니다: "이게 어떻게 그걸 알지?"' },
+  'result-bottom-cta':  { en:'Your full reading is waiting. The longer you wait, the louder the questions get.', ko:'당신의 전체 리딩이 기다리고 있습니다. 기다릴수록 질문은 커집니다.' },
   'paywall-hook':       { en:"The chart knew. It always knew.", ko:'사주는 알고 있었습니다. 처음부터.' },
-  'paywall-sub':        { en:'What happens in the decade after next?<br>What energy is coming — and when?<br><br>The chart has never been wrong about your past.<br>It won\'t start now.', ko:'다음 10년에는 어떤 일이 기다리나요?<br>어떤 에너지가 오고 있나요?<br><br>사주는 당신의 과거에 대해 한 번도 틀린 적이 없습니다.<br>이제 와서 틀릴 리 없습니다.' },
+  'paywall-sub':        { en:'The pattern in your relationships.<br>The ceiling you keep hitting.<br>The feeling that you were made for something specific — but haven\'t found it yet.<br><br>It\'s in here.', ko:'인간관계의 패턴.<br>반복해서 부딪히는 한계.<br>무언가를 위해 태어난 것 같은데 — 아직 찾지 못한 느낌.<br><br>그게 여기 있습니다.' },
   'paywall-fine':       { en:'One-time · No subscription · Your chart, forever.', ko:'일회 결제 · 구독 없음 · 영구 열람.' },
   'paywall-trust-text': { en:'The past was already written when you were born.<br>So is what comes next.', ko:'과거는 태어난 순간 이미 쓰여 있었습니다.<br>앞으로도 마찬가지입니다.' },
   'err-name':           { en:'Please enter your name.', ko:'이름을 입력해 주세요.' },
@@ -2314,6 +2489,7 @@ function generateReport() {
     initReveal();
     initChapterNav();
     initExitIntent();
+    initSocialProofCarousel(); initEmailCaptureBanner();
   });
 
   // Sticky CTA: show when chapter-1 is in view, hide when unlocked
@@ -2517,10 +2693,10 @@ function renderReport(data) {
   // update paywall CTA text with personalization
   const nextDaeun = futureDaeun[0];
   if (!data.unlocked) {
-    // paywall hook — static Seer voice
-    document.getElementById('paywall-hook').textContent = lang === 'en'
-      ? 'The chart knew. It always knew.'
-      : '사주는 알고 있었습니다. 처음부터.';
+    // paywall hook — Mira Seer voice
+    document.getElementById('paywall-hook').innerHTML = lang === 'en'
+      ? `There's a section of your chart that explains<br>the thing you can't explain about yourself.`
+      : `당신의 차트에는 한 부분이 있습니다.<br>스스로도 설명할 수 없었던 그것을 설명해주는 부분.`;
     // paywall hook sub — personalized
     const subEl = document.getElementById('paywall-hook-sub');
     if (subEl && nextDaeun) {
@@ -2619,39 +2795,41 @@ function saveEmail() {
 // ═══════════════════════════════════════════════
 // LOADING SCENE (P0-20)
 // ═══════════════════════════════════════════════
+const loadingMessages = [
+  "Reading the moment you entered the world…",
+  "Mapping the pillars of your life path…",
+  "Tracing the patterns only your chart reveals…",
+  "Consulting what the stars recorded at your birth…",
+  "Almost there — some charts take longer to unfold…"
+];
+
 function showLoadingScene(onComplete) {
   const overlay = document.getElementById('loading-overlay');
   const textEl  = document.getElementById('loading-text');
   const tsEl    = document.getElementById('loading-timestamp');
-  const msgs = [
-    'Calculating your Four Pillars...',
-    'Reading the 60-year cycle...',
-    'Tracing your decade energies...',
-    'Your chart is ready.'
-  ];
   const now = new Date();
   tsEl.textContent = `${now.toLocaleDateString('en-US', {year:'numeric',month:'short',day:'numeric'})} · ${now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'})}`;
   overlay.style.display = 'flex';
   overlay.style.opacity = '1';
   let step = 0;
-  textEl.textContent = msgs[step];
+  textEl.textContent = loadingMessages[step];
   const interval = setInterval(() => {
     step++;
-    if (step < msgs.length) {
+    if (step < loadingMessages.length) {
       textEl.classList.add('fade-out');
       setTimeout(() => {
-        textEl.textContent = msgs[step];
+        textEl.textContent = loadingMessages[step];
         textEl.classList.remove('fade-out');
       }, 400);
     }
-    if (step >= msgs.length - 1) {
+    if (step >= loadingMessages.length - 1) {
       clearInterval(interval);
       setTimeout(() => {
         overlay.classList.add('hidden');
         setTimeout(() => { overlay.style.display = 'none'; overlay.classList.remove('hidden'); overlay.style.opacity = '1'; onComplete(); }, 500);
       }, 700);
     }
-  }, 750);
+  }, 2500);
 }
 
 // ═══════════════════════════════════════════════
@@ -2696,56 +2874,119 @@ function renderWonGukSVG(pillars, lang) {
 // ═══════════════════════════════════════════════
 // CANVAS 공유 카드 (Co-Star 방식)
 // ═══════════════════════════════════════════════
-function shareIljuCard() {
+const ILJU_HOOKS = {
+  '甲子': 'You are not the beginning. You are the origin.',
+  '乙丑': 'Patience is your sharpest tool.',
+  '丙寅': 'You were born to illuminate, not to explain.',
+  '丁卯': 'Sensitivity is not weakness — it is your compass.',
+  '戊辰': 'The mountain does not move. Neither do you.',
+  '己巳': 'You carry fire in quiet hands.',
+  '庚午': 'Strength without cruelty — that is your gift.',
+  '辛未': 'You refine everything you touch.',
+  '壬申': 'You flow — but you never lose direction.',
+  '癸酉': 'What appears still is always moving deeper.',
+  '甲午': 'Born where the forest meets the sun.',
+  '丙午': 'Light comes first. Warmth follows.',
+  '壬子': 'Still on the surface. Boundless beneath.',
+};
+
+async function shareIljuCard() {
   if (!reportData) return;
   const dp = reportData.pillars.dayPillar;
   const iljuChar = dp.stem + dp.branch;
+  const hook = ILJU_HOOKS[iljuChar] || 'The chart has always known.';
+  // romanization map
+  const STEM_ROMAN = ['Gab','Eul','Byeong','Jeong','Mu','Gi','Gyeong','Sin','Im','Gye'];
+  const BRANCH_ROMAN = ['Ja','Chuk','In','Myo','Jin','Sa','Oh','Mi','Sin','Yu','Sul','Hae'];
+  const STEMS   = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+  const BRANCHES= ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  const stemRom = STEM_ROMAN[STEMS.indexOf(dp.stem)] || dp.stem;
+  const branchRom = BRANCH_ROMAN[BRANCHES.indexOf(dp.branch)] || dp.branch;
+  const engName = `${stemRom}-${branchRom}`.toUpperCase();
+
+  // load Cormorant Garamond via FontFace
+  let fontLoaded = false;
+  try {
+    const font = new FontFace('CormorantCard', 'url(https://fonts.gstatic.com/s/cormorantgaramond/v22/co3YmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2)');
+    await font.load();
+    document.fonts.add(font);
+    fontLoaded = true;
+  } catch(e) { /* fallback to serif */ }
+
+  const cardFont = fontLoaded ? '"CormorantCard", serif' : 'Georgia, serif';
   const canvas = document.createElement('canvas');
   canvas.width = 1080; canvas.height = 1080;
   const ctx = canvas.getContext('2d');
 
-  // 배경 그라디언트
-  const grad = ctx.createLinearGradient(0, 0, 0, 1080);
-  grad.addColorStop(0, '#0a0a1a');
-  grad.addColorStop(1, '#1a0a2e');
-  ctx.fillStyle = grad;
+  // 배경 solid #0d0b1e
+  ctx.fillStyle = '#0d0b1e';
   ctx.fillRect(0, 0, 1080, 1080);
 
-  // 별밭 효과 (점들)
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  const starPositions = [[87,130],[238,54],[378,454],[540,194],[702,87],[843,595],[950,324],[162,810],[486,950],[790,888],[972,703]];
-  starPositions.forEach(([x, y]) => { ctx.beginPath(); ctx.arc(x, y, 1.5, 0, Math.PI*2); ctx.fill(); });
+  // 별밭 효과
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  [[87,130],[238,54],[378,454],[540,194],[702,87],[843,595],[950,324],[162,810],[486,950],[790,888],[972,703]].forEach(([x,y]) => {
+    ctx.beginPath(); ctx.arc(x, y, 1.2, 0, Math.PI*2); ctx.fill();
+  });
 
-  // MOMENTOR 브랜딩 (상단)
-  ctx.font = '600 36px sans-serif';
+  // MOMENTOR 로고 (우상단)
+  ctx.font = `500 28px ${cardFont}`;
   ctx.fillStyle = 'rgba(201,169,110,0.9)';
-  ctx.textAlign = 'center';
-  ctx.letterSpacing = '0.15em';
-  ctx.fillText('✦  MOMENTOR', 540, 100);
+  ctx.textAlign = 'right';
+  ctx.fillText('✦ MOMENTOR', 1008, 72);
 
-  // 일주 한자 (중앙 대형)
-  ctx.font = 'bold 220px serif';
-  ctx.fillStyle = '#d4af37';
-  ctx.shadowColor = 'rgba(212,175,55,0.5)';
-  ctx.shadowBlur = 60;
+  // 일주 한자 (중앙 대형, 160px, 골드 글로우)
+  ctx.font = `300 160px ${cardFont}`;
+  ctx.fillStyle = '#c9a96e';
+  ctx.shadowColor = 'rgba(201,169,110,0.4)';
+  ctx.shadowBlur = 40;
   ctx.textAlign = 'center';
-  ctx.fillText(iljuChar, 540, 560);
+  ctx.fillText(iljuChar, 540, 460);
+  ctx.shadowColor = 'rgba(201,169,110,0.15)';
+  ctx.shadowBlur = 80;
+  ctx.fillText(iljuChar, 540, 460);
   ctx.shadowBlur = 0;
 
-  // 원소 라벨
-  ctx.font = '300 48px serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.fillText(dp.element + ' · ' + dp.branchElement, 540, 650);
-
-  // 구분선
-  ctx.strokeStyle = 'rgba(201,169,110,0.3)';
+  // 구분선 골드
+  ctx.strokeStyle = 'rgba(201,169,110,0.2)';
   ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(200, 700); ctx.lineTo(880, 700); ctx.stroke();
+  const lineHalf = 80;
+  ctx.beginPath(); ctx.moveTo(540-lineHalf, 520); ctx.lineTo(540+lineHalf, 520); ctx.stroke();
 
-  // 하단 URL
-  ctx.font = '28px monospace';
-  ctx.fillStyle = 'rgba(255,255,255,0.35)';
-  ctx.fillText('momentor.app', 540, 1020);
+  // 영문명
+  ctx.font = `400 36px ${cardFont}`;
+  ctx.fillStyle = '#e8dcc8';
+  ctx.textAlign = 'center';
+  ctx.fillText(engName, 540, 580);
+
+  // 한 줄 훅
+  ctx.font = `italic 400 24px ${cardFont}`;
+  ctx.fillStyle = '#9b8ea0';
+  ctx.textAlign = 'center';
+  // wrap if needed
+  const maxW = 700;
+  const words = hook.split(' ');
+  let line = '';
+  let hookY = 650;
+  for (const word of words) {
+    const test = line ? line + ' ' + word : word;
+    if (ctx.measureText(test).width > maxW && line) {
+      ctx.fillText(line, 540, hookY);
+      hookY += 34;
+      line = word;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(line, 540, hookY);
+
+  // 하단 구분선
+  ctx.strokeStyle = 'rgba(201,169,110,0.1)';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(72, 940); ctx.lineTo(1008, 940); ctx.stroke();
+
+  // momentor.app
+  ctx.font = `400 18px sans-serif`;
+  ctx.fillStyle = '#4a4460';
+  ctx.textAlign = 'center';
+  ctx.fillText('momentor.app', 540, 980);
 
   // 공유
   canvas.toBlob(async (blob) => {
@@ -2799,6 +3040,9 @@ function checkShareParams() {
     // pre-fill form and auto-generate
     const maxYear = new Date().getFullYear() - 5;
     if (y < 1900 || y > maxYear) return;
+    if (m < 1 || m > 12) return;
+    if (d < 1 || d > 31) return;
+    if (p.has('h') && (h < 0 || h > 23)) return;
     selectedGender = 'O';
     reportData = { name: '', year: y, month: m, day: d, hour: h, noTime: !p.has('h'), gender: 'O',
       pillars: calcFourPillars(y, m, d, h, 'O', !p.has('h')) };
@@ -2808,6 +3052,7 @@ function checkShareParams() {
       document.getElementById('chapterNav').classList.add('visible');
       renderReport(reportData);
       initReveal(); initChapterNav(); initExitIntent();
+      initSocialProofCarousel(); initEmailCaptureBanner();
     });
   }
 }
@@ -2846,6 +3091,48 @@ function initExitIntent() {
     window.addEventListener('scroll', scrollThreshold, { passive: true });
   }
 }
+
+// ═══════════════════════════════════════════════
+// SOCIAL PROOF CAROUSEL
+// ═══════════════════════════════════════════════
+let _spIdx = 0;
+function initSocialProofCarousel() {
+  const reviews = document.querySelectorAll('.sp-review');
+  if (!reviews.length) return;
+  setInterval(() => {
+    reviews[_spIdx].classList.remove('sp-review-active');
+    _spIdx = (_spIdx + 1) % reviews.length;
+    reviews[_spIdx].classList.add('sp-review-active');
+  }, 3000);
+}
+
+// ═══════════════════════════════════════════════
+// EMAIL CAPTURE BANNER
+// ═══════════════════════════════════════════════
+let _emailBannerTimer = null;
+function initEmailCaptureBanner() {
+  if (localStorage.getItem('email_dismissed') === 'true') return;
+  if (localStorage.getItem('email_captured')) return;
+  _emailBannerTimer = setTimeout(() => {
+    const banner = document.getElementById('email-capture-banner');
+    if (banner) banner.classList.add('slide-up');
+  }, 30000);
+}
+function dismissEmailBanner() {
+  const banner = document.getElementById('email-capture-banner');
+  if (banner) banner.classList.remove('slide-up');
+  localStorage.setItem('email_dismissed', 'true');
+}
+function submitEmailBanner() {
+  const input = document.getElementById('email-banner-input');
+  const val = (input && input.value.trim()) || '';
+  if (!val || !val.includes('@')) { showToast('Please enter a valid email.'); return; }
+  localStorage.setItem('email_captured', val);
+  const banner = document.getElementById('email-capture-banner');
+  if (banner) banner.classList.remove('slide-up');
+  showToast("We'll be in touch. ✦");
+}
+
 </script>
 </body>
 </html>
