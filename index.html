@@ -327,7 +327,7 @@
     margin-bottom: 12px;
     font-family: var(--font-sans);
   }
-  .chapter-badge::before { content: '— '; letter-spacing: 0; opacity: 0.5; }
+  .chapter-badge::before { content: ''; }
   .chapter-title {
     font-family: var(--font-serif);
     font-size: clamp(22px, 5vw, 30px);
@@ -1442,14 +1442,14 @@
 <!-- EXIT INTENT POPUP -->
 <div class="exit-popup" id="exit-popup">
   <div class="exit-popup-inner">
-    <div class="exit-popup-hook">Get your Day Master summary — free.</div>
-    <p class="exit-popup-sub">Just your email. We'll send you a 3-line essence of your chart.</p>
+    <div class="exit-popup-hook">Your chart left something unsaid.</div>
+    <p class="exit-popup-sub">Leave your email — we'll send the line we held back.</p>
     <div id="exit-popup-form">
       <input type="email" id="exit-email-input" placeholder="your@email.com" style="width:100%;padding:12px 16px;background:rgba(255,255,255,0.06);border:1px solid rgba(201,169,110,0.3);border-radius:8px;color:#fff;font-size:15px;font-family:var(--font-sans);outline:none;margin-bottom:12px;box-sizing:border-box">
-      <button onclick="submitExitEmail()" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send my summary →</button>
+      <button onclick="submitExitEmail()" style="width:100%;padding:14px;background:var(--gold);color:#0d0b1e;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;font-family:var(--font-sans)">Send it to me →</button>
     </div>
     <div id="exit-popup-thanks" style="display:none;padding:12px 0;color:var(--gold);font-family:var(--font-serif);font-size:16px">✦ Check your inbox soon.</div>
-    <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">No thanks, I'll pass.</span>
+    <span class="exit-popup-close" onclick="document.getElementById('exit-popup').classList.remove('show')">I've read enough.</span>
   </div>
 </div>
 
@@ -2711,6 +2711,8 @@ function generateReport() {
         entries.forEach(e => {
           if (e.isIntersecting) {
             stickyCta.style.display = 'flex';
+            const mcn = document.querySelector('.mobile-chapter-nav');
+            if (mcn) mcn.style.marginBottom = '60px';
             ctaObs.unobserve(e.target);
           }
         });
@@ -2981,7 +2983,7 @@ function renderReport(data) {
       }
     }).join('')
     // P1-7: third locked card → hint text
-    + `<div style="text-align:center;padding:20px 16px;color:var(--text-muted);font-family:var(--font-serif);font-size:15px;font-style:italic;border:1px dashed rgba(201,169,110,0.15);border-radius:12px;margin-top:8px">더 많은 대운이 기다립니다 ✦</div>`
+    + `<div style="text-align:center;padding:20px 16px;color:var(--text-muted);font-family:var(--font-serif);font-size:15px;font-style:italic;border:1px dashed rgba(201,169,110,0.15);border-radius:12px;margin-top:8px">The decades ahead are already written. ✦</div>`
     + `<div class="more-decades-hint"><p>+ more decades in your chart</p></div>`;
   }
 
@@ -3415,7 +3417,7 @@ function initExitIntent() {
     });
   } else {
     // Mobile: 30초 후 표시
-    setTimeout(() => { showExitPopup(); }, 30000);
+    setTimeout(() => { showExitPopup(); }, 45000);
   }
 }
 
