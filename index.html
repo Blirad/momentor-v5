@@ -710,7 +710,7 @@
     background: rgba(232,197,71,0.05);
   }
   .pillar-label {
-    font-size: 10px;
+    font-size: 14px;
     color: var(--text-muted);
     letter-spacing: .1em;
     margin-bottom: 8px;
@@ -824,7 +824,7 @@
     gap: 8px;
   }
   .daeun-era-badge {
-    font-size: 9px;
+    font-size: 13px;
     letter-spacing: .12em;
     text-transform: uppercase;
     font-weight: 700;
@@ -909,7 +909,7 @@
     margin-top: 16px;
   }
   .today-hint-label {
-    font-size: 10px;
+    font-size: 14px;
     letter-spacing: .15em;
     color: var(--text-muted);
     text-transform: uppercase;
@@ -1046,8 +1046,8 @@
   .email-captured-msg { font-size: 14px; color: var(--gold); text-align: center; padding: 12px 0; display: none; }
   /* 환불 보장 */
   .refund-note { font-size: 14px; color: rgba(255,255,255,0.45); text-align: center; margin-top: 20px; line-height: 1.6; }
-  .trust-badges { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
-  .trust-badge { font-size: 13px; color: rgba(201,169,110,0.8); border: 1px solid rgba(201,169,110,0.3); border-radius: 20px; padding: 4px 12px; background: rgba(201,169,110,0.05); }
+  .trust-badges { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; flex-wrap: nowrap; overflow: hidden; }
+  .trust-badge { font-size: 11px; color: rgba(201,169,110,0.8); border: 1px solid rgba(201,169,110,0.3); border-radius: 20px; padding: 4px 12px; background: rgba(201,169,110,0.05); }
   .btn-unlock {
     display: flex;
     align-items: center;
@@ -1348,7 +1348,7 @@
     .pillar-stem-char { font-size: 24px; }
     .chapter-nav { display: none !important; }
     .strength-grid { grid-template-columns: 1fr; }
-    .gender-select { grid-template-columns: 1fr 1fr; }
+    .gender-select { grid-template-columns: repeat(3, 1fr); }
   }
   @media (max-width: 390px) {
     .container { padding: 0 20px; }
@@ -1620,7 +1620,7 @@
       </div>
 
       <!-- #19 Luck Cycle Timeline -->
-      <div class="luck-timeline reveal" id="luck-timeline" style="overflow-x:auto;margin-bottom:24px;padding:16px 0;"></div>
+      <div class="luck-timeline reveal" id="luck-timeline" style="margin-bottom:24px;padding:16px 0;"></div>
 
       <!-- Current Daeun Hero -->
       <div class="current-hero reveal" id="current-daeun-hero">
@@ -1760,9 +1760,9 @@
         <div class="reveal" style="text-align:center;margin-top:20px;padding:20px 16px;background:rgba(255,255,255,0.02);border-radius:12px">
           <p style="font-size:14px;color:rgba(255,255,255,0.65);line-height:1.7;font-family:var(--font-serif);margin-bottom:16px">If the reading doesn't feel true to your life — within 24 hours of purchase, email us and we'll refund it. No questions.</p>
           <div class="trust-badges">
-            <span class="trust-badge">↩ 24h refund</span>
+            <span class="trust-badge">↩ 24h</span>
             <span class="trust-badge">🔒 Secure</span>
-            <span class="trust-badge">∞ No subscription</span>
+            <span class="trust-badge">∞ No sub</span>
             <span class="trust-badge">🔐 Private</span>
           </div>
         </div>
@@ -2774,7 +2774,7 @@ function renderReport(data) {
         <span style="font-family:serif;font-size:20px;color:${isCur ? '#c9a96e' : 'rgba(255,255,255,0.65)'};margin-top:4px">${d.stem}${d.branch}</span>
       </div>`;
     });
-    timelineEl.innerHTML = `<div style="display:flex;gap:8px;align-items:center;padding:4px 0;white-space:nowrap">${items.join('<span style="color:rgba(255,255,255,0.2);flex-shrink:0">›</span>')}</div>`;
+    timelineEl.innerHTML = `<div style="display:flex;gap:8px;align-items:center;padding:4px 0;flex-wrap:wrap;font-size:12px">${items.join('<span style="color:rgba(255,255,255,0.2);flex-shrink:0">›</span>')}</div>`;
   })();
   if (curDaeun) {
     document.getElementById('current-pillar-chars').textContent = `${curDaeun.stem}${curDaeun.branch}`;
