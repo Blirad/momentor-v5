@@ -2081,9 +2081,10 @@
       <div class="form-group">
         <label id="label-gender">Gender</label>
         <div class="gender-select">
-          <div class="gender-btn" id="gb-m" onclick="selectGender('M')">♂ <span id="gb-m-label">Male</span></div>
-          <div class="gender-btn" id="gb-f" onclick="selectGender('F')">♀ <span id="gb-f-label">Female</span></div>
-          <div class="gender-btn" id="gb-o" onclick="selectGender('O')">⚬ <span id="gb-o-label">Other</span></div>
+          <div class="gender-btn" id="gb-m" role="button" tabindex="0" onclick="selectGender('M')">♂ <span id="gb-m-label">Male</span></div>
+          <div class="gender-btn" id="gb-f" role="button" tabindex="0" onclick="selectGender('F')">♀ <span id="gb-f-label">Female</span></div>
+          <div class="gender-btn" id="gb-o" role="button" tabindex="0" onclick="selectGender('O')">⚬ <span id="gb-o-label">Other</span></div>
+          <script>document.querySelectorAll('.gender-btn').forEach(b=>b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();b.click()}}));</script>
         </div>
         <div class="error-msg" id="err-gender">Please select a gender.</div>
       </div>
@@ -2369,7 +2370,6 @@
     </button>
     <div class="acc-content" id="acc-wealth-content">
       <p class="acc-text" id="acc-wealth-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2380,7 +2380,6 @@
     </button>
     <div class="acc-content" id="acc-career-content">
       <p class="acc-text" id="acc-career-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2391,7 +2390,6 @@
     </button>
     <div class="acc-content" id="acc-vocation-content">
       <p class="acc-text" id="acc-vocation-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2402,7 +2400,6 @@
     </button>
     <div class="acc-content" id="acc-love-content">
       <p class="acc-text" id="acc-love-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2413,7 +2410,6 @@
     </button>
     <div class="acc-content" id="acc-health-content">
       <p class="acc-text" id="acc-health-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2424,7 +2420,6 @@
     </button>
     <div class="acc-content" id="acc-family-content">
       <p class="acc-text" id="acc-family-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2435,7 +2430,6 @@
     </button>
     <div class="acc-content" id="acc-mentor-content">
       <p class="acc-text" id="acc-mentor-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2446,7 +2440,6 @@
     </button>
     <div class="acc-content" id="acc-movement-content">
       <p class="acc-text" id="acc-movement-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 
@@ -2457,7 +2450,6 @@
     </button>
     <div class="acc-content" id="acc-growth-content">
       <p class="acc-text" id="acc-growth-text"></p>
-      <span class="acc-locked-cta" onclick="event.stopPropagation();openPayModal()">🔒 Unlock Full Reading — $7.99</span>
     </div>
   </div>
 </div>
@@ -2466,13 +2458,6 @@
 <!-- ═══ 2026 FORTUNE SECTIONS (#7) ═══ -->
 <div class="container" id="fortune-sections" style="display:none">
   <div class="fortune-keywords" id="fortune-keywords" style="display:none"></div>
-</div>
-
-<div class="container" id="monthly-section" style="display:none">
-  <div style="text-align:center;margin-bottom:16px">
-    <span style="font-size:13px;letter-spacing:0.15em;color:var(--gold-dim);text-transform:uppercase;font-weight:600">Monthly Flow · 2026</span>
-  </div>
-  <div class="monthly-highlights" id="monthly-highlights" style="display:none"></div>
 </div>
 
 <div class="container">
@@ -3572,7 +3557,7 @@ function renderReport(data) {
 function toggleAcc(id) {
   const item = document.getElementById(id);
   if (item.classList.contains('locked')) {
-    openPayModal();
+    openPaymentModal();
     return;
   }
   const content = document.getElementById(id + '-content');
@@ -3695,19 +3680,19 @@ const FORTUNE_2026 = {
     familyGrowth: "Guard against performing for your family. They don't need your highlight reel — they need you. Show up real.",
     mentor: `2026 brings a connector — someone who introduces you to the right people at the right time. This person might not seem important when you first meet them. They might be quiet, unassuming, or in a completely different field. But the connection they facilitate changes your trajectory.\n\nA competitor or rival also plays a role this year. Not as an enemy — as a mirror. They show you what you're capable of by pushing you. Don't resent them; learn from them.\n\nWatch for a mentor figure in Q3. Someone who's already walked your path and can tell you which mistakes to skip.`,
     mentorGrowth: "Guard against surrounding yourself only with fans. You need people who tell you the truth, not just what you want to hear.",
-    movement: `2026 has significant movement energy for you. Whether it's a job change, a relocation, or a complete lifestyle shift — something about your external circumstances evolves. The best windows for major moves are April–June and September–October.\n\nTravel is not just recreation for you this year — it's fuel. Every trip you take brings back an idea, a contact, or a perspective that feeds your work. Prioritize travel that expands your worldview, not just your Instagram.\n\nIf you've been feeling geographically stuck, the restlessness is real and valid. You don't have to move countries — but changing your daily environment (new neighborhood, new workspace, new routine) scratches the itch.`,
+    movement: `2026 has significant movement energy for you. Whether it's a job change, a relocation, or a complete lifestyle shift — something about your external circumstances evolves. The best windows for major moves are April–June and September–October.\n\nTravel is not just recreation for you this year — it's fuel. Every trip you take brings back an idea, a contact, or a perspective that feeds your work. If you're going to move this month — physically or mentally — make it count. Not the tourist version. The real one.\n\nIf you've been feeling geographically stuck, the restlessness is real and valid. You don't have to move countries — but changing your daily environment (new neighborhood, new workspace, new routine) scratches the itch.`,
     movementGrowth: "Guard against running from something and calling it \"chasing something.\" Make sure your moves are toward, not away from.",
     growth: `Your growth this year is about leadership skills. Communication, emotional intelligence, delegation, public speaking — these are the muscles 2026 wants you to build. You already have the raw charisma; now you're adding the craft.\n\nConsider taking a course or workshop in Q1–Q2 that pushes you into unfamiliar territory. Not more of what you already know — something adjacent. A musician takes an acting class. A developer learns storytelling. Cross-pollination is where your best ideas come from.\n\nThe personal growth lesson of 2026: humility makes you stronger, not weaker. The willingness to say "I don't know" or "teach me" opens doors that confidence alone can't.`,
     growthGrowth: "Guard against thinking you've already figured it out. The moment you stop learning is the moment you start becoming irrelevant. Stay curious.",
     monthly: [
-      "Set bold intentions. This isn't a year for playing it safe.",
+      "This is the month to actually say the thing you've been sitting on. You've been patient long enough.",
       "Someone from your past reaches out. Hear them out.",
       "Financial boost. A project or effort starts paying off.",
       "Movement energy — travel, relocate, or shake up your routine.",
       "Career peak moment. Prepare and show up fully.",
       "Social connections deepen. Quality over quantity.",
       "Creative explosion. Follow the inspiration wherever it leads.",
-      "Rest is non-negotiable. Recharge before fall pushes begin.",
+      "Honestly? This month, just rest. Your body's been keeping score, and August is when it collects.",
       "Big decision incoming. Trust your preparation, not just your gut.",
       "Unexpected opportunity — the kind that doesn't come twice.",
       "Relationship clarity. You'll know who's real and who's not.",
@@ -3740,7 +3725,7 @@ const FORTUNE_2026 = {
     growth: `2026 is a year of inner development as much as outer. Yes, you'll learn new skills and gain new knowledge — but the real growth is in self-awareness. You understand yourself better by December than you ever have. That understanding is worth more than any certificate.\n\nA practice like journaling, meditation, or therapy (if you haven't tried it) gives you outsized returns this year. Even 10 minutes of reflection daily compounds into genuine wisdom by year's end.\n\nAcademically, this is a strong year for deep study. If you've been wanting to master something — a language, a framework, a discipline — 2026's focused energy supports immersive learning. Go deep, not wide.`,
     growthGrowth: "Guard against spiritual bypassing — using personal development as an excuse to avoid practical action. Growth that doesn't translate into behavior is just entertainment.",
     monthly: [
-      "Set one clear intention for the year. Just one. Make it matter.",
+      "The year closes with a weird clarity. Use December to name what you actually learned — not what you wanted to learn.",
       "A quiet realization about a relationship. Trust what you feel.",
       "Financial insight lands. Act on it — don't just note it.",
       "Travel or explore. New environments spark new ideas.",
@@ -4628,9 +4613,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function openPayModal() {
-  window.open(CHECKOUT_URL, '_blank');
-}
 
 // ═══════════════════════════════════════════════
 // EMAIL CAPTURE
@@ -5143,7 +5125,7 @@ function renderLifeAreas(stemKey, fortune, isPaid) {
     html += '</div>';
     html += '<div class="life-area-body' + (isLocked ? ' life-area-locked' : '') + '">';
     if (isLocked) {
-      html += '<div class="blur-overlay-text" style="position:relative;filter:none;opacity:1;padding:20px;text-align:center;cursor:pointer" onclick="openPaymentModal()">Unlock this section</div>';
+      html += '<div class="blur-overlay-text" style="position:relative;filter:none;opacity:1;padding:20px;text-align:center;cursor:pointer" onclick="openPaymentModal()">This is part of your full reading</div>';
     } else {
       html += bodyHtml;
     }
@@ -5248,7 +5230,7 @@ function renderOverallVibe(fortune, isPaid) {
     <p class="payment-modal-desc">You've got the basics — now here's the part that actually gets specific. Your luck cycles, this year's energy month by month, and the stuff most readings leave out.</p>
     <p class="payment-modal-desc">One reading. Everything unlocked. <strong>$7.99</strong></p>
     <p class="payment-modal-fine">No subscription. No recurring charges. Just this — yours to keep.</p>
-    <a class="payment-modal-btn" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" target="_blank" onclick="openPayModal(); return false;">Unlock My Full Reading</a>
+    <a class="payment-modal-btn" href="https://momentor.lemonsqueezy.com/checkout/buy/1350661" target="_blank" onclick="openPaymentModal(); return false;">Unlock My Full Reading</a>
   </div>
 </div>
 
