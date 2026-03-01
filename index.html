@@ -1562,6 +1562,32 @@
         <span class="no-time-link" id="notime-label" onclick="toggleNoTime()" tabindex="0" role="button">Don't know your birth time?</span>
         <input type="hidden" id="chk-notime" value="0">
       </div>
+      <div class="form-group">
+        <label for="inp-city">Birth City <span style="color:var(--text-muted);font-weight:normal;font-size:13px">(for precise hour pillar)</span></label>
+        <select id="inp-city">
+          <optgroup label="Korea">
+            <option value="127.0" selected>Seoul (서울)</option>
+            <option value="129.1">Busan (부산)</option>
+            <option value="128.6">Daegu (대구)</option>
+            <option value="126.7">Incheon (인천)</option>
+            <option value="126.9">Gwangju (광주)</option>
+            <option value="127.4">Daejeon (대전)</option>
+            <option value="129.3">Ulsan (울산)</option>
+            <option value="126.5">Jeju (제주)</option>
+          </optgroup>
+          <optgroup label="Global">
+            <option value="139.7">Tokyo (도쿄)</option>
+            <option value="121.5">Shanghai (상하이)</option>
+            <option value="116.4">Beijing (베이징)</option>
+            <option value="-74.0">New York</option>
+            <option value="-118.2">Los Angeles</option>
+            <option value="-0.1">London</option>
+            <option value="2.3">Paris</option>
+            <option value="103.8">Singapore</option>
+          </optgroup>
+        </select>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:4px;">Birth city affects the Hour Pillar calculation. Seoul is default.</p>
+      </div>
       <button class="btn-primary" onclick="generateReport()" id="btn-generate">See My Reading →</button>
       <p style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:12px;">Free. Private. Instant. Just your birth moment, just your chart.</p>
     </div>
@@ -2008,7 +2034,7 @@ function setLang(lang) {
 // CALCULATION FUNCTIONS
 // ═══════════════════════════════════════════════
 function calcSolarTermDate(year, termIndex) {
-  const C = (year % 100 < 20) ? ST_BASE_19[termIndex] : ST_BASE_20[termIndex];
+  const C = year < 2000 ? ST_BASE_19[termIndex] : ST_BASE_20[termIndex];
   const Y = year % 100;
   return Math.trunc(Y * 0.2422 + C) - Math.trunc(Y / 4);
 }
@@ -2025,10 +2051,12 @@ function getMonthPillar(year, month, day) {
   const termDay = calcSolarTermDate(year, month - 1);
   const monthIndex = (day < termDay) ? month - 2 : month - 1;
   const adjustedMonth = ((monthIndex % 12) + 12) % 12;
-  const yearStemIdx = ((year - 4) % 10 + 10) % 10;
-  const monthStemStart = (yearStemIdx % 5) * 2;
-  const stemIdx = (monthStemStart + adjustedMonth) % 10;
-  const branchIdx = (adjustedMonth + 2) % 12;
+  const lichunDay = calcSolarTermDate(year, 1);
+  const effectiveYear = (month < 2 || (month === 2 && day < lichunDay)) ? year - 1 : year;
+  const yearStemIdx = ((effectiveYear - 4) % 10 + 10) % 10;
+  const monthStemBase = (yearStemIdx % 5) * 2 + 2;
+  const stemIdx = (monthStemBase + (adjustedMonth + 11) % 12) % 10;
+  const branchIdx = (adjustedMonth + 1) % 12;
   return { stem: STEMS[stemIdx], branch: BRANCHES[branchIdx], stemKr: STEM_KR[stemIdx], branchKr: BRANCH_KR[branchIdx], element: STEM_ELEMENTS[stemIdx], branchElement: BRANCH_ELEMENTS[branchIdx], stemIdx, branchIdx };
 }
 
@@ -2096,6 +2124,16 @@ function renderDaeunProgress(startAge, currentAge) {
       <span class="progress-meta">${elapsed}yr in · ${10 - elapsed}yr remaining</span>
     </div>
   `;
+}
+
+function applyTrueSolarTime(hour, minute, longitude) {
+  const stdMeridian = 135;
+  const lonDiff = longitude - stdMeridian;
+  const correctionMinutes = lonDiff * 4;
+  const totalMinutes = hour * 60 + minute + correctionMinutes;
+  const correctedHour = Math.floor(((totalMinutes % 1440) + 1440) % 1440 / 60);
+  const correctedMinute = Math.floor(((totalMinutes % 1440) + 1440) % 1440 % 60);
+  return { hour: correctedHour, minute: correctedMinute };
 }
 
 function calcFourPillars(year, month, day, hour, gender, noTime) {
@@ -2673,7 +2711,11 @@ function generateReport() {
   const month   = parseInt(document.getElementById('inp-month').value);
   const day     = parseInt(document.getElementById('inp-day').value);
   const noTime  = _noTimeActive;
-  const hour    = noTime ? 12 : parseInt(document.getElementById('inp-hour').value) || 12;
+  const rawHour = noTime ? 12 : parseInt(document.getElementById('inp-hour').value) || 12;
+  const rawMinute = noTime ? 0 : parseInt(document.getElementById('inp-minute').value) || 0;
+  const longitude = parseFloat(document.getElementById('inp-city').value) || 127.0;
+  const corrected = noTime ? { hour: 12, minute: 0 } : applyTrueSolarTime(rawHour, rawMinute, longitude);
+  const hour = corrected.hour;
 
   const pillars = calcFourPillars(year, month, day, hour, selectedGender, noTime);
 
