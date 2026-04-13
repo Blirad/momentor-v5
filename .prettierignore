@@ -1,0 +1,22 @@
+# Build artifacts
+node_modules/
+.vercel/
+dist/
+build/
+coverage/
+
+# Generated / vendored
+*.min.js
+*.min.css
+
+# The big one — do not auto-format until it's modularized.
+# Remove this line once index.html is split into modules.
+index.html
+
+# Package lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Service worker — pinned formatting
+sw.js
