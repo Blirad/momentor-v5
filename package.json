@@ -1,0 +1,38 @@
+{
+  "name": "momentor",
+  "version": "5.0.0",
+  "private": true,
+  "description": "Momentor — Your Four Pillars (Saju) birth chart reading. 518,400 unique combinations.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:vercel": "vercel dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test --test-reporter=spec tests/**/*.test.mjs",
+    "test:unit": "node --test --test-reporter=spec tests/unit/**/*.test.mjs",
+    "test:smoke": "node --test --test-reporter=spec tests/smoke/**/*.test.mjs",
+    "smoke": "node scripts/smoke.mjs",
+    "verify": "npm run format:check && npm run lint && npm run test && npm run smoke"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.13.0",
+    "eslint": "^9.13.0",
+    "globals": "^15.11.0",
+    "prettier": "^3.3.3"
+  },
+  "keywords": [
+    "saju",
+    "four-pillars",
+    "bazi",
+    "astrology",
+    "birth-chart",
+    "pwa"
+  ],
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,8 @@
+# Every PR needs a review from a codeowner of the touched paths.
+# Add GitHub handles once the team is wired up.
+#
+# Example:
+# *                @your-gh-handle
+# /api/            @your-gh-handle @backend-reviewer
+# /.github/        @your-gh-handle
+# /docs/           @your-gh-handle
