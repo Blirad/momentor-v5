@@ -308,6 +308,92 @@
             100% { opacity: 0.4; transform: scaleX(-1) translateY(0); }
         }
 
+        /* Phase 6 — Custom Cursor */
+        body.custom-cursor,
+        body.custom-cursor * { cursor: none !important; }
+        .cursor-dot,
+        .cursor-ring,
+        .cursor-ghost {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--fg-paper);
+            border-radius: 50%;
+        }
+        .cursor-ring {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--fg-paper);
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: width 0.2s var(--ease-out), height 0.2s var(--ease-out),
+                        border-radius 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+        }
+        .cursor-ghost {
+            width: 6px;
+            height: 6px;
+            border: 1px solid var(--fg-paper);
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        .cursor-ring.on-node {
+            width: 44px;
+            height: 44px;
+            border-style: dashed;
+            opacity: 0.9;
+        }
+        .cursor-ring.on-seal {
+            width: 36px;
+            height: 36px;
+            border-radius: 3px;
+            border-color: var(--accent-cinnabar);
+            opacity: 1;
+        }
+
+        /* Phase 6 — Audio toggle */
+        .audio-toggle {
+            position: fixed;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            z-index: 20;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--line-ghost);
+            background: transparent;
+            color: var(--fg-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            transition: all 0.3s var(--ease-out);
+        }
+        .audio-toggle:hover {
+            color: var(--fg-paper);
+            border-color: var(--fg-paper);
+        }
+        .audio-toggle.active {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+        .audio-toggle svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.2;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.001ms !important;
@@ -1302,10 +1388,143 @@
 
     </div>
 
+    <!-- Phase 6 — Custom cursor elements -->
+    <div class="cursor-ghost" id="cursor-ghost" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+    <!-- Phase 6 — Audio toggle (muted by default) -->
+    <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Toggle ambient sound" aria-pressed="false">
+        <svg viewBox="0 0 24 24" id="audio-icon-off"><path d="M4,9 L4,15 L8,15 L13,19 L13,5 L8,9 Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+    </button>
+
     <!-- Phase 0 — Grain Texture Overlay (topmost layer) -->
     <div class="grain-overlay" aria-hidden="true"></div>
 
     <script>
+        // Phase 6 — Custom cursor (desktop only)
+        (function customCursor() {
+            const isTouch = matchMedia('(hover: none)').matches || 'ontouchstart' in window;
+            if (isTouch) return;
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            const ghost = document.getElementById('cursor-ghost');
+            if (!dot || !ring) return;
+            document.body.classList.add('custom-cursor');
+
+            let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+            let rx = tx, ry = ty;
+            let gx = tx, gy = ty;
+
+            window.addEventListener('mousemove', e => {
+                tx = e.clientX;
+                ty = e.clientY;
+                dot.style.transform = `translate(${tx}px, ${ty}px) translate(-50%, -50%)`;
+            });
+
+            function loop() {
+                rx += (tx - rx) * 0.18;
+                ry += (ty - ry) * 0.18;
+                gx += (tx - gx) * 0.08;
+                gy += (ty - gy) * 0.08;
+                ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+                ghost.style.transform = `translate(${gx}px, ${gy}px) translate(-50%, -50%)`;
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            // Context-aware ring shape
+            document.querySelectorAll('.node').forEach(n => {
+                n.addEventListener('mouseenter', () => ring.classList.add('on-node'));
+                n.addEventListener('mouseleave', () => ring.classList.remove('on-node'));
+            });
+            const seal = document.getElementById('seal-btn');
+            if (seal) {
+                seal.addEventListener('mouseenter', () => ring.classList.add('on-seal'));
+                seal.addEventListener('mouseleave', () => ring.classList.remove('on-seal'));
+            }
+        })();
+
+        // Phase 6 — Web Audio ambient (muted default, user-activated)
+        (function ambientAudio() {
+            const toggle = document.getElementById('audio-toggle');
+            if (!toggle) return;
+            const nodeFreqs = { flow: 220, still: 196, void: 174, light: 293, core: 261, path: 246, order: 329, form: 392 };
+            let ctx, drone, droneGain, master;
+            let enabled = false;
+
+            function ensureCtx() {
+                if (ctx) return;
+                ctx = new (window.AudioContext || window.webkitAudioContext)();
+                master = ctx.createGain();
+                master.gain.value = 0;
+                master.connect(ctx.destination);
+
+                drone = ctx.createOscillator();
+                drone.type = 'sine';
+                drone.frequency.value = 180;
+                droneGain = ctx.createGain();
+                droneGain.gain.value = 0.02;
+                drone.connect(droneGain).connect(master);
+                drone.start();
+            }
+
+            function fade(node, target, dur = 0.4) {
+                const now = ctx.currentTime;
+                node.gain.cancelScheduledValues(now);
+                node.gain.setValueAtTime(node.gain.value, now);
+                node.gain.linearRampToValueAtTime(target, now + dur);
+            }
+
+            toggle.addEventListener('click', () => {
+                ensureCtx();
+                if (ctx.state === 'suspended') ctx.resume();
+                enabled = !enabled;
+                toggle.classList.toggle('active', enabled);
+                toggle.setAttribute('aria-pressed', enabled);
+                fade(master, enabled ? 1 : 0, 0.6);
+            });
+
+            // Node hover tone
+            document.querySelectorAll('.node').forEach(n => {
+                n.addEventListener('mouseenter', () => {
+                    if (!enabled || !ctx) return;
+                    const sym = n.dataset.symbol || 'flow';
+                    const f = nodeFreqs[sym] || 220;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = f;
+                    g.gain.value = 0;
+                    osc.connect(g).connect(master);
+                    osc.start();
+                    const t = ctx.currentTime;
+                    g.gain.linearRampToValueAtTime(0.05, t + 0.08);
+                    g.gain.linearRampToValueAtTime(0, t + 0.35);
+                    osc.stop(t + 0.4);
+                });
+            });
+
+            // Seal capture hit
+            const seal = document.getElementById('seal-btn');
+            if (seal) {
+                seal.addEventListener('click', () => {
+                    if (!enabled || !ctx) return;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = 110;
+                    osc.connect(g).connect(master);
+                    g.gain.value = 0;
+                    osc.start();
+                    const t = ctx.currentTime;
+                    g.gain.linearRampToValueAtTime(0.14, t + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+                    osc.stop(t + 1);
+                });
+            }
+        })();
+
         // Phase 4 — Trigger entrance choreography after first paint
         (function startEntrance() {
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
