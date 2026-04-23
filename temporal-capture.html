@@ -784,18 +784,105 @@
         .blob-3 { animation: driftBlob 22s ease-in-out infinite 5s; }
         .blob-4 { animation: driftBlob 18s ease-in-out infinite 3s; }
 
-        /* Seal button pulse */
-        @keyframes sealPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(181, 41, 27, 0); }
-            50% { box-shadow: 0 0 20px 4px rgba(181, 41, 27, 0.15); }
+        /* Phase 3 — Seal idle breathing (async outer glow + inner border) */
+        @keyframes sealBreath {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(181, 41, 27, 0.25),
+                            inset 0 0 0 0 rgba(181, 41, 27, 0);
+            }
+            50% {
+                box-shadow: 0 0 24px 6px rgba(181, 41, 27, 0.2),
+                            inset 0 0 12px 2px rgba(181, 41, 27, 0.15);
+            }
+        }
+
+        @keyframes sealFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
         }
 
         .seal-button {
-            animation: sealPulse 4s ease-in-out infinite;
+            animation: sealBreath 4s ease-in-out infinite, sealFloat 6s ease-in-out infinite;
+            padding: 0;
+            font: inherit;
+            color: inherit;
         }
 
         .seal-button:hover {
-            animation: none;
+            animation: sealFloat 6s ease-in-out infinite;
+        }
+
+        .seal-glyph::before {
+            animation: sealGlyphPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes sealGlyphPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Phase 3 — Capture ritual rings (3 expanding concentric rings) */
+        .ritual-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 80px;
+            height: 80px;
+            border: 1.5px solid var(--accent-cinnabar);
+            border-radius: 6px;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .seal-button.ritual-active .ritual-ring {
+            animation: ringBurst 1.2s ease-out forwards;
+        }
+
+        .seal-button.ritual-active .ritual-ring:nth-child(2) { animation-delay: 0.15s; }
+        .seal-button.ritual-active .ritual-ring:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes ringBurst {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+        }
+
+        /* Phase 3 — Shake on click */
+        @keyframes sealShake {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 2px); }
+            80% { transform: translate(1px, -2px); }
+        }
+
+        .seal-button.ritual-active {
+            animation: sealShake 0.3s ease-in-out;
+        }
+
+        /* Phase 3 — Node sequential glow on capture */
+        .node.ritual-flash {
+            border-color: var(--fg-paper);
+            box-shadow: 0 0 22px rgba(229, 225, 213, 0.35);
+            transform: scale(1.1);
+        }
+
+        .node.ritual-flash .node-icon {
+            filter: drop-shadow(0 0 8px rgba(229, 225, 213, 0.7));
+        }
+
+        /* Phase 3 — Connector glow during capture */
+        .connector-svg.ritual-active .conn-path {
+            stroke: var(--fg-paper);
+            stroke-width: 0.8;
+            filter: drop-shadow(0 0 4px rgba(229, 225, 213, 0.4));
+            transition: stroke 0.4s var(--ease-out);
+        }
+
+        /* Phase 3 — Capture meta typewriter */
+        .capture-meta .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
         }
     </style>
 </head>
@@ -960,6 +1047,9 @@
                 <!-- Capture Zone -->
                 <div class="capture-zone">
                     <button class="seal-button" id="seal-btn" type="button" aria-label="Capture temporal moment">
+                        <span class="ritual-ring" aria-hidden="true"></span>
+                        <span class="ritual-ring" aria-hidden="true"></span>
+                        <span class="ritual-ring" aria-hidden="true"></span>
                         <span class="seal-glyph" aria-hidden="true"></span>
                         <span class="seal-caption">CAPTURE</span>
                     </button>
@@ -1202,39 +1292,89 @@
             window.__momentorParticles = { particles: () => particles };
         })();
 
-        // Seal button capture interaction
+        // Phase 3 — Multi-stage seal ritual (0→2800ms choreographed capture)
         const sealBtn = document.getElementById('seal-btn');
         const captureStatus = document.getElementById('capture-status');
+        const connectorSvg = document.getElementById('connector-svg');
 
+        function typewriterSet(el, text, perChar = 30) {
+            el.textContent = '';
+            let i = 0;
+            const iv = setInterval(() => {
+                el.textContent += text[i++];
+                if (i >= text.length) clearInterval(iv);
+            }, perChar);
+        }
+
+        function convergeParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas || !window.__momentorParticles) return;
+            const seal = document.getElementById('seal-btn');
+            const r = seal.getBoundingClientRect();
+            const targetX = r.left + r.width / 2;
+            const targetY = r.top + r.height / 2;
+            const ps = window.__momentorParticles.particles();
+            if (!ps) return;
+            ps.forEach(p => {
+                const dx = targetX - p.x;
+                const dy = targetY - p.y;
+                const d = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+                p.vx += (dx / d) * 2.4;
+                p.vy += (dy / d) * 2.4;
+            });
+        }
+
+        let ritualLocked = false;
         sealBtn.addEventListener('click', function() {
-            captureStatus.textContent = 'CAPTURING...';
-            captureStatus.style.color = 'var(--accent-cinnabar)';
+            if (ritualLocked) return;
+            ritualLocked = true;
 
-            sealBtn.style.transform = 'scale(0.95)';
-            setTimeout(() => { sealBtn.style.transform = ''; }, 150);
+            // Stage 0-300ms — shake + ring burst
+            sealBtn.classList.add('ritual-active');
+            setTimeout(() => sealBtn.classList.remove('ritual-active'), 320);
 
-            // Flash all nodes
-            document.querySelectorAll('.node').forEach((node, i) => {
+            // Stage 300-800ms — update status
+            setTimeout(() => {
+                captureStatus.textContent = 'CAPTURING';
+                captureStatus.style.color = 'var(--accent-cinnabar)';
+            }, 300);
+
+            // Stage 800-1500ms — sequential node glow + connector glow
+            if (connectorSvg) connectorSvg.classList.add('ritual-active');
+            const nodes = document.querySelectorAll('.node');
+            nodes.forEach((node, i) => {
                 setTimeout(() => {
-                    node.style.borderColor = 'var(--fg-paper)';
-                    node.style.boxShadow = '0 0 20px rgba(229, 225, 213, 0.3)';
-                    setTimeout(() => {
-                        node.style.borderColor = '';
-                        node.style.boxShadow = '';
-                    }, 600);
-                }, i * 80);
+                    node.classList.add('ritual-flash');
+                    setTimeout(() => node.classList.remove('ritual-flash'), 700);
+                }, 800 + i * 90);
             });
 
+            // Stage 1500-2200ms — particles converge
+            setTimeout(convergeParticles, 1500);
+            setTimeout(convergeParticles, 1700);
+
+            // Stage 2200-2800ms — max cinnabar glow then decay
+            setTimeout(() => {
+                sealBtn.style.boxShadow = '0 0 60px 12px rgba(181, 41, 27, 0.45)';
+            }, 2200);
+            setTimeout(() => {
+                sealBtn.style.boxShadow = '';
+                if (connectorSvg) connectorSvg.classList.remove('ritual-active');
+            }, 2800);
+
+            // Stage 2800+ — typewriter timestamp
             setTimeout(() => {
                 const now = new Date();
                 const timeStr = now.toTimeString().split(' ')[0];
-                captureStatus.textContent = 'CAPTURED AT ' + timeStr;
+                typewriterSet(captureStatus, 'CAPTURED · ' + timeStr, 28);
                 captureStatus.style.color = 'var(--fg-paper)';
+            }, 2800);
 
-                // Brief cinnabar glow on seal
-                sealBtn.style.boxShadow = '0 0 40px rgba(181, 41, 27, 0.4)';
-                setTimeout(() => { sealBtn.style.boxShadow = ''; }, 1000);
-            }, 1200);
+            // Release lock
+            setTimeout(() => { ritualLocked = false; }, 3600);
+
+            // Haptic on mobile
+            if (navigator.vibrate) navigator.vibrate(50);
         });
 
         // Node hover ripple effect
