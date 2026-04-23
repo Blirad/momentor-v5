@@ -396,18 +396,34 @@
         .nav-top { top: 2rem; left: 50%; transform: translateX(-50%); }
         .nav-bottom { bottom: 2rem; left: 50%; transform: translateX(-50%); }
 
+        /* Phase 5 — Dynamic moon phase (illum filled via clip-path) */
         .moon-phase {
-            width: 12px; height: 12px;
+            width: 14px; height: 14px;
             border: 1px solid var(--fg-muted);
             border-radius: 50%;
             position: relative;
             overflow: hidden;
+            background: transparent;
         }
-        .moon-phase::after {
-            content: '';
+        .moon-phase .moon-disk {
             position: absolute;
-            top: 0; left: 50%; width: 100%; height: 100%;
+            inset: 0;
+            border-radius: 50%;
             background: var(--fg-muted);
+            transition: clip-path 0.6s var(--ease-out);
+        }
+
+        /* Phase 5 — Live clock */
+        .live-clock {
+            font-family: var(--font-mono);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.08em;
+        }
+        .live-clock .clock-sep {
+            animation: clockBlink 1s steps(2) infinite;
+        }
+        @keyframes clockBlink {
+            50% { opacity: 0.2; }
         }
 
         /* App Grid */
@@ -469,6 +485,30 @@
 
         .constellation circle {
             fill: var(--fg-paper);
+            animation: twinkle 4s ease-in-out infinite;
+        }
+        .constellation circle:nth-child(2) { animation-duration: 5.5s; animation-delay: -1s; }
+        .constellation circle:nth-child(3) { animation-duration: 6.8s; animation-delay: -2.4s; }
+        .constellation circle:nth-child(4) { animation-duration: 4.6s; animation-delay: -0.6s; }
+        .constellation circle:nth-child(5) { animation-duration: 7s; animation-delay: -3s; }
+        .constellation circle:nth-child(6) { animation-duration: 5s; animation-delay: -1.8s; }
+        .constellation svg {
+            animation: constRot 120s linear infinite;
+            transform-origin: center;
+        }
+        .constellation polyline {
+            stroke-dasharray: 2 3;
+            animation: constFlow 40s linear infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.55; }
+            50% { opacity: 1; }
+        }
+        @keyframes constRot {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes constFlow {
+            to { stroke-dashoffset: -120; }
         }
 
         /* Right Panel */
@@ -490,12 +530,33 @@
             gap: 1rem;
             align-items: center;
             opacity: 0.5;
-            transition: opacity 0.4s ease;
+            transition: opacity 0.4s ease, transform 0.3s var(--ease-out);
             cursor: pointer;
+            position: relative;
         }
 
+        /* Phase 5 — Archive hover (cinnabar border draw + tx shift) */
+        .archive-item::before {
+            content: '';
+            position: absolute;
+            left: calc(2rem + 18px);
+            top: 10%;
+            width: 1px;
+            height: 0%;
+            background: var(--accent-cinnabar);
+            transition: height 0.35s var(--ease-out);
+        }
+        .archive-item:hover::before { height: 80%; }
         .archive-item:hover {
             opacity: 1;
+            transform: translateX(4px);
+        }
+        .archive-item:hover .archive-time { color: var(--fg-paper); }
+        .archive-item:active { transform: translateX(4px) scale(0.98); }
+
+        .archive-time {
+            transition: color 0.3s var(--ease-out);
+            color: var(--fg-muted);
         }
 
         .archive-time {
@@ -1085,12 +1146,14 @@
     <!-- Celestial Navigation -->
     <div class="celestial-nav nav-top">
         <span>Zenith</span>
-        <div class="moon-phase"></div>
-        <span>14° N, 108° E</span>
+        <div class="moon-phase" id="moon-phase" aria-label="Moon phase"><div class="moon-disk"></div></div>
+        <span id="moon-label">Waxing Crescent</span>
+        <span id="geo-coords">14° N, 108° E</span>
     </div>
     <div class="celestial-nav nav-bottom">
         <span>Nadir</span>
         <span class="accent-red">System Active</span>
+        <span class="live-clock" id="live-clock"><span id="clk-h">00</span><span class="clock-sep">:</span><span id="clk-m">00</span><span class="clock-sep">:</span><span id="clk-s">00</span></span>
         <span>Freq 432Hz</span>
     </div>
 
@@ -1518,12 +1581,80 @@
         // Geolocation (optional, update coordinates if available)
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(pos) {
-                document.getElementById('lat-val').textContent = pos.coords.latitude.toFixed(4);
-                document.getElementById('lng-val').textContent = pos.coords.longitude.toFixed(4);
-            }, function() {
-                // Keep default coordinates
-            });
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                document.getElementById('lat-val').textContent = Math.abs(lat).toFixed(4);
+                document.getElementById('lng-val').textContent = Math.abs(lng).toFixed(4);
+                const geo = document.getElementById('geo-coords');
+                if (geo) {
+                    geo.textContent = Math.abs(lat).toFixed(0) + '° ' + (lat >= 0 ? 'N' : 'S') + ', ' +
+                                      Math.abs(lng).toFixed(0) + '° ' + (lng >= 0 ? 'E' : 'W');
+                }
+            }, function() {});
         }
+
+        // Phase 5 — Live clock (HH:MM:SS, colon blinks every 1s via CSS)
+        (function liveClock() {
+            const h = document.getElementById('clk-h');
+            const m = document.getElementById('clk-m');
+            const s = document.getElementById('clk-s');
+            if (!h) return;
+            function pad(n) { return String(n).padStart(2, '0'); }
+            function tick() {
+                const d = new Date();
+                h.textContent = pad(d.getHours());
+                m.textContent = pad(d.getMinutes());
+                s.textContent = pad(d.getSeconds());
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        // Phase 5 — Dynamic moon phase (synodic month: 29.53059 days)
+        (function moonPhase() {
+            const disk = document.querySelector('#moon-phase .moon-disk');
+            const label = document.getElementById('moon-label');
+            if (!disk) return;
+
+            // reference new moon: 2000-01-06 18:14 UTC
+            const ref = Date.UTC(2000, 0, 6, 18, 14, 0);
+            const synodic = 29.530588853;
+            const now = Date.now();
+            const days = (now - ref) / 86400000;
+            const age = ((days % synodic) + synodic) % synodic;
+            const frac = age / synodic; // 0 = new, 0.5 = full
+            const illum = (1 - Math.cos(frac * Math.PI * 2)) / 2; // 0..1
+            const waxing = frac < 0.5;
+
+            // clip-path: show lit portion
+            // waxing: lit on right side grows left; waning: lit on left side shrinks right
+            let clip;
+            if (illum < 0.01) {
+                clip = 'inset(0 100% 0 0)'; // new moon — invisible
+            } else if (illum > 0.99) {
+                clip = 'inset(0)'; // full
+            } else if (waxing) {
+                const pct = (1 - illum) * 100;
+                clip = `inset(0 0 0 ${pct.toFixed(1)}%)`;
+            } else {
+                const pct = (1 - illum) * 100;
+                clip = `inset(0 ${pct.toFixed(1)}% 0 0)`;
+            }
+            disk.style.clipPath = clip;
+
+            if (label) {
+                let name;
+                if (frac < 0.03 || frac > 0.97) name = 'New Moon';
+                else if (frac < 0.22) name = 'Waxing Crescent';
+                else if (frac < 0.28) name = 'First Quarter';
+                else if (frac < 0.47) name = 'Waxing Gibbous';
+                else if (frac < 0.53) name = 'Full Moon';
+                else if (frac < 0.72) name = 'Waning Gibbous';
+                else if (frac < 0.78) name = 'Last Quarter';
+                else name = 'Waning Crescent';
+                label.textContent = name;
+            }
+        })();
     </script>
 
 </body>
