@@ -208,7 +208,7 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
-            filter: blur(60px);
+            filter: blur(60px) url(#ink-turbulence);
         }
 
         .ink-blob {
@@ -220,6 +220,20 @@
         .blob-1 { width: 80vw; height: 80vh; top: -20vh; left: -10vw; }
         .blob-2 { width: 60vw; height: 90vh; bottom: -30vh; right: -5vw; background: radial-gradient(circle, var(--ink-wash-2) 0%, transparent 70%); }
         .blob-3 { width: 40vw; height: 40vh; top: 40vh; left: 30vw; background: radial-gradient(circle, rgba(40,40,45,0.3) 0%, transparent 70%); }
+        .blob-4 {
+            width: 30vw; height: 30vh;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--ink-wash-cinnabar) 0%, transparent 65%);
+        }
+
+        /* Phase 1 — Particle Canvas */
+        .particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
 
         /* Decorative Layer */
         .decor-layer {
@@ -235,10 +249,21 @@
             stroke: var(--line-ghost);
             stroke-width: 0.5;
             opacity: 0.4;
+            animation: craneBreath 10s ease-in-out infinite;
         }
 
         .crane-left { bottom: 10%; left: 5%; width: 20vw; transform: scaleX(-1); }
-        .crane-right { top: 15%; right: 5%; width: 15vw; }
+        .crane-right { top: 15%; right: 5%; width: 15vw; animation-delay: -4s; }
+
+        @keyframes craneBreath {
+            0%, 100% { opacity: 0.2; transform: translateY(0); }
+            50% { opacity: 0.5; transform: translateY(-2px); }
+        }
+        .crane-left { animation-name: craneBreathLeft; }
+        @keyframes craneBreathLeft {
+            0%, 100% { opacity: 0.2; transform: scaleX(-1) translateY(0); }
+            50% { opacity: 0.5; transform: scaleX(-1) translateY(-2px); }
+        }
 
         .celestial-nav {
             position: absolute;
@@ -614,9 +639,10 @@
             66% { transform: translate(-10px, 10px) scale(0.97); }
         }
 
-        .blob-1 { animation: driftBlob 25s ease-in-out infinite; }
-        .blob-2 { animation: driftBlob 30s ease-in-out infinite reverse; }
-        .blob-3 { animation: driftBlob 20s ease-in-out infinite 5s; }
+        .blob-1 { animation: driftBlob 28s ease-in-out infinite; }
+        .blob-2 { animation: driftBlob 34s ease-in-out infinite reverse; }
+        .blob-3 { animation: driftBlob 22s ease-in-out infinite 5s; }
+        .blob-4 { animation: driftBlob 18s ease-in-out infinite 3s; }
 
         /* Seal button pulse */
         @keyframes sealPulse {
@@ -634,6 +660,19 @@
     </style>
 </head>
 <body>
+
+    <!-- Phase 1 — SVG Filter Defs -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <filter id="ink-turbulence" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="7"/>
+                <feDisplacementMap in="SourceGraphic" scale="18"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Phase 1 — Particle Canvas -->
+    <canvas class="particle-canvas" id="particle-canvas" aria-hidden="true"></canvas>
 
     <!-- Phase 0 — Chapter Watermark (replaces hanja watermark) -->
     <div class="chapter-watermark" aria-hidden="true">I</div>
@@ -656,20 +695,48 @@
         <div class="ink-blob blob-1"></div>
         <div class="ink-blob blob-2"></div>
         <div class="ink-blob blob-3"></div>
+        <div class="ink-blob blob-4"></div>
     </div>
 
     <!-- Decorative Layer -->
     <div class="decor-layer">
+        <!-- Phase 1 — Refined crane (armillary-like filmyo) -->
         <svg class="crane-svg crane-left" viewBox="0 0 200 200">
-            <path d="M50,150 Q70,120 90,140 T150,100 Q120,80 100,90 T60,50 Q70,90 40,110 Z"></path>
-            <path d="M100,90 Q110,60 130,50 Q115,70 110,90"></path>
-            <circle cx="125" cy="55" r="1" fill="var(--fg-muted)"></circle>
-            <path d="M60,110 Q50,150 40,180" stroke-dasharray="2,2"></path>
+            <!-- body -->
+            <path d="M50,150 Q70,118 92,138 Q118,126 142,102 Q126,86 102,92 Q84,72 62,54 Q72,82 48,104 Q44,128 50,150 Z"></path>
+            <!-- wing feathers -->
+            <path d="M72,124 Q82,116 96,120" stroke-dasharray="1,2"></path>
+            <path d="M78,130 Q90,124 104,128" stroke-dasharray="1,2"></path>
+            <path d="M84,136 Q96,132 110,134" stroke-dasharray="1,2"></path>
+            <!-- neck + head -->
+            <path d="M102,92 Q114,68 128,52 Q134,48 138,46"></path>
+            <path d="M102,92 Q116,74 130,56"></path>
+            <!-- beak -->
+            <path d="M138,46 L146,42 L140,50 Z" fill="var(--line-ghost)"></path>
+            <circle cx="132" cy="52" r="0.8" fill="var(--fg-paper)"></circle>
+            <!-- legs -->
+            <path d="M60,150 Q54,168 48,184" stroke-dasharray="2,2"></path>
+            <path d="M68,150 Q66,170 64,186" stroke-dasharray="2,2"></path>
+            <!-- feet -->
+            <path d="M48,184 L44,186 M48,184 L50,188"/>
+            <path d="M64,186 L60,188 M64,186 L66,190"/>
         </svg>
         <svg class="crane-svg crane-right" viewBox="0 0 200 200">
-            <path d="M150,150 Q130,120 110,140 T50,100 Q80,80 100,90 T140,50 Q130,90 160,110 Z"></path>
-            <path d="M100,90 Q90,60 70,50 Q85,70 90,90"></path>
-            <circle cx="75" cy="55" r="1" fill="var(--fg-muted)"></circle>
+            <!-- body -->
+            <path d="M150,150 Q130,118 108,138 Q82,126 58,102 Q74,86 98,92 Q116,72 138,54 Q128,82 152,104 Q156,128 150,150 Z"></path>
+            <!-- wing feathers -->
+            <path d="M128,124 Q118,116 104,120" stroke-dasharray="1,2"></path>
+            <path d="M122,130 Q110,124 96,128" stroke-dasharray="1,2"></path>
+            <path d="M116,136 Q104,132 90,134" stroke-dasharray="1,2"></path>
+            <!-- neck + head -->
+            <path d="M98,92 Q86,68 72,52 Q66,48 62,46"></path>
+            <path d="M98,92 Q84,74 70,56"></path>
+            <!-- beak -->
+            <path d="M62,46 L54,42 L60,50 Z" fill="var(--line-ghost)"></path>
+            <circle cx="68" cy="52" r="0.8" fill="var(--fg-paper)"></circle>
+            <!-- legs -->
+            <path d="M140,150 Q146,168 152,184" stroke-dasharray="2,2"></path>
+            <path d="M132,150 Q134,170 136,186" stroke-dasharray="2,2"></path>
         </svg>
     </div>
 
@@ -796,6 +863,98 @@
     <div class="grain-overlay" aria-hidden="true"></div>
 
     <script>
+        // Phase 1 — Canvas particle system (brownian drift + mouse repulsion)
+        (function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const ctx = canvas.getContext('2d');
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const particleCount = isMobile ? 30 : 70;
+            let w, h, particles;
+            const mouse = { x: -9999, y: -9999, active: false };
+
+            function resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = canvas.width = window.innerWidth * dpr;
+                h = canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            function seed() {
+                particles = Array.from({ length: particleCount }, () => ({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    r: Math.random() * 0.7 + 0.3,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    a: Math.random() * 0.3 + 0.1
+                }));
+            }
+
+            function step() {
+                ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                for (const p of particles) {
+                    // brownian jitter
+                    p.vx += (Math.random() - 0.5) * 0.02;
+                    p.vy += (Math.random() - 0.5) * 0.02;
+                    // soft clamp
+                    p.vx = Math.max(-0.4, Math.min(0.4, p.vx));
+                    p.vy = Math.max(-0.4, Math.min(0.4, p.vy));
+
+                    // mouse repulsion
+                    if (mouse.active) {
+                        const dx = p.x - mouse.x;
+                        const dy = p.y - mouse.y;
+                        const d2 = dx * dx + dy * dy;
+                        if (d2 < 10000) {
+                            const d = Math.sqrt(d2) || 1;
+                            const f = (100 - d) / 100 * 0.6;
+                            p.vx += (dx / d) * f;
+                            p.vy += (dy / d) * f;
+                        }
+                    }
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // wrap
+                    if (p.x < -5) p.x = window.innerWidth + 5;
+                    if (p.x > window.innerWidth + 5) p.x = -5;
+                    if (p.y < -5) p.y = window.innerHeight + 5;
+                    if (p.y > window.innerHeight + 5) p.y = -5;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(229, 225, 213, ' + p.a + ')';
+                    ctx.fill();
+                }
+                if (!prefersReduced) requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', () => { resize(); seed(); });
+            window.addEventListener('mousemove', e => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.active = true;
+            });
+            window.addEventListener('mouseout', () => { mouse.active = false; });
+
+            resize();
+            seed();
+            if (prefersReduced) {
+                // draw a single static frame
+                step();
+            } else {
+                requestAnimationFrame(step);
+            }
+
+            // Expose for Phase 3 seal ritual (converge effect)
+            window.__momentorParticles = { particles: () => particles };
+        })();
+
         // Seal button capture interaction
         const sealBtn = document.getElementById('seal-btn');
         const captureStatus = document.getElementById('capture-status');
