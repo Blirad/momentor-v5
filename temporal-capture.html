@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOMENTOR - Temporal Capture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-void: #050506;
+            --fg-paper: #e5e1d5;
+            --fg-muted: #7a776e;
+            --fg-dim: rgba(229, 225, 213, 0.35);
+            --accent-cinnabar: #b5291b;
+            --accent-gold: #c9a96e;
+            --line-ghost: rgba(229, 225, 213, 0.12);
+            --line-ghost-soft: rgba(229, 225, 213, 0.06);
+            --ink-wash-1: rgba(30, 30, 35, 0.6);
+            --ink-wash-2: rgba(20, 25, 30, 0.4);
+            --ink-wash-cinnabar: rgba(181, 41, 27, 0.08);
+
+            --font-serif: 'Cormorant Garamond', Georgia, serif;
+            --font-mono: 'Space Mono', monospace;
+
+            --ease-slow: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(229, 225, 213, 0.015) 1px, transparent 1px);
+            background-size: 28px 28px;
+            background-position: 0 0;
+            color: var(--fg-paper);
+            font-family: var(--font-serif);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Phase 0 — Grain Texture Overlay */
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.05;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+        }
+
+        /* Phase 0 — Chapter Watermark (replaces hanja watermark) */
+        .chapter-watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-serif);
+            font-size: clamp(220px, 30vw, 420px);
+            font-weight: 300;
+            color: var(--fg-paper);
+            opacity: 0.025;
+            letter-spacing: -0.04em;
+            font-style: italic;
+            z-index: 1;
+            pointer-events: none;
+            line-height: 1;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        /* Phase 0 — Quotation Watermark */
+        .quote-watermark {
+            position: absolute;
+            font-family: var(--font-serif);
+            font-size: 280px;
+            line-height: 0.5;
+            color: var(--fg-paper);
+            opacity: 0.04;
+            font-weight: 400;
+            z-index: 2;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .quote-watermark.qw-left { top: 14%; left: 4vw; }
+        .quote-watermark.qw-right { bottom: 18%; right: 4vw; transform: scale(-1, -1); }
+
+        /* Phase 0 — Corner Ornaments (applied to center panel) */
+        .corner-ornament {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            pointer-events: none;
+            opacity: 0.5;
+            z-index: 15;
+        }
+
+        .corner-ornament::before,
+        .corner-ornament::after {
+            content: '';
+            position: absolute;
+            background: var(--accent-gold);
+        }
+
+        .corner-ornament::before { width: 100%; height: 0.5px; }
+        .corner-ornament::after { width: 0.5px; height: 100%; }
+
+        .co-tl { top: 14px; left: 14px; }
+        .co-tl::before { top: 0; left: 0; }
+        .co-tl::after { top: 0; left: 0; }
+
+        .co-tr { top: 14px; right: 14px; }
+        .co-tr::before { top: 0; right: 0; }
+        .co-tr::after { top: 0; right: 0; }
+
+        .co-bl { bottom: 14px; left: 14px; }
+        .co-bl::before { bottom: 0; left: 0; }
+        .co-bl::after { bottom: 0; left: 0; }
+
+        .co-br { bottom: 14px; right: 14px; }
+        .co-br::before { bottom: 0; right: 0; }
+        .co-br::after { bottom: 0; right: 0; }
+
+        /* Phase 0 — Floating Symbols */
+        .floating-symbols {
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .float-sym {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            opacity: 0.18;
+            animation: floatDrift 40s ease-in-out infinite;
+        }
+
+        .float-sym svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--accent-gold);
+            fill: none;
+            stroke-width: 0.6;
+        }
+
+        .fs-1 { top: 12%; left: 8%; animation-delay: 0s; animation-duration: 38s; }
+        .fs-2 { top: 28%; right: 12%; animation-delay: -12s; animation-duration: 44s; }
+        .fs-3 { bottom: 18%; left: 14%; animation-delay: -22s; animation-duration: 52s; }
+        .fs-4 { bottom: 34%; right: 8%; animation-delay: -6s; animation-duration: 46s; }
+        .fs-5 { top: 62%; left: 46%; animation-delay: -30s; animation-duration: 58s; }
+
+        @keyframes floatDrift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(8px, -12px) rotate(45deg); }
+            50% { transform: translate(-6px, 10px) rotate(90deg); }
+            75% { transform: translate(10px, 6px) rotate(135deg); }
+        }
+
+        /* Phase 0 — Section Divider Ornament */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 12px;
+            opacity: 0.4;
+        }
+
+        .section-divider svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--accent-gold);
+            fill: none;
+            stroke-width: 0.6;
+        }
+
+        /* Phase 4 — Entrance Choreography (3.2s cinematic sequence) */
+        body:not(.scene-ready) .ink-wash-container,
+        body:not(.scene-ready) .grain-overlay,
+        body:not(.scene-ready) .crane-svg,
+        body:not(.scene-ready) .chapter-watermark,
+        body:not(.scene-ready) .quote-watermark,
+        body:not(.scene-ready) .floating-symbols,
+        body:not(.scene-ready) .celestial-nav,
+        body:not(.scene-ready) .panel-left,
+        body:not(.scene-ready) .panel-right,
+        body:not(.scene-ready) .panel-center,
+        body:not(.scene-ready) .particle-canvas {
+            opacity: 0;
+        }
+
+        body.scene-ready .ink-wash-container {
+            animation: entInkBloom 1.4s var(--ease-out) 0.2s both;
+        }
+        body.scene-ready .grain-overlay {
+            animation: entFade 1s var(--ease-out) 0.6s both;
+        }
+        body.scene-ready .chapter-watermark {
+            animation: entFade 1.4s var(--ease-out) 2.6s both;
+        }
+        body.scene-ready .quote-watermark {
+            animation: entFade 1.2s var(--ease-out) 2.8s both;
+        }
+        body.scene-ready .floating-symbols {
+            animation: entFade 1.4s var(--ease-out) 3.0s both;
+        }
+        body.scene-ready .talisman-structure {
+            animation: entAxisDraw 0.9s var(--ease-out) 0.8s both;
+            transform-origin: top;
+        }
+        body.scene-ready .panel-center .node {
+            animation: entNode 0.7s var(--ease-out) both;
+            opacity: 0;
+        }
+        body.scene-ready .panel-center .n-1 { animation-delay: 1.0s; }
+        body.scene-ready .panel-center .n-2 { animation-delay: 1.0s; }
+        body.scene-ready .panel-center .n-3 { animation-delay: 1.2s; }
+        body.scene-ready .panel-center .n-4 { animation-delay: 1.2s; }
+        body.scene-ready .panel-center .n-5 { animation-delay: 1.4s; }
+        body.scene-ready .panel-center .n-6 { animation-delay: 1.4s; }
+        body.scene-ready .panel-center .n-7 { animation-delay: 1.6s; }
+        body.scene-ready .panel-center .n-8 { animation-delay: 1.6s; }
+
+        body.scene-ready .connector-svg {
+            animation: entFade 1.2s var(--ease-out) 1.8s both;
+        }
+        body.scene-ready .seal-button {
+            animation: entSeal 0.9s var(--ease-out) 2.0s both,
+                       sealBreath 4s ease-in-out infinite 3.0s,
+                       sealFloat 6s ease-in-out infinite 3.0s;
+        }
+        body.scene-ready .capture-meta {
+            animation: entFade 0.9s var(--ease-out) 2.3s both;
+        }
+        body.scene-ready .panel-left,
+        body.scene-ready .panel-right {
+            animation: entPanel 1s var(--ease-out) 2.5s both;
+        }
+        body.scene-ready .celestial-nav {
+            animation: entFade 1.1s var(--ease-out) 2.8s both;
+        }
+        body.scene-ready .crane-svg {
+            animation: entCrane 1.4s var(--ease-out) 3.0s both;
+        }
+        body.scene-ready .particle-canvas {
+            animation: entFade 1.8s var(--ease-out) 3.2s both;
+        }
+        body.scene-ready .title-mark {
+            animation: entFade 1.2s var(--ease-out) 2.4s both;
+        }
+
+        @keyframes entInkBloom {
+            0% { opacity: 0; transform: scale(0.65); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes entFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes entAxisDraw {
+            0% { transform: scaleY(0); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+        @keyframes entNode {
+            0% { opacity: 0; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes entSeal {
+            0% { opacity: 0; transform: scale(0) rotate(90deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0); }
+        }
+        @keyframes entPanel {
+            0% { opacity: 0; transform: translateX(var(--ent-shift, 0)); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        body.scene-ready .panel-left { --ent-shift: -20px; }
+        body.scene-ready .panel-right { --ent-shift: 20px; }
+
+        @keyframes entCrane {
+            0% { opacity: 0; }
+            100% { opacity: 0.4; }
+        }
+        body.scene-ready .crane-left {
+            animation: entCraneLeft 1.4s var(--ease-out) 3.0s both,
+                       craneBreathLeft 10s ease-in-out infinite 4.4s;
+        }
+        @keyframes entCraneLeft {
+            0% { opacity: 0; transform: scaleX(-1) translateY(0); }
+            100% { opacity: 0.4; transform: scaleX(-1) translateY(0); }
+        }
+
+        /* Phase 6 — Custom Cursor */
+        body.custom-cursor,
+        body.custom-cursor * { cursor: none !important; }
+        .cursor-dot,
+        .cursor-ring,
+        .cursor-ghost {
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+        }
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--fg-paper);
+            border-radius: 50%;
+        }
+        .cursor-ring {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--fg-paper);
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: width 0.2s var(--ease-out), height 0.2s var(--ease-out),
+                        border-radius 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+        }
+        .cursor-ghost {
+            width: 6px;
+            height: 6px;
+            border: 1px solid var(--fg-paper);
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        .cursor-ring.on-node {
+            width: 44px;
+            height: 44px;
+            border-style: dashed;
+            opacity: 0.9;
+        }
+        .cursor-ring.on-seal {
+            width: 36px;
+            height: 36px;
+            border-radius: 3px;
+            border-color: var(--accent-cinnabar);
+            opacity: 1;
+        }
+
+        /* Phase 6 — Audio toggle */
+        .audio-toggle {
+            position: fixed;
+            bottom: 1.2rem;
+            right: 1.2rem;
+            z-index: 20;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--line-ghost);
+            background: transparent;
+            color: var(--fg-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            transition: all 0.3s var(--ease-out);
+        }
+        .audio-toggle:hover {
+            color: var(--fg-paper);
+            border-color: var(--fg-paper);
+        }
+        .audio-toggle.active {
+            color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+        .audio-toggle svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.2;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+
+        /* Phase 7 — Mobile ≤768px: single-column center focus */
+        @media (max-width: 768px) {
+            .app-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                width: 100vw;
+                height: 100dvh;
+            }
+            .panel-left,
+            .panel-right {
+                display: none;
+            }
+            .celestial-nav {
+                font-size: 0.55rem;
+                gap: 0.6rem;
+            }
+            .nav-top { top: 1rem; flex-wrap: wrap; justify-content: center; max-width: 92vw; }
+            .nav-bottom { bottom: 1rem; flex-wrap: wrap; justify-content: center; max-width: 92vw; }
+
+            .title-mark { font-size: 2.6rem; }
+
+            .chapter-watermark { font-size: 200px; opacity: 0.03; }
+            .quote-watermark { display: none; }
+
+            .crane-svg { display: none; }
+            .floating-symbols .float-sym { opacity: 0.12; }
+
+            /* Rearrange nodes top/bottom stacked instead of left/right */
+            .n-1 { left: 22%; top: -110px; }
+            .n-2 { right: 22%; top: -110px; }
+            .n-3 { left: 8%; top: -30px; }
+            .n-4 { right: 8%; top: -30px; }
+            .n-5 { left: 8%; top: 160px; }
+            .n-6 { right: 8%; top: 160px; }
+            .n-7 { left: 22%; top: 240px; }
+            .n-8 { right: 22%; top: 240px; }
+
+            .node { width: 52px; height: 52px; }
+            .node::before { width: 60px; height: 60px; }
+            .node::after { width: 76px; height: 76px; }
+            .node-icon { width: 16px; height: 16px; }
+            .node-label { font-size: 0.36rem; }
+
+            .seal-button { width: 72px; height: 72px; }
+            .seal-glyph { width: 24px; height: 24px; }
+
+            .capture-meta { font-size: 0.58rem; }
+
+            .audio-toggle { bottom: 0.8rem; right: 0.8rem; width: 28px; height: 28px; }
+
+            .ritual-ring { width: 72px; height: 72px; }
+        }
+
+        /* Phase 7 — Very small ≤480px */
+        @media (max-width: 480px) {
+            .app-grid { padding: 0 1rem; }
+            .title-mark { font-size: 2rem; letter-spacing: 0.15em; }
+            .chapter-watermark { font-size: 140px; }
+
+            .n-1 { left: 18%; top: -100px; }
+            .n-2 { right: 18%; top: -100px; }
+            .n-3 { left: 2%; top: -20px; }
+            .n-4 { right: 2%; top: -20px; }
+            .n-5 { left: 2%; top: 140px; }
+            .n-6 { right: 2%; top: 140px; }
+            .n-7 { left: 18%; top: 220px; }
+            .n-8 { right: 18%; top: 220px; }
+        }
+
+        /* Phase 7 — Touch-friendly: disable custom cursor on touch */
+        @media (hover: none) {
+            body.custom-cursor,
+            body.custom-cursor * { cursor: auto !important; }
+            .cursor-dot, .cursor-ring, .cursor-ghost { display: none; }
+        }
+
+        /* Phase 7 — Shortened entrance on mobile (2s instead of 3.2s) */
+        @media (max-width: 768px) {
+            body.scene-ready .ink-wash-container { animation-duration: 0.9s; animation-delay: 0.1s; }
+            body.scene-ready .talisman-structure { animation-duration: 0.6s; animation-delay: 0.4s; }
+            body.scene-ready .panel-center .n-1,
+            body.scene-ready .panel-center .n-2 { animation-delay: 0.6s; }
+            body.scene-ready .panel-center .n-3,
+            body.scene-ready .panel-center .n-4 { animation-delay: 0.75s; }
+            body.scene-ready .panel-center .n-5,
+            body.scene-ready .panel-center .n-6 { animation-delay: 0.9s; }
+            body.scene-ready .panel-center .n-7,
+            body.scene-ready .panel-center .n-8 { animation-delay: 1.05s; }
+            body.scene-ready .connector-svg { animation-delay: 1.1s; }
+            body.scene-ready .seal-button {
+                animation: entSeal 0.6s var(--ease-out) 1.2s both,
+                           sealBreath 4s ease-in-out infinite 1.9s,
+                           sealFloat 6s ease-in-out infinite 1.9s;
+            }
+            body.scene-ready .capture-meta { animation-delay: 1.4s; }
+            body.scene-ready .celestial-nav { animation-delay: 1.6s; }
+            body.scene-ready .title-mark { animation-delay: 1.5s; }
+            body.scene-ready .chapter-watermark { animation-delay: 1.7s; }
+            body.scene-ready .floating-symbols { animation-delay: 1.8s; }
+            body.scene-ready .particle-canvas { animation-delay: 2.0s; }
+        }
+
+        /* Ink Wash Background */
+        .ink-wash-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            filter: blur(60px) url(#ink-turbulence);
+        }
+
+        .ink-blob {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--ink-wash-1) 0%, transparent 70%);
+        }
+
+        .blob-1 { width: 80vw; height: 80vh; top: -20vh; left: -10vw; }
+        .blob-2 { width: 60vw; height: 90vh; bottom: -30vh; right: -5vw; background: radial-gradient(circle, var(--ink-wash-2) 0%, transparent 70%); }
+        .blob-3 { width: 40vw; height: 40vh; top: 40vh; left: 30vw; background: radial-gradient(circle, rgba(40,40,45,0.3) 0%, transparent 70%); }
+        .blob-4 {
+            width: 30vw; height: 30vh;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--ink-wash-cinnabar) 0%, transparent 65%);
+        }
+
+        /* Phase 1 — Particle Canvas */
+        .particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Decorative Layer */
+        .decor-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .crane-svg {
+            position: absolute;
+            fill: none;
+            stroke: var(--line-ghost);
+            stroke-width: 0.5;
+            opacity: 0.4;
+            animation: craneBreath 10s ease-in-out infinite;
+        }
+
+        .crane-left { bottom: 10%; left: 5%; width: 20vw; transform: scaleX(-1); }
+        .crane-right { top: 15%; right: 5%; width: 15vw; animation-delay: -4s; }
+
+        @keyframes craneBreath {
+            0%, 100% { opacity: 0.2; transform: translateY(0); }
+            50% { opacity: 0.5; transform: translateY(-2px); }
+        }
+        .crane-left { animation-name: craneBreathLeft; }
+        @keyframes craneBreathLeft {
+            0%, 100% { opacity: 0.2; transform: scaleX(-1) translateY(0); }
+            50% { opacity: 0.5; transform: scaleX(-1) translateY(-2px); }
+        }
+
+        .celestial-nav {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--fg-muted);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .nav-top { top: 2rem; left: 50%; transform: translateX(-50%); }
+        .nav-bottom { bottom: 2rem; left: 50%; transform: translateX(-50%); }
+
+        /* Phase 5 — Dynamic moon phase (illum filled via clip-path) */
+        .moon-phase {
+            width: 14px; height: 14px;
+            border: 1px solid var(--fg-muted);
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+        }
+        .moon-phase .moon-disk {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--fg-muted);
+            transition: clip-path 0.6s var(--ease-out);
+        }
+
+        /* Phase 5 — Live clock */
+        .live-clock {
+            font-family: var(--font-mono);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.08em;
+        }
+        .live-clock .clock-sep {
+            animation: clockBlink 1s steps(2) infinite;
+        }
+        @keyframes clockBlink {
+            50% { opacity: 0.2; }
+        }
+
+        /* App Grid */
+        .app-grid {
+            position: relative;
+            z-index: 5;
+            width: 95vw;
+            height: 90vh;
+            max-width: 1600px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Panels */
+        .panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Left Panel */
+        .panel-left {
+            border-right: 1px solid var(--line-ghost);
+            padding-right: 2rem;
+            align-items: flex-end;
+        }
+
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 1.1rem;
+            letter-spacing: 0.4em;
+            color: var(--fg-muted);
+            font-weight: 300;
+        }
+
+        .energy-tracker {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2rem;
+        }
+
+        .constellation {
+            width: 80px;
+            height: 150px;
+            position: relative;
+        }
+
+        .constellation svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--fg-muted);
+            fill: none;
+            stroke-width: 0.5;
+        }
+
+        .constellation circle {
+            fill: var(--fg-paper);
+            animation: twinkle 4s ease-in-out infinite;
+        }
+        .constellation circle:nth-child(2) { animation-duration: 5.5s; animation-delay: -1s; }
+        .constellation circle:nth-child(3) { animation-duration: 6.8s; animation-delay: -2.4s; }
+        .constellation circle:nth-child(4) { animation-duration: 4.6s; animation-delay: -0.6s; }
+        .constellation circle:nth-child(5) { animation-duration: 7s; animation-delay: -3s; }
+        .constellation circle:nth-child(6) { animation-duration: 5s; animation-delay: -1.8s; }
+        .constellation svg {
+            animation: constRot 120s linear infinite;
+            transform-origin: center;
+        }
+        .constellation polyline {
+            stroke-dasharray: 2 3;
+            animation: constFlow 40s linear infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.55; }
+            50% { opacity: 1; }
+        }
+        @keyframes constRot {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes constFlow {
+            to { stroke-dashoffset: -120; }
+        }
+
+        /* Right Panel */
+        .panel-right {
+            border-left: 1px solid var(--line-ghost);
+            padding-left: 2rem;
+        }
+
+        .archive-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .archive-item {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            opacity: 0.5;
+            transition: opacity 0.4s ease, transform 0.3s var(--ease-out);
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Phase 5 — Archive hover (cinnabar border draw + tx shift) */
+        .archive-item::before {
+            content: '';
+            position: absolute;
+            left: calc(2rem + 18px);
+            top: 10%;
+            width: 1px;
+            height: 0%;
+            background: var(--accent-cinnabar);
+            transition: height 0.35s var(--ease-out);
+        }
+        .archive-item:hover::before { height: 80%; }
+        .archive-item:hover {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+        .archive-item:hover .archive-time { color: var(--fg-paper); }
+        .archive-item:active { transform: translateX(4px) scale(0.98); }
+
+        .archive-time {
+            transition: color 0.3s var(--ease-out);
+            color: var(--fg-muted);
+        }
+
+        .archive-time {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .archive-desc {
+            font-size: 1.2rem;
+            font-style: italic;
+            border-left: 1px solid var(--accent-cinnabar);
+            padding-left: 1rem;
+            line-height: 1.2;
+        }
+
+        /* Center Panel */
+        .panel-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .panel-center::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(229, 225, 213, 0.02) 0%,
+                transparent 60%
+            );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .title-mark {
+            writing-mode: vertical-rl;
+            font-size: 4rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            color: var(--fg-paper);
+            text-shadow:
+                0 0 10px rgba(229, 225, 213, 0.2),
+                0 0 40px rgba(229, 225, 213, 0.08);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            transition: letter-spacing 0.6s var(--ease-out);
+        }
+
+        .title-mark:hover {
+            letter-spacing: 0.3em;
+        }
+
+        /* Phase 2 — Talisman Axis (upgraded with flow + terminals + pulses) */
+        .talisman-structure {
+            position: absolute;
+            top: 15%;
+            bottom: 10%;
+            width: 2px;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(229, 225, 213, 0.05) 10%,
+                rgba(229, 225, 213, 0.35) 30%,
+                rgba(229, 225, 213, 0.5) 50%,
+                rgba(229, 225, 213, 0.35) 70%,
+                rgba(229, 225, 213, 0.05) 90%,
+                transparent 100%
+            );
+            background-size: 100% 220%;
+            animation: axisFlow 6s ease-in-out infinite;
+        }
+
+        @keyframes axisFlow {
+            0%, 100% { background-position: 0 0%; }
+            50% { background-position: 0 120%; }
+        }
+
+        .axis-node {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 8px rgba(201, 169, 110, 0.6);
+            animation: axisPulse 2.4s ease-in-out infinite;
+        }
+
+        .axis-node.an-top { top: 8%; animation-delay: 0s; }
+        .axis-node.an-mid { top: 50%; animation-delay: 0.8s; }
+        .axis-node.an-bot { top: 92%; animation-delay: 1.6s; }
+
+        @keyframes axisPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+            50% { transform: translateX(-50%) scale(1.6); opacity: 1; }
+        }
+
+        .axis-terminal {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border: 0.5px solid var(--accent-gold);
+            opacity: 0.6;
+        }
+
+        .axis-terminal.at-top { top: -6px; transform: translateX(-50%) rotate(45deg); }
+        .axis-terminal.at-bot { bottom: -6px; transform: translateX(-50%) rotate(45deg); }
+
+        .talisman-core {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .node-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Nodes — Phase 2 upgrade */
+        .node {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--fg-muted);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            position: absolute;
+            background: var(--bg-void);
+            transition: all 0.5s var(--ease-slow);
+            cursor: crosshair;
+        }
+
+        .node::before {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 1px dashed var(--line-ghost);
+            border-radius: 50%;
+            animation: rotateSlow 20s linear infinite;
+        }
+
+        .node::after {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border: 1px solid rgba(229, 225, 213, 0.05);
+            border-radius: 50%;
+            animation: rotateSlow 60s linear infinite reverse;
+        }
+
+        /* staggered rotation speeds for organic feel */
+        .n-1::before, .n-8::before { animation-duration: 18s; }
+        .n-2::before, .n-7::before { animation-duration: 24s; animation-direction: reverse; }
+        .n-3::before, .n-6::before { animation-duration: 28s; }
+        .n-4::before, .n-5::before { animation-duration: 22s; animation-direction: reverse; }
+
+        @keyframes rotateSlow {
+            100% { transform: rotate(360deg); }
+        }
+
+        .node:hover {
+            border-color: var(--fg-paper);
+            box-shadow: 0 0 18px rgba(229, 225, 213, 0.22);
+            transform: scale(1.08);
+        }
+
+        .node:hover .node-icon { filter: drop-shadow(0 0 6px rgba(229, 225, 213, 0.6)); }
+        .node:hover .node-label { color: var(--fg-paper); }
+
+        .node-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--fg-paper);
+            fill: none;
+            stroke-width: 1;
+            transition: filter 0.3s var(--ease-out);
+        }
+
+        .node-label {
+            font-family: var(--font-mono);
+            font-size: 0.4rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--fg-muted);
+            text-transform: uppercase;
+            margin-top: 3px;
+            transition: color 0.3s var(--ease-out);
+        }
+
+        /* Node Positions */
+        .n-1 { left: 20%; top: -100px; }
+        .n-2 { right: 20%; top: -60px; }
+        .n-3 { left: 15%; top: 20px; }
+        .n-4 { right: 15%; top: 60px; }
+        .n-5 { left: 18%; top: 140px; }
+        .n-6 { right: 18%; top: 180px; }
+        .n-7 { left: 25%; top: 260px; }
+        .n-8 { right: 25%; top: 280px; }
+
+        /* Phase 2 — SVG Bezier Connector Layer */
+        .connector-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .connector-svg .conn-path {
+            fill: none;
+            stroke: var(--line-ghost);
+            stroke-width: 0.6;
+            stroke-dasharray: 2 6;
+            stroke-dashoffset: 0;
+            animation: connFlow 14s linear infinite;
+        }
+
+        .connector-svg .conn-flare {
+            fill: var(--fg-paper);
+            opacity: 0.8;
+            r: 1.2;
+        }
+
+        @keyframes connFlow {
+            to { stroke-dashoffset: -80; }
+        }
+
+        /* Capture Zone */
+        .capture-zone {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .seal-button {
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border: 2px solid var(--accent-cinnabar);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .seal-button::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid var(--accent-cinnabar);
+            opacity: 0.5;
+        }
+
+        .seal-text {
+            color: var(--accent-cinnabar);
+            font-size: 1.8rem;
+            font-family: var(--font-serif);
+            font-weight: 600;
+            line-height: 1;
+        }
+
+        .seal-glyph {
+            width: 28px;
+            height: 28px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seal-glyph::before,
+        .seal-glyph::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-cinnabar);
+        }
+
+        .seal-glyph::before { width: 100%; height: 100%; }
+        .seal-glyph::after {
+            width: 40%; height: 40%;
+            background: var(--accent-cinnabar);
+            border: none;
+        }
+
+        .seal-caption {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            color: var(--accent-cinnabar);
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0.85;
+        }
+
+        .seal-button:hover {
+            background: rgba(181, 41, 27, 0.1);
+            box-shadow: 0 0 30px rgba(181, 41, 27, 0.2);
+            transform: scale(1.05);
+        }
+
+        .capture-meta {
+            margin-top: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--fg-muted);
+            text-align: center;
+            letter-spacing: 0.1em;
+            line-height: 1.8;
+        }
+
+        .accent-red {
+            color: var(--accent-cinnabar);
+        }
+
+        /* Esoteric Script */
+        .esoteric-script {
+            position: absolute;
+            font-family: var(--font-serif);
+            font-size: 0.8rem;
+            font-style: italic;
+            color: var(--fg-muted);
+            opacity: 0.4;
+            writing-mode: vertical-rl;
+        }
+
+        .script-1 { top: 20%; left: -30px; }
+        .script-2 { bottom: 30%; right: -20px; }
+
+        /* Talisman Base */
+        .talisman-base {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 80px;
+        }
+
+        .talisman-base svg {
+            width: 100%;
+            height: 100%;
+            stroke: var(--fg-paper);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .talisman-base circle {
+            fill: var(--bg-void);
+            stroke: var(--fg-paper);
+            stroke-width: 1.5;
+        }
+
+        /* Ink blob subtle animation */
+        @keyframes driftBlob {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(20px, -15px) scale(1.03); }
+            66% { transform: translate(-10px, 10px) scale(0.97); }
+        }
+
+        .blob-1 { animation: driftBlob 28s ease-in-out infinite; }
+        .blob-2 { animation: driftBlob 34s ease-in-out infinite reverse; }
+        .blob-3 { animation: driftBlob 22s ease-in-out infinite 5s; }
+        .blob-4 { animation: driftBlob 18s ease-in-out infinite 3s; }
+
+        /* Phase 3 — Seal idle breathing (async outer glow + inner border) */
+        @keyframes sealBreath {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(181, 41, 27, 0.25),
+                            inset 0 0 0 0 rgba(181, 41, 27, 0);
+            }
+            50% {
+                box-shadow: 0 0 24px 6px rgba(181, 41, 27, 0.2),
+                            inset 0 0 12px 2px rgba(181, 41, 27, 0.15);
+            }
+        }
+
+        @keyframes sealFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .seal-button {
+            animation: sealBreath 4s ease-in-out infinite, sealFloat 6s ease-in-out infinite;
+            padding: 0;
+            font: inherit;
+            color: inherit;
+        }
+
+        .seal-button:hover {
+            animation: sealFloat 6s ease-in-out infinite;
+        }
+
+        .seal-glyph::before {
+            animation: sealGlyphPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes sealGlyphPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Phase 3 — Capture ritual rings (3 expanding concentric rings) */
+        .ritual-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 80px;
+            height: 80px;
+            border: 1.5px solid var(--accent-cinnabar);
+            border-radius: 6px;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .seal-button.ritual-active .ritual-ring {
+            animation: ringBurst 1.2s ease-out forwards;
+        }
+
+        .seal-button.ritual-active .ritual-ring:nth-child(2) { animation-delay: 0.15s; }
+        .seal-button.ritual-active .ritual-ring:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes ringBurst {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+        }
+
+        /* Phase 3 — Shake on click */
+        @keyframes sealShake {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, 2px); }
+            80% { transform: translate(1px, -2px); }
+        }
+
+        .seal-button.ritual-active {
+            animation: sealShake 0.3s ease-in-out;
+        }
+
+        /* Phase 3 — Node sequential glow on capture */
+        .node.ritual-flash {
+            border-color: var(--fg-paper);
+            box-shadow: 0 0 22px rgba(229, 225, 213, 0.35);
+            transform: scale(1.1);
+        }
+
+        .node.ritual-flash .node-icon {
+            filter: drop-shadow(0 0 8px rgba(229, 225, 213, 0.7));
+        }
+
+        /* Phase 3 — Connector glow during capture */
+        .connector-svg.ritual-active .conn-path {
+            stroke: var(--fg-paper);
+            stroke-width: 0.8;
+            filter: drop-shadow(0 0 4px rgba(229, 225, 213, 0.4));
+            transition: stroke 0.4s var(--ease-out);
+        }
+
+        /* Phase 3 — Capture meta typewriter */
+        .capture-meta .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Phase 1 — SVG Filter Defs -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <defs>
+            <filter id="ink-turbulence" x="-20%" y="-20%" width="140%" height="140%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="2" seed="7"/>
+                <feDisplacementMap in="SourceGraphic" scale="18"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Phase 1 — Particle Canvas -->
+    <canvas class="particle-canvas" id="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Phase 0 — Chapter Watermark (replaces hanja watermark) -->
+    <div class="chapter-watermark" aria-hidden="true">I</div>
+
+    <!-- Phase 0 — Quotation Watermarks -->
+    <div class="quote-watermark qw-left" aria-hidden="true">&ldquo;</div>
+    <div class="quote-watermark qw-right" aria-hidden="true">&ldquo;</div>
+
+    <!-- Phase 0 — Floating Symbols (abstract geometric punctuation) -->
+    <div class="floating-symbols" aria-hidden="true">
+        <div class="float-sym fs-1"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><circle cx="10" cy="10" r="3"/></svg></div>
+        <div class="float-sym fs-2"><svg viewBox="0 0 20 20"><polygon points="10,2 18,18 2,18"/></svg></div>
+        <div class="float-sym fs-3"><svg viewBox="0 0 20 20"><polygon points="10,2 18,10 10,18 2,10"/></svg></div>
+        <div class="float-sym fs-4"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14"/><line x1="3" y1="3" x2="17" y2="17"/><line x1="17" y1="3" x2="3" y2="17"/></svg></div>
+        <div class="float-sym fs-5"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8"/><line x1="2" y1="10" x2="18" y2="10"/><line x1="10" y1="2" x2="10" y2="18"/></svg></div>
+    </div>
+
+    <!-- Ink Wash Background -->
+    <div class="ink-wash-container">
+        <div class="ink-blob blob-1"></div>
+        <div class="ink-blob blob-2"></div>
+        <div class="ink-blob blob-3"></div>
+        <div class="ink-blob blob-4"></div>
+    </div>
+
+    <!-- Decorative Layer -->
+    <div class="decor-layer">
+        <!-- Phase 1 — Refined crane (armillary-like filmyo) -->
+        <svg class="crane-svg crane-left" viewBox="0 0 200 200">
+            <!-- body -->
+            <path d="M50,150 Q70,118 92,138 Q118,126 142,102 Q126,86 102,92 Q84,72 62,54 Q72,82 48,104 Q44,128 50,150 Z"></path>
+            <!-- wing feathers -->
+            <path d="M72,124 Q82,116 96,120" stroke-dasharray="1,2"></path>
+            <path d="M78,130 Q90,124 104,128" stroke-dasharray="1,2"></path>
+            <path d="M84,136 Q96,132 110,134" stroke-dasharray="1,2"></path>
+            <!-- neck + head -->
+            <path d="M102,92 Q114,68 128,52 Q134,48 138,46"></path>
+            <path d="M102,92 Q116,74 130,56"></path>
+            <!-- beak -->
+            <path d="M138,46 L146,42 L140,50 Z" fill="var(--line-ghost)"></path>
+            <circle cx="132" cy="52" r="0.8" fill="var(--fg-paper)"></circle>
+            <!-- legs -->
+            <path d="M60,150 Q54,168 48,184" stroke-dasharray="2,2"></path>
+            <path d="M68,150 Q66,170 64,186" stroke-dasharray="2,2"></path>
+            <!-- feet -->
+            <path d="M48,184 L44,186 M48,184 L50,188"/>
+            <path d="M64,186 L60,188 M64,186 L66,190"/>
+        </svg>
+        <svg class="crane-svg crane-right" viewBox="0 0 200 200">
+            <!-- body -->
+            <path d="M150,150 Q130,118 108,138 Q82,126 58,102 Q74,86 98,92 Q116,72 138,54 Q128,82 152,104 Q156,128 150,150 Z"></path>
+            <!-- wing feathers -->
+            <path d="M128,124 Q118,116 104,120" stroke-dasharray="1,2"></path>
+            <path d="M122,130 Q110,124 96,128" stroke-dasharray="1,2"></path>
+            <path d="M116,136 Q104,132 90,134" stroke-dasharray="1,2"></path>
+            <!-- neck + head -->
+            <path d="M98,92 Q86,68 72,52 Q66,48 62,46"></path>
+            <path d="M98,92 Q84,74 70,56"></path>
+            <!-- beak -->
+            <path d="M62,46 L54,42 L60,50 Z" fill="var(--line-ghost)"></path>
+            <circle cx="68" cy="52" r="0.8" fill="var(--fg-paper)"></circle>
+            <!-- legs -->
+            <path d="M140,150 Q146,168 152,184" stroke-dasharray="2,2"></path>
+            <path d="M132,150 Q134,170 136,186" stroke-dasharray="2,2"></path>
+        </svg>
+    </div>
+
+    <!-- Celestial Navigation -->
+    <div class="celestial-nav nav-top">
+        <span>Zenith</span>
+        <div class="moon-phase" id="moon-phase" aria-label="Moon phase"><div class="moon-disk"></div></div>
+        <span id="moon-label">Waxing Crescent</span>
+        <span id="geo-coords">14° N, 108° E</span>
+    </div>
+    <div class="celestial-nav nav-bottom">
+        <span>Nadir</span>
+        <span class="accent-red">System Active</span>
+        <span class="live-clock" id="live-clock"><span id="clk-h">00</span><span class="clock-sep">:</span><span id="clk-m">00</span><span class="clock-sep">:</span><span id="clk-s">00</span></span>
+        <span>Freq 432Hz</span>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="app-grid">
+
+        <!-- Left Panel -->
+        <div class="panel panel-left">
+            <div class="vertical-text">
+                TRACKING TEMPORAL ENERGY FLOW
+            </div>
+            <div class="energy-tracker">
+                <div class="esoteric-script">Resonance High</div>
+                <div class="constellation">
+                    <svg viewBox="0 0 50 150">
+                        <polyline points="25,10 10,40 40,70 25,100 35,130"></polyline>
+                        <circle cx="25" cy="10" r="3"></circle>
+                        <circle cx="10" cy="40" r="2"></circle>
+                        <circle cx="40" cy="70" r="4"></circle>
+                        <circle cx="25" cy="100" r="2"></circle>
+                        <circle cx="35" cy="130" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="vertical-text" style="font-size: 0.8rem; opacity: 0.5;">
+                    PHASE III • ALIGNED
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Panel -->
+        <div class="panel panel-center">
+            <!-- Phase 0 — Corner Ornaments -->
+            <div class="corner-ornament co-tl" aria-hidden="true"></div>
+            <div class="corner-ornament co-tr" aria-hidden="true"></div>
+            <div class="corner-ornament co-bl" aria-hidden="true"></div>
+            <div class="corner-ornament co-br" aria-hidden="true"></div>
+
+            <div class="title-mark">MOMENTOR</div>
+            <div class="talisman-structure">
+                <div class="axis-terminal at-top" aria-hidden="true"></div>
+                <div class="axis-terminal at-bot" aria-hidden="true"></div>
+                <div class="axis-node an-top" aria-hidden="true"></div>
+                <div class="axis-node an-mid" aria-hidden="true"></div>
+                <div class="axis-node an-bot" aria-hidden="true"></div>
+            </div>
+
+            <div class="talisman-core">
+                <!-- Phase 2 — SVG bezier connector overlay (populated by JS on load) -->
+                <svg class="connector-svg" id="connector-svg" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+                <!-- Phase 2 — Abstract symbol nodes (hanja removed) -->
+                <div class="node n-1" data-label="FLOW" data-symbol="flow">
+                    <svg class="node-icon" viewBox="0 0 20 20"><path d="M2,10 Q6,6 10,10 T18,10"/><path d="M2,14 Q6,10 10,14 T18,14" opacity="0.5"/></svg>
+                    <span class="node-label">FLOW</span>
+                </div>
+                <div class="node n-2" data-label="STILL" data-symbol="still">
+                    <svg class="node-icon" viewBox="0 0 20 20"><line x1="3" y1="10" x2="17" y2="10"/><line x1="5" y1="7" x2="15" y2="7" opacity="0.4"/><line x1="5" y1="13" x2="15" y2="13" opacity="0.4"/></svg>
+                    <span class="node-label">STILL</span>
+                </div>
+                <div class="node n-3" data-label="VOID" data-symbol="void">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>
+                    <span class="node-label">VOID</span>
+                </div>
+                <div class="node n-4" data-label="LIGHT" data-symbol="light">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5" fill="var(--fg-paper)"/><line x1="10" y1="2" x2="10" y2="5"/><line x1="10" y1="15" x2="10" y2="18"/><line x1="2" y1="10" x2="5" y2="10"/><line x1="15" y1="10" x2="18" y2="10"/><line x1="4.5" y1="4.5" x2="6.5" y2="6.5"/><line x1="13.5" y1="13.5" x2="15.5" y2="15.5"/><line x1="4.5" y1="15.5" x2="6.5" y2="13.5"/><line x1="13.5" y1="6.5" x2="15.5" y2="4.5"/></svg>
+                    <span class="node-label">LIGHT</span>
+                </div>
+
+                <!-- Capture Zone -->
+                <div class="capture-zone">
+                    <button class="seal-button" id="seal-btn" type="button" aria-label="Capture temporal moment">
+                        <span class="ritual-ring" aria-hidden="true"></span>
+                        <span class="ritual-ring" aria-hidden="true"></span>
+                        <span class="ritual-ring" aria-hidden="true"></span>
+                        <span class="seal-glyph" aria-hidden="true"></span>
+                        <span class="seal-caption">CAPTURE</span>
+                    </button>
+                    <div class="capture-meta">
+                        LAT <span id="lat-val">34.0522</span>° N<br>
+                        LNG <span id="lng-val">118.2437</span>° W<br>
+                        <span style="color: var(--fg-paper);" id="capture-status">AWAITING CAPTURE</span>
+                    </div>
+                </div>
+
+                <div class="node n-5" data-label="CORE" data-symbol="core">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="1" fill="var(--fg-paper)"/></svg>
+                    <span class="node-label">CORE</span>
+                </div>
+                <div class="node n-6" data-label="PATH" data-symbol="path">
+                    <svg class="node-icon" viewBox="0 0 20 20"><path d="M3,16 Q8,4 12,10 T17,4"/></svg>
+                    <span class="node-label">PATH</span>
+                </div>
+                <div class="node n-7" data-label="ORDER" data-symbol="order">
+                    <svg class="node-icon" viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12"/><line x1="4" y1="8" x2="16" y2="8"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="8" y1="4" x2="8" y2="16"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
+                    <span class="node-label">ORDER</span>
+                </div>
+                <div class="node n-8" data-label="FORM" data-symbol="form">
+                    <svg class="node-icon" viewBox="0 0 20 20"><polygon points="10,3 17,10 10,17 3,10"/><polygon points="10,6 14,10 10,14 6,10"/></svg>
+                    <span class="node-label">FORM</span>
+                </div>
+            </div>
+
+            <div class="esoteric-script script-1">Observing the void...</div>
+            <div class="esoteric-script script-2">...Form emerges.</div>
+
+            <div class="talisman-base">
+                <svg viewBox="0 0 150 80">
+                    <polyline points="20,60 50,40 75,65 100,30 130,50"></polyline>
+                    <line x1="50" y1="40" x2="75" y2="20"></line>
+                    <line x1="100" y1="30" x2="120" y2="10"></line>
+                    <circle cx="20" cy="60" r="3"></circle>
+                    <circle cx="50" cy="40" r="3"></circle>
+                    <circle cx="75" cy="65" r="3"></circle>
+                    <circle cx="100" cy="30" r="3"></circle>
+                    <circle cx="130" cy="50" r="3"></circle>
+                    <circle cx="75" cy="20" r="2"></circle>
+                    <circle cx="120" cy="10" r="2"></circle>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="panel panel-right">
+            <div class="archive-list">
+                <div class="archive-item">
+                    <div class="archive-time">14:02:55</div>
+                    <div class="archive-desc">Rain against<br>bamboo glass.</div>
+                </div>
+                <div class="archive-item" style="opacity: 0.8;">
+                    <div class="archive-time">11:18:22</div>
+                    <div class="archive-desc">Sudden clarity<br>in the noise.</div>
+                </div>
+                <div class="archive-item">
+                    <div class="archive-time">08:45:10</div>
+                    <div class="archive-desc">Morning mist<br>dissipating.</div>
+                </div>
+                <div class="archive-item" style="opacity: 0.3;">
+                    <div class="archive-time">06:30:00</div>
+                    <div class="archive-desc">First light<br>strikes stone.</div>
+                </div>
+            </div>
+            <div class="vertical-text" style="align-self: flex-start;">
+                ARCHIVED ECHOES
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Phase 6 — Custom cursor elements -->
+    <div class="cursor-ghost" id="cursor-ghost" aria-hidden="true"></div>
+    <div class="cursor-ring" id="cursor-ring" aria-hidden="true"></div>
+    <div class="cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+
+    <!-- Phase 6 — Audio toggle (muted by default) -->
+    <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Toggle ambient sound" aria-pressed="false">
+        <svg viewBox="0 0 24 24" id="audio-icon-off"><path d="M4,9 L4,15 L8,15 L13,19 L13,5 L8,9 Z"/><line x1="16" y1="9" x2="22" y2="15"/><line x1="22" y1="9" x2="16" y2="15"/></svg>
+    </button>
+
+    <!-- Phase 0 — Grain Texture Overlay (topmost layer) -->
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <script>
+        // Phase 6 — Custom cursor (desktop only)
+        (function customCursor() {
+            const isTouch = matchMedia('(hover: none)').matches || 'ontouchstart' in window;
+            if (isTouch) return;
+            const dot = document.getElementById('cursor-dot');
+            const ring = document.getElementById('cursor-ring');
+            const ghost = document.getElementById('cursor-ghost');
+            if (!dot || !ring) return;
+            document.body.classList.add('custom-cursor');
+
+            let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+            let rx = tx, ry = ty;
+            let gx = tx, gy = ty;
+
+            window.addEventListener('mousemove', e => {
+                tx = e.clientX;
+                ty = e.clientY;
+                dot.style.transform = `translate(${tx}px, ${ty}px) translate(-50%, -50%)`;
+            });
+
+            function loop() {
+                rx += (tx - rx) * 0.18;
+                ry += (ty - ry) * 0.18;
+                gx += (tx - gx) * 0.08;
+                gy += (ty - gy) * 0.08;
+                ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+                ghost.style.transform = `translate(${gx}px, ${gy}px) translate(-50%, -50%)`;
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+
+            // Context-aware ring shape
+            document.querySelectorAll('.node').forEach(n => {
+                n.addEventListener('mouseenter', () => ring.classList.add('on-node'));
+                n.addEventListener('mouseleave', () => ring.classList.remove('on-node'));
+            });
+            const seal = document.getElementById('seal-btn');
+            if (seal) {
+                seal.addEventListener('mouseenter', () => ring.classList.add('on-seal'));
+                seal.addEventListener('mouseleave', () => ring.classList.remove('on-seal'));
+            }
+        })();
+
+        // Phase 6 — Web Audio ambient (muted default, user-activated)
+        (function ambientAudio() {
+            const toggle = document.getElementById('audio-toggle');
+            if (!toggle) return;
+            const nodeFreqs = { flow: 220, still: 196, void: 174, light: 293, core: 261, path: 246, order: 329, form: 392 };
+            let ctx, drone, droneGain, master;
+            let enabled = false;
+
+            function ensureCtx() {
+                if (ctx) return;
+                ctx = new (window.AudioContext || window.webkitAudioContext)();
+                master = ctx.createGain();
+                master.gain.value = 0;
+                master.connect(ctx.destination);
+
+                drone = ctx.createOscillator();
+                drone.type = 'sine';
+                drone.frequency.value = 180;
+                droneGain = ctx.createGain();
+                droneGain.gain.value = 0.02;
+                drone.connect(droneGain).connect(master);
+                drone.start();
+            }
+
+            function fade(node, target, dur = 0.4) {
+                const now = ctx.currentTime;
+                node.gain.cancelScheduledValues(now);
+                node.gain.setValueAtTime(node.gain.value, now);
+                node.gain.linearRampToValueAtTime(target, now + dur);
+            }
+
+            toggle.addEventListener('click', () => {
+                ensureCtx();
+                if (ctx.state === 'suspended') ctx.resume();
+                enabled = !enabled;
+                toggle.classList.toggle('active', enabled);
+                toggle.setAttribute('aria-pressed', enabled);
+                fade(master, enabled ? 1 : 0, 0.6);
+            });
+
+            // Node hover tone
+            document.querySelectorAll('.node').forEach(n => {
+                n.addEventListener('mouseenter', () => {
+                    if (!enabled || !ctx) return;
+                    const sym = n.dataset.symbol || 'flow';
+                    const f = nodeFreqs[sym] || 220;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = f;
+                    g.gain.value = 0;
+                    osc.connect(g).connect(master);
+                    osc.start();
+                    const t = ctx.currentTime;
+                    g.gain.linearRampToValueAtTime(0.05, t + 0.08);
+                    g.gain.linearRampToValueAtTime(0, t + 0.35);
+                    osc.stop(t + 0.4);
+                });
+            });
+
+            // Seal capture hit
+            const seal = document.getElementById('seal-btn');
+            if (seal) {
+                seal.addEventListener('click', () => {
+                    if (!enabled || !ctx) return;
+                    const osc = ctx.createOscillator();
+                    const g = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = 110;
+                    osc.connect(g).connect(master);
+                    g.gain.value = 0;
+                    osc.start();
+                    const t = ctx.currentTime;
+                    g.gain.linearRampToValueAtTime(0.14, t + 0.02);
+                    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+                    osc.stop(t + 1);
+                });
+            }
+        })();
+
+        // Phase 4 — Trigger entrance choreography after first paint
+        (function startEntrance() {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const go = () => document.body.classList.add('scene-ready');
+            if (prefersReduced) {
+                go();
+            } else {
+                requestAnimationFrame(() => requestAnimationFrame(go));
+            }
+        })();
+
+        // Phase 2 — SVG bezier connector renderer (nodes → seal)
+        (function renderConnectors() {
+            const svg = document.getElementById('connector-svg');
+            if (!svg) return;
+
+            function draw() {
+                const core = document.querySelector('.talisman-core');
+                const seal = document.querySelector('.seal-button');
+                if (!core || !seal) return;
+                const coreRect = core.getBoundingClientRect();
+                const sealRect = seal.getBoundingClientRect();
+                const cx = sealRect.left - coreRect.left + sealRect.width / 2;
+                const cy = sealRect.top - coreRect.top + sealRect.height / 2;
+
+                svg.setAttribute('viewBox', `0 0 ${coreRect.width} ${coreRect.height}`);
+                svg.setAttribute('width', coreRect.width);
+                svg.setAttribute('height', coreRect.height);
+                svg.innerHTML = '';
+
+                const nodes = svg.parentElement.querySelectorAll('.node');
+                const ns = 'http://www.w3.org/2000/svg';
+
+                nodes.forEach((n, i) => {
+                    const r = n.getBoundingClientRect();
+                    const nx = r.left - coreRect.left + r.width / 2;
+                    const ny = r.top - coreRect.top + r.height / 2;
+
+                    // control point perpendicular bias
+                    const dx = cx - nx;
+                    const dy = cy - ny;
+                    const mx = nx + dx * 0.5;
+                    const my = ny + dy * 0.5;
+                    const perpX = -dy * 0.18;
+                    const perpY = dx * 0.18;
+                    const cpX = mx + perpX * ((i % 2 === 0) ? 1 : -1);
+                    const cpY = my + perpY * ((i % 2 === 0) ? 1 : -1);
+
+                    const d = `M ${nx} ${ny} Q ${cpX} ${cpY} ${cx} ${cy}`;
+                    const path = document.createElementNS(ns, 'path');
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'conn-path');
+                    path.setAttribute('id', 'conn-' + (i + 1));
+                    path.style.animationDelay = (i * -1.5) + 's';
+                    svg.appendChild(path);
+
+                    // flare: circle traveling along path
+                    const flare = document.createElementNS(ns, 'circle');
+                    flare.setAttribute('class', 'conn-flare');
+                    flare.setAttribute('r', '1.4');
+                    const motion = document.createElementNS(ns, 'animateMotion');
+                    motion.setAttribute('dur', (7 + i * 0.4) + 's');
+                    motion.setAttribute('repeatCount', 'indefinite');
+                    motion.setAttribute('begin', (i * 0.8) + 's');
+                    const mpath = document.createElementNS(ns, 'mpath');
+                    mpath.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#conn-' + (i + 1));
+                    motion.appendChild(mpath);
+                    flare.appendChild(motion);
+                    svg.appendChild(flare);
+                });
+            }
+
+            draw();
+            let rafId;
+            window.addEventListener('resize', () => {
+                cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(draw);
+            });
+            // redraw once layout settles (fonts, icons)
+            setTimeout(draw, 300);
+            setTimeout(draw, 1200);
+        })();
+
+        // Phase 1 — Canvas particle system (brownian drift + mouse repulsion)
+        (function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas) return;
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const ctx = canvas.getContext('2d');
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
+            const particleCount = isMobile ? 30 : 70;
+            let w, h, particles;
+            const mouse = { x: -9999, y: -9999, active: false };
+
+            function resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                w = canvas.width = window.innerWidth * dpr;
+                h = canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+
+            function seed() {
+                particles = Array.from({ length: particleCount }, () => ({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    r: Math.random() * 0.7 + 0.3,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    a: Math.random() * 0.3 + 0.1
+                }));
+            }
+
+            function step() {
+                ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                for (const p of particles) {
+                    // brownian jitter
+                    p.vx += (Math.random() - 0.5) * 0.02;
+                    p.vy += (Math.random() - 0.5) * 0.02;
+                    // soft clamp
+                    p.vx = Math.max(-0.4, Math.min(0.4, p.vx));
+                    p.vy = Math.max(-0.4, Math.min(0.4, p.vy));
+
+                    // mouse repulsion
+                    if (mouse.active) {
+                        const dx = p.x - mouse.x;
+                        const dy = p.y - mouse.y;
+                        const d2 = dx * dx + dy * dy;
+                        if (d2 < 10000) {
+                            const d = Math.sqrt(d2) || 1;
+                            const f = (100 - d) / 100 * 0.6;
+                            p.vx += (dx / d) * f;
+                            p.vy += (dy / d) * f;
+                        }
+                    }
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    // wrap
+                    if (p.x < -5) p.x = window.innerWidth + 5;
+                    if (p.x > window.innerWidth + 5) p.x = -5;
+                    if (p.y < -5) p.y = window.innerHeight + 5;
+                    if (p.y > window.innerHeight + 5) p.y = -5;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(229, 225, 213, ' + p.a + ')';
+                    ctx.fill();
+                }
+                if (!prefersReduced) requestAnimationFrame(step);
+            }
+
+            window.addEventListener('resize', () => { resize(); seed(); });
+            window.addEventListener('mousemove', e => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+                mouse.active = true;
+            });
+            window.addEventListener('mouseout', () => { mouse.active = false; });
+
+            resize();
+            seed();
+            if (prefersReduced) {
+                // draw a single static frame
+                step();
+            } else {
+                requestAnimationFrame(step);
+            }
+
+            // Expose for Phase 3 seal ritual (converge effect)
+            window.__momentorParticles = { particles: () => particles };
+        })();
+
+        // Phase 3 — Multi-stage seal ritual (0→2800ms choreographed capture)
+        const sealBtn = document.getElementById('seal-btn');
+        const captureStatus = document.getElementById('capture-status');
+        const connectorSvg = document.getElementById('connector-svg');
+
+        function typewriterSet(el, text, perChar = 30) {
+            el.textContent = '';
+            let i = 0;
+            const iv = setInterval(() => {
+                el.textContent += text[i++];
+                if (i >= text.length) clearInterval(iv);
+            }, perChar);
+        }
+
+        function convergeParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas || !window.__momentorParticles) return;
+            const seal = document.getElementById('seal-btn');
+            const r = seal.getBoundingClientRect();
+            const targetX = r.left + r.width / 2;
+            const targetY = r.top + r.height / 2;
+            const ps = window.__momentorParticles.particles();
+            if (!ps) return;
+            ps.forEach(p => {
+                const dx = targetX - p.x;
+                const dy = targetY - p.y;
+                const d = Math.max(Math.sqrt(dx * dx + dy * dy), 1);
+                p.vx += (dx / d) * 2.4;
+                p.vy += (dy / d) * 2.4;
+            });
+        }
+
+        let ritualLocked = false;
+        sealBtn.addEventListener('click', function() {
+            if (ritualLocked) return;
+            ritualLocked = true;
+
+            // Stage 0-300ms — shake + ring burst
+            sealBtn.classList.add('ritual-active');
+            setTimeout(() => sealBtn.classList.remove('ritual-active'), 320);
+
+            // Stage 300-800ms — update status
+            setTimeout(() => {
+                captureStatus.textContent = 'CAPTURING';
+                captureStatus.style.color = 'var(--accent-cinnabar)';
+            }, 300);
+
+            // Stage 800-1500ms — sequential node glow + connector glow
+            if (connectorSvg) connectorSvg.classList.add('ritual-active');
+            const nodes = document.querySelectorAll('.node');
+            nodes.forEach((node, i) => {
+                setTimeout(() => {
+                    node.classList.add('ritual-flash');
+                    setTimeout(() => node.classList.remove('ritual-flash'), 700);
+                }, 800 + i * 90);
+            });
+
+            // Stage 1500-2200ms — particles converge
+            setTimeout(convergeParticles, 1500);
+            setTimeout(convergeParticles, 1700);
+
+            // Stage 2200-2800ms — max cinnabar glow then decay
+            setTimeout(() => {
+                sealBtn.style.boxShadow = '0 0 60px 12px rgba(181, 41, 27, 0.45)';
+            }, 2200);
+            setTimeout(() => {
+                sealBtn.style.boxShadow = '';
+                if (connectorSvg) connectorSvg.classList.remove('ritual-active');
+            }, 2800);
+
+            // Stage 2800+ — typewriter timestamp
+            setTimeout(() => {
+                const now = new Date();
+                const timeStr = now.toTimeString().split(' ')[0];
+                typewriterSet(captureStatus, 'CAPTURED · ' + timeStr, 28);
+                captureStatus.style.color = 'var(--fg-paper)';
+            }, 2800);
+
+            // Release lock
+            setTimeout(() => { ritualLocked = false; }, 3600);
+
+            // Haptic on mobile
+            if (navigator.vibrate) navigator.vibrate(50);
+        });
+
+        // Node hover ripple effect
+        document.querySelectorAll('.node').forEach(node => {
+            node.addEventListener('mouseenter', function() {
+                const inner = this.querySelector('.node-inner');
+                inner.style.textShadow = '0 0 10px rgba(229, 225, 213, 0.5)';
+            });
+            node.addEventListener('mouseleave', function() {
+                const inner = this.querySelector('.node-inner');
+                inner.style.textShadow = '';
+            });
+        });
+
+        // Geolocation (optional, update coordinates if available)
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                document.getElementById('lat-val').textContent = Math.abs(lat).toFixed(4);
+                document.getElementById('lng-val').textContent = Math.abs(lng).toFixed(4);
+                const geo = document.getElementById('geo-coords');
+                if (geo) {
+                    geo.textContent = Math.abs(lat).toFixed(0) + '° ' + (lat >= 0 ? 'N' : 'S') + ', ' +
+                                      Math.abs(lng).toFixed(0) + '° ' + (lng >= 0 ? 'E' : 'W');
+                }
+            }, function() {});
+        }
+
+        // Phase 5 — Live clock (HH:MM:SS, colon blinks every 1s via CSS)
+        (function liveClock() {
+            const h = document.getElementById('clk-h');
+            const m = document.getElementById('clk-m');
+            const s = document.getElementById('clk-s');
+            if (!h) return;
+            function pad(n) { return String(n).padStart(2, '0'); }
+            function tick() {
+                const d = new Date();
+                h.textContent = pad(d.getHours());
+                m.textContent = pad(d.getMinutes());
+                s.textContent = pad(d.getSeconds());
+            }
+            tick();
+            setInterval(tick, 1000);
+        })();
+
+        // Phase 5 — Dynamic moon phase (synodic month: 29.53059 days)
+        (function moonPhase() {
+            const disk = document.querySelector('#moon-phase .moon-disk');
+            const label = document.getElementById('moon-label');
+            if (!disk) return;
+
+            // reference new moon: 2000-01-06 18:14 UTC
+            const ref = Date.UTC(2000, 0, 6, 18, 14, 0);
+            const synodic = 29.530588853;
+            const now = Date.now();
+            const days = (now - ref) / 86400000;
+            const age = ((days % synodic) + synodic) % synodic;
+            const frac = age / synodic; // 0 = new, 0.5 = full
+            const illum = (1 - Math.cos(frac * Math.PI * 2)) / 2; // 0..1
+            const waxing = frac < 0.5;
+
+            // clip-path: show lit portion
+            // waxing: lit on right side grows left; waning: lit on left side shrinks right
+            let clip;
+            if (illum < 0.01) {
+                clip = 'inset(0 100% 0 0)'; // new moon — invisible
+            } else if (illum > 0.99) {
+                clip = 'inset(0)'; // full
+            } else if (waxing) {
+                const pct = (1 - illum) * 100;
+                clip = `inset(0 0 0 ${pct.toFixed(1)}%)`;
+            } else {
+                const pct = (1 - illum) * 100;
+                clip = `inset(0 ${pct.toFixed(1)}% 0 0)`;
+            }
+            disk.style.clipPath = clip;
+
+            if (label) {
+                let name;
+                if (frac < 0.03 || frac > 0.97) name = 'New Moon';
+                else if (frac < 0.22) name = 'Waxing Crescent';
+                else if (frac < 0.28) name = 'First Quarter';
+                else if (frac < 0.47) name = 'Waxing Gibbous';
+                else if (frac < 0.53) name = 'Full Moon';
+                else if (frac < 0.72) name = 'Waning Gibbous';
+                else if (frac < 0.78) name = 'Last Quarter';
+                else name = 'Waning Crescent';
+                label.textContent = name;
+            }
+        })();
+    </script>
+
+</body>
+</html>
