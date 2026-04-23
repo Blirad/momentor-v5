@@ -426,23 +426,79 @@
             font-weight: 300;
             letter-spacing: 0.2em;
             color: var(--fg-paper);
-            text-shadow: 0 0 20px rgba(229, 225, 213, 0.1);
+            text-shadow:
+                0 0 10px rgba(229, 225, 213, 0.2),
+                0 0 40px rgba(229, 225, 213, 0.08);
             position: absolute;
             top: 0;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
+            transition: letter-spacing 0.6s var(--ease-out);
         }
 
-        /* Talisman Structure */
+        .title-mark:hover {
+            letter-spacing: 0.3em;
+        }
+
+        /* Phase 2 — Talisman Axis (upgraded with flow + terminals + pulses) */
         .talisman-structure {
             position: absolute;
             top: 15%;
             bottom: 10%;
             width: 2px;
-            background: linear-gradient(to bottom, transparent, var(--fg-paper), transparent);
-            opacity: 0.3;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(229, 225, 213, 0.05) 10%,
+                rgba(229, 225, 213, 0.35) 30%,
+                rgba(229, 225, 213, 0.5) 50%,
+                rgba(229, 225, 213, 0.35) 70%,
+                rgba(229, 225, 213, 0.05) 90%,
+                transparent 100%
+            );
+            background-size: 100% 220%;
+            animation: axisFlow 6s ease-in-out infinite;
         }
+
+        @keyframes axisFlow {
+            0%, 100% { background-position: 0 0%; }
+            50% { background-position: 0 120%; }
+        }
+
+        .axis-node {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--accent-gold);
+            box-shadow: 0 0 8px rgba(201, 169, 110, 0.6);
+            animation: axisPulse 2.4s ease-in-out infinite;
+        }
+
+        .axis-node.an-top { top: 8%; animation-delay: 0s; }
+        .axis-node.an-mid { top: 50%; animation-delay: 0.8s; }
+        .axis-node.an-bot { top: 92%; animation-delay: 1.6s; }
+
+        @keyframes axisPulse {
+            0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+            50% { transform: translateX(-50%) scale(1.6); opacity: 1; }
+        }
+
+        .axis-terminal {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            border: 0.5px solid var(--accent-gold);
+            opacity: 0.6;
+        }
+
+        .axis-terminal.at-top { top: -6px; transform: translateX(-50%) rotate(45deg); }
+        .axis-terminal.at-bot { bottom: -6px; transform: translateX(-50%) rotate(45deg); }
 
         .talisman-core {
             position: relative;
@@ -464,7 +520,7 @@
             width: 100%;
         }
 
-        /* Nodes */
+        /* Nodes — Phase 2 upgrade */
         .node {
             width: 60px;
             height: 60px;
@@ -473,6 +529,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
             position: absolute;
             background: var(--bg-void);
             transition: all 0.5s var(--ease-slow);
@@ -489,20 +546,53 @@
             animation: rotateSlow 20s linear infinite;
         }
 
+        .node::after {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border: 1px solid rgba(229, 225, 213, 0.05);
+            border-radius: 50%;
+            animation: rotateSlow 60s linear infinite reverse;
+        }
+
+        /* staggered rotation speeds for organic feel */
+        .n-1::before, .n-8::before { animation-duration: 18s; }
+        .n-2::before, .n-7::before { animation-duration: 24s; animation-direction: reverse; }
+        .n-3::before, .n-6::before { animation-duration: 28s; }
+        .n-4::before, .n-5::before { animation-duration: 22s; animation-direction: reverse; }
+
         @keyframes rotateSlow {
             100% { transform: rotate(360deg); }
         }
 
         .node:hover {
             border-color: var(--fg-paper);
-            box-shadow: 0 0 15px rgba(229, 225, 213, 0.2);
-            transform: scale(1.1);
+            box-shadow: 0 0 18px rgba(229, 225, 213, 0.22);
+            transform: scale(1.08);
         }
 
-        .node-inner {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            color: var(--fg-paper);
+        .node:hover .node-icon { filter: drop-shadow(0 0 6px rgba(229, 225, 213, 0.6)); }
+        .node:hover .node-label { color: var(--fg-paper); }
+
+        .node-icon {
+            width: 18px;
+            height: 18px;
+            stroke: var(--fg-paper);
+            fill: none;
+            stroke-width: 1;
+            transition: filter 0.3s var(--ease-out);
+        }
+
+        .node-label {
+            font-family: var(--font-mono);
+            font-size: 0.4rem;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--fg-muted);
+            text-transform: uppercase;
+            margin-top: 3px;
+            transition: color 0.3s var(--ease-out);
         }
 
         /* Node Positions */
@@ -515,23 +605,34 @@
         .n-7 { left: 25%; top: 260px; }
         .n-8 { right: 25%; top: 280px; }
 
-        /* Connectors */
-        .connector {
+        /* Phase 2 — SVG Bezier Connector Layer */
+        .connector-svg {
             position: absolute;
-            height: 1px;
-            background: var(--line-ghost);
-            top: 50%;
-            z-index: -1;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .n-1 .connector { width: 12vw; left: 100%; transform: rotate(15deg); transform-origin: left; }
-        .n-2 .connector { width: 12vw; right: 100%; transform: rotate(-10deg); transform-origin: right; }
-        .n-3 .connector { width: 15vw; left: 100%; transform: rotate(5deg); transform-origin: left; }
-        .n-4 .connector { width: 15vw; right: 100%; transform: rotate(-5deg); transform-origin: right; }
-        .n-5 .connector { width: 13vw; left: 100%; transform: rotate(-5deg); transform-origin: left; }
-        .n-6 .connector { width: 13vw; right: 100%; transform: rotate(5deg); transform-origin: right; }
-        .n-7 .connector { width: 10vw; left: 100%; transform: rotate(-15deg); transform-origin: left; }
-        .n-8 .connector { width: 10vw; right: 100%; transform: rotate(15deg); transform-origin: right; }
+        .connector-svg .conn-path {
+            fill: none;
+            stroke: var(--line-ghost);
+            stroke-width: 0.6;
+            stroke-dasharray: 2 6;
+            stroke-dashoffset: 0;
+            animation: connFlow 14s linear infinite;
+        }
+
+        .connector-svg .conn-flare {
+            fill: var(--fg-paper);
+            opacity: 0.8;
+            r: 1.2;
+        }
+
+        @keyframes connFlow {
+            to { stroke-dashoffset: -80; }
+        }
 
         /* Capture Zone */
         .capture-zone {
@@ -572,6 +673,45 @@
             font-family: var(--font-serif);
             font-weight: 600;
             line-height: 1;
+        }
+
+        .seal-glyph {
+            width: 28px;
+            height: 28px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seal-glyph::before,
+        .seal-glyph::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            border: 1.5px solid var(--accent-cinnabar);
+        }
+
+        .seal-glyph::before { width: 100%; height: 100%; }
+        .seal-glyph::after {
+            width: 40%; height: 40%;
+            background: var(--accent-cinnabar);
+            border: none;
+        }
+
+        .seal-caption {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--font-mono);
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            color: var(--accent-cinnabar);
+            text-transform: uppercase;
+            white-space: nowrap;
+            opacity: 0.85;
         }
 
         .seal-button:hover {
@@ -787,19 +927,42 @@
             <div class="corner-ornament co-br" aria-hidden="true"></div>
 
             <div class="title-mark">MOMENTOR</div>
-            <div class="talisman-structure"></div>
+            <div class="talisman-structure">
+                <div class="axis-terminal at-top" aria-hidden="true"></div>
+                <div class="axis-terminal at-bot" aria-hidden="true"></div>
+                <div class="axis-node an-top" aria-hidden="true"></div>
+                <div class="axis-node an-mid" aria-hidden="true"></div>
+                <div class="axis-node an-bot" aria-hidden="true"></div>
+            </div>
 
             <div class="talisman-core">
-                <div class="node n-1"><div class="connector"></div><span class="node-inner">氣</span></div>
-                <div class="node n-2"><div class="connector"></div><span class="node-inner">靜</span></div>
-                <div class="node n-3"><div class="connector"></div><span class="node-inner">空</span></div>
-                <div class="node n-4"><div class="connector"></div><span class="node-inner">明</span></div>
+                <!-- Phase 2 — SVG bezier connector overlay (populated by JS on load) -->
+                <svg class="connector-svg" id="connector-svg" preserveAspectRatio="none" aria-hidden="true"></svg>
+
+                <!-- Phase 2 — Abstract symbol nodes (hanja removed) -->
+                <div class="node n-1" data-label="FLOW" data-symbol="flow">
+                    <svg class="node-icon" viewBox="0 0 20 20"><path d="M2,10 Q6,6 10,10 T18,10"/><path d="M2,14 Q6,10 10,14 T18,14" opacity="0.5"/></svg>
+                    <span class="node-label">FLOW</span>
+                </div>
+                <div class="node n-2" data-label="STILL" data-symbol="still">
+                    <svg class="node-icon" viewBox="0 0 20 20"><line x1="3" y1="10" x2="17" y2="10"/><line x1="5" y1="7" x2="15" y2="7" opacity="0.4"/><line x1="5" y1="13" x2="15" y2="13" opacity="0.4"/></svg>
+                    <span class="node-label">STILL</span>
+                </div>
+                <div class="node n-3" data-label="VOID" data-symbol="void">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/></svg>
+                    <span class="node-label">VOID</span>
+                </div>
+                <div class="node n-4" data-label="LIGHT" data-symbol="light">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5" fill="var(--fg-paper)"/><line x1="10" y1="2" x2="10" y2="5"/><line x1="10" y1="15" x2="10" y2="18"/><line x1="2" y1="10" x2="5" y2="10"/><line x1="15" y1="10" x2="18" y2="10"/><line x1="4.5" y1="4.5" x2="6.5" y2="6.5"/><line x1="13.5" y1="13.5" x2="15.5" y2="15.5"/><line x1="4.5" y1="15.5" x2="6.5" y2="13.5"/><line x1="13.5" y1="6.5" x2="15.5" y2="4.5"/></svg>
+                    <span class="node-label">LIGHT</span>
+                </div>
 
                 <!-- Capture Zone -->
                 <div class="capture-zone">
-                    <div class="seal-button" id="seal-btn">
-                        <span class="seal-text">印</span>
-                    </div>
+                    <button class="seal-button" id="seal-btn" type="button" aria-label="Capture temporal moment">
+                        <span class="seal-glyph" aria-hidden="true"></span>
+                        <span class="seal-caption">CAPTURE</span>
+                    </button>
                     <div class="capture-meta">
                         LAT <span id="lat-val">34.0522</span>° N<br>
                         LNG <span id="lng-val">118.2437</span>° W<br>
@@ -807,10 +970,22 @@
                     </div>
                 </div>
 
-                <div class="node n-5"><div class="connector"></div><span class="node-inner">心</span></div>
-                <div class="node n-6"><div class="connector"></div><span class="node-inner">道</span></div>
-                <div class="node n-7"><div class="connector"></div><span class="node-inner">理</span></div>
-                <div class="node n-8"><div class="connector"></div><span class="node-inner">法</span></div>
+                <div class="node n-5" data-label="CORE" data-symbol="core">
+                    <svg class="node-icon" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6"/><circle cx="10" cy="10" r="3"/><circle cx="10" cy="10" r="1" fill="var(--fg-paper)"/></svg>
+                    <span class="node-label">CORE</span>
+                </div>
+                <div class="node n-6" data-label="PATH" data-symbol="path">
+                    <svg class="node-icon" viewBox="0 0 20 20"><path d="M3,16 Q8,4 12,10 T17,4"/></svg>
+                    <span class="node-label">PATH</span>
+                </div>
+                <div class="node n-7" data-label="ORDER" data-symbol="order">
+                    <svg class="node-icon" viewBox="0 0 20 20"><rect x="4" y="4" width="12" height="12"/><line x1="4" y1="8" x2="16" y2="8"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="8" y1="4" x2="8" y2="16"/><line x1="12" y1="4" x2="12" y2="16"/></svg>
+                    <span class="node-label">ORDER</span>
+                </div>
+                <div class="node n-8" data-label="FORM" data-symbol="form">
+                    <svg class="node-icon" viewBox="0 0 20 20"><polygon points="10,3 17,10 10,17 3,10"/><polygon points="10,6 14,10 10,14 6,10"/></svg>
+                    <span class="node-label">FORM</span>
+                </div>
             </div>
 
             <div class="esoteric-script script-1">Observing the void...</div>
@@ -863,6 +1038,78 @@
     <div class="grain-overlay" aria-hidden="true"></div>
 
     <script>
+        // Phase 2 — SVG bezier connector renderer (nodes → seal)
+        (function renderConnectors() {
+            const svg = document.getElementById('connector-svg');
+            if (!svg) return;
+
+            function draw() {
+                const core = document.querySelector('.talisman-core');
+                const seal = document.querySelector('.seal-button');
+                if (!core || !seal) return;
+                const coreRect = core.getBoundingClientRect();
+                const sealRect = seal.getBoundingClientRect();
+                const cx = sealRect.left - coreRect.left + sealRect.width / 2;
+                const cy = sealRect.top - coreRect.top + sealRect.height / 2;
+
+                svg.setAttribute('viewBox', `0 0 ${coreRect.width} ${coreRect.height}`);
+                svg.setAttribute('width', coreRect.width);
+                svg.setAttribute('height', coreRect.height);
+                svg.innerHTML = '';
+
+                const nodes = svg.parentElement.querySelectorAll('.node');
+                const ns = 'http://www.w3.org/2000/svg';
+
+                nodes.forEach((n, i) => {
+                    const r = n.getBoundingClientRect();
+                    const nx = r.left - coreRect.left + r.width / 2;
+                    const ny = r.top - coreRect.top + r.height / 2;
+
+                    // control point perpendicular bias
+                    const dx = cx - nx;
+                    const dy = cy - ny;
+                    const mx = nx + dx * 0.5;
+                    const my = ny + dy * 0.5;
+                    const perpX = -dy * 0.18;
+                    const perpY = dx * 0.18;
+                    const cpX = mx + perpX * ((i % 2 === 0) ? 1 : -1);
+                    const cpY = my + perpY * ((i % 2 === 0) ? 1 : -1);
+
+                    const d = `M ${nx} ${ny} Q ${cpX} ${cpY} ${cx} ${cy}`;
+                    const path = document.createElementNS(ns, 'path');
+                    path.setAttribute('d', d);
+                    path.setAttribute('class', 'conn-path');
+                    path.setAttribute('id', 'conn-' + (i + 1));
+                    path.style.animationDelay = (i * -1.5) + 's';
+                    svg.appendChild(path);
+
+                    // flare: circle traveling along path
+                    const flare = document.createElementNS(ns, 'circle');
+                    flare.setAttribute('class', 'conn-flare');
+                    flare.setAttribute('r', '1.4');
+                    const motion = document.createElementNS(ns, 'animateMotion');
+                    motion.setAttribute('dur', (7 + i * 0.4) + 's');
+                    motion.setAttribute('repeatCount', 'indefinite');
+                    motion.setAttribute('begin', (i * 0.8) + 's');
+                    const mpath = document.createElementNS(ns, 'mpath');
+                    mpath.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#conn-' + (i + 1));
+                    motion.appendChild(mpath);
+                    flare.appendChild(motion);
+                    svg.appendChild(flare);
+                });
+            }
+
+            draw();
+            let rafId;
+            window.addEventListener('resize', () => {
+                cancelAnimationFrame(rafId);
+                rafId = requestAnimationFrame(draw);
+            });
+            // redraw once layout settles (fonts, icons)
+            setTimeout(draw, 300);
+            setTimeout(draw, 1200);
+        })();
+
         // Phase 1 — Canvas particle system (brownian drift + mouse repulsion)
         (function initParticles() {
             const canvas = document.getElementById('particle-canvas');
